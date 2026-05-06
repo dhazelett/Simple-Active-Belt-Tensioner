@@ -15,9 +15,15 @@ These are the most common questions raised:
 
 > Can I use a different type of motor?
 
-No, both the printed pulleys and the Waveshare control board are designed to work specifically with the DDSM115 (and less powerful DDSM210) motors.
+The BOM states the [Waveshare DDSM115](https://www.waveshare.com/wiki/DDSM115) motor should be used because that is the motor I've developed and tested with. However there appear to be a number of rebrands of the same OEM motor available around the world. For example, the [DFRobot M0601](https://wiki.dfrobot.com/fit1042/#tech_specs) is more commonly available in the US.
 
-The SimHub plugin software is only programmed to use the DDSM115 motor protocol, so any other integrated servo motors you might find simlpy won't be controllable; even if you somehow manage to physically connect them.
+The company that makes these motors is [Direct Drive Tech](https://shop.directdrive.com/products/m0601c-111-direct-drive-motor), who appear to designate it the `M0601C-111`.
+
+Since I have not purchased and tested these other versions I cannot recommend them until a user reports back that they work as expected. If that happens, I'll update the documentation.
+
+As for other types of motors; no, both the printed pulleys and the Waveshare control board are designed to work specifically with the DDSM115 motor.
+
+The SimHub plugin software is only programmed to use the DDSM115 motor protocol, so any other integrated servo motors you might find simply won't be controllable; even if you somehow manage to physically connect them.
 
 Most comments/queries I've received regarding the motors have been from potential builders feeling they want more torque/force, which I don't personally feel is necessary. So far the people who have built the kit agree that the ~10Kg of force per belt is plenty.
 
