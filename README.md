@@ -16,12 +16,12 @@ It requires **no soldering or programming** and can be built for **as little as 
 
 An _active belt tensioner_ is a device that attaches between your sim rig and the anchor points of your racing harness. It dynamically tensions the harness in response to game telemetry; giving a sense of the forces you'd be experencing in a vehicle when changing speed, braking, cornering and jumping/landing.
 
-It works with **any game fully supported by [SimHub](https://www.simhubdash.com/)**, but the current software is designed primarily for racing games and simluators.
+It works with **any game fully supported by [SimHub](https://www.simhubdash.com/)**, but the current software is designed primarily for racing games and simulators.
 
 This project consists of three parts:
 - A shopping list of [components](#what-does-it-cost), readily available from online sellers
 - Printable [parts](/Printables/) and instructions on how to assemble them
-- A _SimHub_ [plugin](/Plugin/) that controls the hardware and allows customisation of the effects
+- A _SimHub_ plugin that controls the hardware and allows customisation of the effects
 
 The printable files and software are **completely free** (except the required [SimHub License](https://www.simhubdash.com/get-a-license/)). The printed part designs are `CERN-OHL-P` licensed (open-source), and the software is `MIT` licensed, which essentially means you can do what you like with either; including selling printed/machined parts kits.
 
@@ -29,17 +29,17 @@ The printable files and software are **completely free** (except the required [S
 - Lowest Practical Cost
 - Minimal Parts & Tools
 - No Soldering
-- No Progamming
+- No Programming
 - No 'Reclaimed' Parts
 - Direct-Drive (FOC/BLDC) Performance & Flexibility
 
 ## Who Is It For?
 
-Anyone with a sim rig that desires a more immersive experience. It's a plug-and-play design that requires no soldering or progamming, so virtually anyone can build it.
+Anyone with a sim rig that desires a more immersive experience. It's a plug-and-play design that requires no soldering or programming, so virtually anyone can build it.
 
 Note that you'll need either an _aluminium profile_ (e.g. [GT Omega Prime](https://www.gtomega.co.uk/products/prime-cockpit)) or _2" tubular steel_ (e.g. [GT Omega Titan](https://www.gtomega.co.uk/products/titan-cockpit)) sim rig frame to mount this using the available brackets. Mounting to other types of rig is possible, but you'll need to design and fabricate your own brackets (or [get in touch](mailto:sabt@georgewilkins.co.uk) with me). _Folding-seat_ rigs (e.g. [Playseat Challenge](https://www.playseat.com/)) are _not suitable_.
 
-I would reccommend installing tactile tranducers (bass shakers) before embarking on belt tensioners and other more exotic haptic systems. Tranducers are by far the simplest and cheapest way of adding real immersion to your experience. They provide detail that belt tensioners cannot (road bumps, curbs, etc), while tensioners provide constant forces that tranduscers cannot (braking, cornering, etc).
+I would recommend installing tactile transducers (bass shakers) before embarking on belt tensioners and other more exotic haptic systems. Transducers are by far the simplest and cheapest way of adding real immersion to your experience. They provide detail that belt tensioners cannot (road bumps, curbs, etc), while tensioners provide constant forces that transducers cannot (braking, cornering, etc).
 
 ## What Does It Cost?
 

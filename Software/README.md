@@ -1,10 +1,8 @@
 # Software
 
 There are two things you'll need to use this belt tensioner:
-- [SimHub](https://www.simhubdash.com/) and a [Licesnse](https://www.simhubdash.com/get-a-license/) for 60FPS telemetry data
-- This project's [Plugin](./Plugin) `DLL` file, which must be copied into SimHub's installation directory
-
-That's it. Once you open SimHub after copying the plugin `DLL`, it should recognise the plugin and load it. You can then add the plugin to your SimHub dashboard and configure it as you like.
+- [SimHub](https://www.simhubdash.com/) and a [License](https://www.simhubdash.com/get-a-license/) for 60FPS telemetry data
+- The project's SimHub plugin, which must be copied into SimHub's installation directory
 
 ## Downloading SimHub
 
@@ -28,8 +26,11 @@ Note that you do not need a _'Motion License'_ to use this tensioner; that is a 
 
 ## Downloading & Installing The Plugin
 
-1. Go to [the latest release](https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/releases) and download the `User.ActiveBeltTensioner.dll` file
-2. Make sure _SimHub_ is closed before proceeding to the next step
-3. Copy the `DLL` file within to your SimHub installation directory (e.g. `C:\Program Files\SimHub`)
+1. Make sure _SimHub_ is closed before proceeding
+2. Download the [SABT SimHub Plugin.zip](SABT%20SimHub%20Plugin.zip) file
+3. Unzip the downloaded file, which will contain a `.dll` file (the plugin itself) and a `/Languages/` folder
+3. Copy both into your SimHub installation directory (e.g. `C:\Program Files\SimHub`)
 4. Open _SimHub_, which should then recognise the plugin and load it
 5. Click on the `Simple Active Belt Tensioner` plugin in the left-hand menu and configure it as you like
+
+You can change the language of the plugin (and SimHub itself) from `Settings` > `General` > `Language`.

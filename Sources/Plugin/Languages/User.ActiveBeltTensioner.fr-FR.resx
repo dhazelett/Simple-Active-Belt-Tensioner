@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,131 +118,131 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="SABT_Tab_Tuning" xml:space="preserve">
-    <value>Tuning</value>
+    <value>Réglage</value>
   </data>
   <data name="SABT_Tab_Credits" xml:space="preserve">
-    <value>Credits</value>
+    <value>Crédits</value>
   </data>
   <data name="SABT_Title_Connection" xml:space="preserve">
-    <value>Status &amp; Setup</value>
+    <value>État et configuration</value>
   </data>
   <data name="SABT_Title_Effects" xml:space="preserve">
-    <value>Effect Strength Adjustment</value>
+    <value>Réglage de l'intensité des effets</value>
   </data>
   <data name="SABT_Title_Tension" xml:space="preserve">
-    <value>Belt Tension Adjustment</value>
+    <value>Réglage de la tension de ceinture</value>
   </data>
   <data name="SABT_Title_Tuning" xml:space="preserve">
-    <value>Telemetry Handling</value>
+    <value>Gestion de la télémétrie</value>
   </data>
   <data name="SABT_Status_Disconnected" xml:space="preserve">
-    <value>Disconnected</value>
+    <value>Déconnecté</value>
   </data>
   <data name="SABT_Status_CommunicationFailure" xml:space="preserve">
-    <value>Communication Failure</value>
+    <value>Échec de communication</value>
   </data>
   <data name="SABT_Message_ActivationWarning" xml:space="preserve">
-    <value>The belt tensioner motors will be activated. Proceed?</value>
+    <value>Les moteurs du tendeur de ceinture vont être activés. Continuer ?</value>
   </data>
   <data name="SABT_Message_SimHubLicenseRequired" xml:space="preserve">
-    <value>Your installation of SimHub is not licensed, so telemetry updates will be limited to 10Hz</value>
+    <value>Votre installation SimHub n'est pas sous licence, les mises à jour de télémétrie seront donc limitées à 10 Hz</value>
   </data>
   <data name="SABT_Message_Setup_TurnOffPower" xml:space="preserve">
-    <value>We'll now set up the motors. The first step is to TURN OFF THE POWER to the tensioner. Have you done this?</value>
+    <value>Nous allons maintenant configurer les moteurs. La première étape est de COUPER L'ALIMENTATION du tendeur. L'avez-vous fait ?</value>
   </data>
   <data name="SABT_Message_Setup_Complete" xml:space="preserve">
-    <value>Great, the RIGHT MOTOR has been configured. Both motors are now ready to go...</value>
+    <value>Parfait, le MOTEUR DROIT a été configuré. Les deux moteurs sont maintenant prêts...</value>
   </data>
   <data name="SABT_Message_Setup_PlugInLeftMotor" xml:space="preserve">
-    <value>Now we need to PLUG IN THE LEFT MOTOR ONLY. Any of the ports on the controller will do. Once connected, plug in the power. Have you done this?</value>
+    <value>Nous devons maintenant BRANCHER UNIQUEMENT LE MOTEUR GAUCHE. N'importe quel port du contrôleur convient. Une fois connecté, mettez sous tension. L'avez-vous fait ?</value>
   </data>
   <data name="SABT_Message_Setup_PlugInRightMotor" xml:space="preserve">
-    <value>Great, the LEFT MOTOR has been configured. Now PLUG IN THE RIGHT MOTOR, leaving the other motor still connected. Have you done this?</value>
+    <value>Parfait, le MOTEUR GAUCHE a été configuré. Branchez maintenant LE MOTEUR DROIT en laissant l'autre moteur connecté. L'avez-vous fait ?</value>
   </data>
   <data name="SABT_Message_Setup_AlreadySetUp" xml:space="preserve">
-    <value>You appear to already be set up correctly (both motors are connected)!</value>
+    <value>Il semble que tout soit déjà correctement configuré (les deux moteurs sont connectés) !</value>
   </data>
   <data name="SABT_Message_Setup_FailedToSetLeftMotor" xml:space="preserve">
-    <value>Failed to set identifier for the LEFT MOTOR. Please ensure only one motor is plugged in and powered</value>
+    <value>Impossible de définir l'identifiant du MOTEUR GAUCHE. Vérifiez qu'un seul moteur est branché et alimenté</value>
   </data>
   <data name="SABT_Message_Setup_FailedToSetRightMotor" xml:space="preserve">
-    <value>Failed to set identifier for the RIGHT MOTOR. Please ensure both motors are plugged in and powered</value>
+    <value>Impossible de définir l'identifiant du MOTEUR DROIT. Vérifiez que les deux moteurs sont branchés et alimentés</value>
   </data>
   <data name="SABT_Message_NoDeviceDetected" xml:space="preserve">
-    <value>No device detected. You must select a serial device before performing setup!</value>
+    <value>Aucun périphérique détecté. Vous devez sélectionner un port série avant de lancer la configuration.</value>
   </data>
   <data name="SABT_Message_DeviceFailure" xml:space="preserve">
-    <value>The device could not be found, or motors did not respond. The 'Enable Motors' option has been automatically switched off</value>
+    <value>Le périphérique est introuvable ou les moteurs n'ont pas répondu. L'option « Activer les moteurs » a été désactivée automatiquement</value>
   </data>
   <data name="SABT_Plugin" xml:space="preserve">
     <value>Simple Active Belt Tensioner</value>
   </data>
   <data name="SABT_Label_EnableMotors" xml:space="preserve">
-    <value>Enable Motors</value>
+    <value>Activer les moteurs</value>
   </data>
   <data name="SABT_Label_FlipChannels" xml:space="preserve">
-    <value>Flip Channels</value>
+    <value>Inverser les canaux</value>
   </data>
   <data name="SABT_Label_StartAutomatically" xml:space="preserve">
-    <value>Start Automatically</value>
+    <value>Démarrer automatiquement</value>
   </data>
   <data name="SABT_Title_Credits" xml:space="preserve">
-    <value>Licensing &amp; Author Information</value>
+    <value>Licence et informations auteur</value>
   </data>
   <data name="SABT_Tab_Tension" xml:space="preserve">
     <value>Tension</value>
   </data>
   <data name="SABT_Tab_Effects" xml:space="preserve">
-    <value>Effects</value>
+    <value>Effets</value>
   </data>
   <data name="SABT_Tab_Connection" xml:space="preserve">
-    <value>Connection</value>
+    <value>Connexion</value>
   </data>
   <data name="SABT_Button_TestMotor" xml:space="preserve">
-    <value>Test Motor</value>
+    <value>Tester le moteur</value>
   </data>
   <data name="SABT_Button_SetupMotors" xml:space="preserve">
-    <value>Setup Motors</value>
+    <value>Configurer les moteurs</value>
   </data>
   <data name="SABT_Label_Connection" xml:space="preserve">
-    <value>• Select a serial port from the drop-down list below. Only ports that appear to be the belt tensioner device will be shown. If the list is empty, check that the controller is plugged in. It should appear even without power or any motors connected.
-• Future launches of SimHub should remember your port selection and reconnect automatically. However the 'Enable Motors' option will be reset every launch unless 'Start Automatically' is also enabled.
-• If this is your first time setting up, you'll need to then click 'Setup Motors' and follow the instructions given. You'll only need to do this once, as each motor stores its configuration once set.</value>
+    <value>• Sélectionnez un port série dans la liste ci-dessous. Seuls les ports correspondant au tendeur de ceinture seront affichés. Si la liste est vide, vérifiez que le contrôleur est branché. Il doit apparaître même sans alimentation ni moteurs connectés.
+• Aux prochains lancements de SimHub, votre sélection de port devrait être conservée et reconnectée automatiquement. Cependant l'option « Activer les moteurs » sera réinitialisée à chaque lancement sauf si « Démarrer automatiquement » est activé.
+• Si c'est votre première configuration, cliquez ensuite sur « Configurer les moteurs » et suivez les instructions. Cette opération n'est à faire qu'une seule fois, chaque moteur conservant sa configuration.</value>
   </data>
   <data name="SABT_Slider_IdleTension" xml:space="preserve">
-    <value>Idle Tension</value>
+    <value>Tension au repos</value>
   </data>
   <data name="SABT_Label_IdleTension" xml:space="preserve">
-    <value>• Always applied while not driving (no effect while driving)
-• Behaves like the retraction spring on an inertia reel belt
-• Set to zero to disable; limited to 25% of maximum motor torque</value>
+    <value>• Toujours appliquée hors conduite (aucun effet en conduite)
+• Se comporte comme le ressort de rappel d'une ceinture à enrouleur inertiel
+• Réglez à zéro pour désactiver ; limité à 25 % du couple moteur maximal</value>
   </data>
   <data name="SABT_Slider_DrivingTension" xml:space="preserve">
-    <value>Driving Tension</value>
+    <value>Tension en conduite</value>
   </data>
   <data name="SABT_Label_DrivingTension" xml:space="preserve">
-    <value>• The minimum and maximum tension to be applied while driving
-• Increasing the minimum will apply a constant tension and enhance acceleration and jumping effects
-• Reducing the maximum will result in a reduction of overall tension strength</value>
+    <value>• Tension minimale et maximale appliquées en conduite
+• Augmenter le minimum applique une tension constante et renforce les effets d'accélération et de saut
+• Réduire le maximum diminue l'intensité globale de tension</value>
   </data>
   <data name="SABT_Slider_LeftRightBias" xml:space="preserve">
-    <value>Left/Right Bias</value>
+    <value>Équilibre gauche/droite</value>
   </data>
   <data name="SABT_Label_LeftRightBias" xml:space="preserve">
-    <value>• If tension feels unbalanced between sides, adjust this left or right to bias towards that side
-• Check and correct your belt path and contact points before resorting to using this setting</value>
+    <value>• Si la tension semble déséquilibrée, ajustez vers la gauche ou la droite
+• Vérifiez d'abord le cheminement de la ceinture et les points de contact avant d'utiliser ce réglage</value>
   </data>
   <data name="SABT_Slider_Cornering" xml:space="preserve">
-    <value>Cornering</value>
+    <value>Virage</value>
   </data>
   <data name="SABT_Label_Cornering" xml:space="preserve">
-    <value>• How much cornering forces should affect the tension differential between the two belts</value>
+    <value>• Intensité de l'effet des forces de virage sur la différence de tension entre les deux ceintures</value>
   </data>
   <data name="SABT_Slider_Braking" xml:space="preserve">
-    <value>Braking</value>
+    <value>Freinage</value>
   </data>
   <data name="SABT_Label_Braking" xml:space="preserve">
-    <value>• How much decceleration forces should increase the tension on both belts</value>
+    <value>• Intensité de l'augmentation de tension sur les deux ceintures lors de la décélération</value>
   </data>
   <data name="SABT_Legend_Surge" xml:space="preserve">
     <value>Surge</value>
@@ -254,123 +254,123 @@
     <value>Heave</value>
   </data>
   <data name="SABT_Slider_Acceleration" xml:space="preserve">
-    <value>Acceleration</value>
+    <value>Accélération</value>
   </data>
   <data name="SABT_Label_Acceleration" xml:space="preserve">
-    <value>• How much acceleration forces should decrease the tension on both belts
-• Set minimum 'Driving Tension' to non-zero for best results (see 'Tension' tab)</value>
+    <value>• Intensité de la diminution de tension sur les deux ceintures due à l'accélération
+• Pour de meilleurs résultats, définissez la « Tension en conduite » minimale à une valeur non nulle (voir onglet « Tension »)</value>
   </data>
   <data name="SABT_Slider_Jumping" xml:space="preserve">
-    <value>Jumping</value>
+    <value>Sauts</value>
   </data>
   <data name="SABT_Label_Jumping" xml:space="preserve">
-    <value>• How much jumping should decrease the tension on both belts
-• Set minimum 'Driving Tension' to non-zero for best results (see 'Tension' tab)</value>
+    <value>• Intensité de la diminution de tension sur les deux ceintures lors des sauts
+• Pour de meilleurs résultats, définissez la « Tension en conduite » minimale à une valeur non nulle (voir onglet « Tension »)</value>
   </data>
   <data name="SABT_Label_SetMinimumTensionToNonZero" xml:space="preserve">
-    <value>• Set minimum 'Driving Tension' to non-zero for best results (see 'Tension' tab)</value>
+    <value>• Pour de meilleurs résultats, définissez la « Tension en conduite » minimale à une valeur non nulle (voir onglet « Tension »)</value>
   </data>
   <data name="SABT_Slider_Landing" xml:space="preserve">
-    <value>Landing</value>
+    <value>Atterrissage</value>
   </data>
   <data name="SABT_Label_Landing" xml:space="preserve">
-    <value>• How much landing should increase the tension on both belts</value>
+    <value>• Intensité de l'augmentation de tension sur les deux ceintures lors des réceptions</value>
   </data>
   <data name="SABT_Slider_Shifting" xml:space="preserve">
-    <value>Shifting</value>
+    <value>Changement de vitesse</value>
   </data>
   <data name="SABT_Label_Shifting" xml:space="preserve">
-    <value>• Adds a more pronounced release of tension on upshift than standard telemetry offers
-• Set minimum 'Driving Tension' to non-zero for best results (see 'Tension' tab)</value>
+    <value>• Ajoute un relâchement de tension plus marqué lors des passages de rapport que la télémétrie standard
+• Pour de meilleurs résultats, définissez la « Tension en conduite » minimale à une valeur non nulle (voir onglet « Tension »)</value>
   </data>
   <data name="SABT_Slider_SurgeLimits" xml:space="preserve">
-    <value>Surge Limits (Acceleration/Braking)</value>
+    <value>Limites Surge (Accélération/Freinage)</value>
   </data>
   <data name="SABT_Slider_SwayLimits" xml:space="preserve">
-    <value>Sway Limits (Cornering)</value>
+    <value>Limites Sway (Virage)</value>
   </data>
   <data name="SABT_Slider_HeaveLimits" xml:space="preserve">
-    <value>Heave Limits (Jumps)</value>
+    <value>Limites Heave (Sauts)</value>
   </data>
   <data name="SABT_Label_TelemetryLimits" xml:space="preserve">
-    <value>• The permitted value ranges for incoming telemetry (anything more or less will be clipped)
-• Set appropriately for the types of vehicles you mostly drive (defaults are fine for most)
-• Narrower ranges result in more aggressive effects, wider ranges result in greater subtlety
-• Run a replay to see live telemetry plotted above and to make adjustment easier</value>
+    <value>• Plages autorisées pour la télémétrie entrante (les valeurs hors plage seront limitées)
+• Adaptez-les aux types de véhicules que vous pilotez le plus souvent (les valeurs par défaut conviennent dans la plupart des cas)
+• Des plages plus étroites donnent des effets plus agressifs, des plages plus larges donnent plus de subtilité
+• Lancez un replay pour voir la télémétrie en direct tracée ci-dessus et faciliter les réglages</value>
   </data>
   <data name="SABT_Slider_SmoothingFactor" xml:space="preserve">
-    <value>Smoothing Factor</value>
+    <value>Facteur de lissage</value>
   </data>
   <data name="SABT_Label_SmoothingFactor" xml:space="preserve">
-    <value>• How much the tension output should be smoothed</value>
+    <value>• Intensité du lissage appliqué à la tension de sortie</value>
   </data>
   <data name="SABT_Link_Website" xml:space="preserve">
-    <value>Website</value>
+    <value>Site web</value>
   </data>
   <data name="SABT_Link_Email" xml:space="preserve">
-    <value>E-Mail</value>
+    <value>E-mail</value>
   </data>
   <data name="SABT_Link_GitHubProfile" xml:space="preserve">
-    <value>GitHub Profile</value>
+    <value>Profil GitHub</value>
   </data>
   <data name="SABT_Link_ProjectLicense" xml:space="preserve">
-    <value>Project License</value>
+    <value>Licence du projet</value>
   </data>
   <data name="SABT_Text_SimHub" xml:space="preserve">
-    <value>SimHub plugin based upon 'SimHub Plugin Demo' by SHWotever:</value>
+    <value>Plugin SimHub basé sur « SimHub Plugin Demo » par SHWotever :</value>
   </data>
   <data name="SABT_Link_SDKDocumentation" xml:space="preserve">
-    <value>SDK Documentation</value>
+    <value>Documentation SDK</value>
   </data>
   <data name="SABT_Text_Tester" xml:space="preserve">
-    <value>Pre-Release Testing &amp; Feedback by TurtleMenace:</value>
+    <value>Tests pré-version et retours par TurtleMenace :</value>
   </data>
   <data name="SABT_Text_Repository" xml:space="preserve">
-    <value>For more information, to report a bug or contribute, consult the project GitHub repository:</value>
+    <value>Pour plus d'informations, signaler un bug ou contribuer, consultez le dépôt GitHub du projet :</value>
   </data>
   <data name="SABT_Link_GitHubRepository" xml:space="preserve">
-    <value>GitHub Repository</value>
+    <value>Dépôt GitHub</value>
   </data>
   <data name="SABT_Text_Designer" xml:space="preserve">
-    <value>Hardware and software design by George Wilkins:</value>
+    <value>Conception matérielle et logicielle par George Wilkins :</value>
   </data>
   <data name="SABT_Status_Connected" xml:space="preserve">
-    <value>Connected</value>
+    <value>Connecté</value>
   </data>
   <data name="SABT_Status_NoDeviceDetected" xml:space="preserve">
-    <value>No Device Detected</value>
+    <value>Aucun périphérique détecté</value>
   </data>
   <data name="SABT_Status_Connecting" xml:space="preserve">
-    <value>Connecting...</value>
+    <value>Connexion...</value>
   </data>
   <data name="SABT_Status_AwaitingConnection" xml:space="preserve">
-    <value>Awaiting Connection...</value>
+    <value>En attente de connexion...</value>
   </data>
   <data name="SABT_Status_CheckingMode" xml:space="preserve">
-    <value>Checking Mode...</value>
+    <value>Vérification du mode...</value>
   </data>
   <data name="SABT_Status_SettingMode" xml:space="preserve">
-    <value>Setting Mode...</value>
+    <value>Configuration du mode...</value>
   </data>
   <data name="SABT_Status_IdentifierSet" xml:space="preserve">
-    <value>Identifier Set (Connected)</value>
+    <value>Identifiant défini (Connecté)</value>
   </data>
   <data name="SABT_Status_SettingIdentifier" xml:space="preserve">
-    <value>Setting Identifier</value>
+    <value>Définition de l'identifiant</value>
   </data>
   <data name="SABT_Status_TestPassed" xml:space="preserve">
-    <value>Test Passed</value>
+    <value>Test réussi</value>
   </data>
   <data name="SABT_Status_TestFailed" xml:space="preserve">
-    <value>Test Failed</value>
+    <value>Test échoué</value>
   </data>
   <data name="SABT_Status_Testing" xml:space="preserve">
-    <value>Testing...</value>
+    <value>Test en cours...</value>
   </data>
   <data name="SABT_Status_Stopping" xml:space="preserve">
-    <value>Stopping...</value>
+    <value>Arrêt...</value>
   </data>
   <data name="SABT_Status_TestPartiallyFailed" xml:space="preserve">
-    <value>Test Partially Failed</value>
+    <value>Test partiellement échoué</value>
   </data>
 </root>
