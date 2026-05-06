@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SABT_Tab_Tuning" xml:space="preserve">
+    <value>Feinabstimmung</value>
+  </data>
+  <data name="SABT_Tab_Credits" xml:space="preserve">
+    <value>Danksagungen</value>
+  </data>
+  <data name="SABT_Title_Connection" xml:space="preserve">
+    <value>Status und Einrichtung</value>
+  </data>
+  <data name="SABT_Title_Effects" xml:space="preserve">
+    <value>Anpassung der Effektstärke</value>
+  </data>
+  <data name="SABT_Title_Tension" xml:space="preserve">
+    <value>Anpassung der Gurtspannung</value>
+  </data>
+  <data name="SABT_Title_Tuning" xml:space="preserve">
+    <value>Telemetrie-Verarbeitung</value>
+  </data>
+  <data name="SABT_Status_Disconnected" xml:space="preserve">
+    <value>Getrennt</value>
+  </data>
+  <data name="SABT_Status_CommunicationFailure" xml:space="preserve">
+    <value>Kommunikationsfehler</value>
+  </data>
+  <data name="SABT_Message_ActivationWarning" xml:space="preserve">
+    <value>Die Motoren des Gurtstraffers werden aktiviert. Fortfahren?</value>
+  </data>
+  <data name="SABT_Message_SimHubLicenseRequired" xml:space="preserve">
+    <value>Ihre SimHub-Installation ist nicht lizenziert, daher sind Telemetrie-Updates auf 10 Hz begrenzt</value>
+  </data>
+  <data name="SABT_Message_Setup_TurnOffPower" xml:space="preserve">
+    <value>Wir richten jetzt die Motoren ein. Der erste Schritt ist, DIE STROMVERSORGUNG des Gurtstraffers AUSZUSCHALTEN. Haben Sie das getan?</value>
+  </data>
+  <data name="SABT_Message_Setup_Complete" xml:space="preserve">
+    <value>Super, der RECHTE MOTOR wurde konfiguriert. Beide Motoren sind jetzt einsatzbereit...</value>
+  </data>
+  <data name="SABT_Message_Setup_PlugInLeftMotor" xml:space="preserve">
+    <value>Jetzt müssen Sie NUR DEN LINKEN MOTOR ANSCHLIESSEN. Jeder Anschluss am Controller ist geeignet. Schalten Sie danach die Stromversorgung ein. Haben Sie das getan?</value>
+  </data>
+  <data name="SABT_Message_Setup_PlugInRightMotor" xml:space="preserve">
+    <value>Super, der LINKE MOTOR wurde konfiguriert. Schließen Sie jetzt den RECHTEN MOTOR an und lassen Sie den anderen Motor weiterhin verbunden. Haben Sie das getan?</value>
+  </data>
+  <data name="SABT_Message_Setup_AlreadySetUp" xml:space="preserve">
+    <value>Es scheint bereits alles korrekt eingerichtet zu sein (beide Motoren sind verbunden)!</value>
+  </data>
+  <data name="SABT_Message_Setup_FailedToSetLeftMotor" xml:space="preserve">
+    <value>Die Kennung für den LINKEN MOTOR konnte nicht gesetzt werden. Bitte stellen Sie sicher, dass nur ein Motor angeschlossen und mit Strom versorgt ist</value>
+  </data>
+  <data name="SABT_Message_Setup_FailedToSetRightMotor" xml:space="preserve">
+    <value>Die Kennung für den RECHTEN MOTOR konnte nicht gesetzt werden. Bitte stellen Sie sicher, dass beide Motoren angeschlossen und mit Strom versorgt sind</value>
+  </data>
+  <data name="SABT_Message_NoDeviceDetected" xml:space="preserve">
+    <value>Kein Gerät erkannt. Sie müssen ein serielles Gerät auswählen, bevor Sie die Einrichtung starten.</value>
+  </data>
+  <data name="SABT_Message_DeviceFailure" xml:space="preserve">
+    <value>Das Gerät wurde nicht gefunden oder die Motoren haben nicht reagiert. Die Option „Motoren aktivieren“ wurde automatisch ausgeschaltet</value>
+  </data>
+  <data name="SABT_Plugin" xml:space="preserve">
+    <value>Simple Active Belt Tensioner</value>
+  </data>
+  <data name="SABT_Label_EnableMotors" xml:space="preserve">
+    <value>Motoren aktivieren</value>
+  </data>
+  <data name="SABT_Label_FlipChannels" xml:space="preserve">
+    <value>Kanäle tauschen</value>
+  </data>
+  <data name="SABT_Label_StartAutomatically" xml:space="preserve">
+    <value>Automatisch starten</value>
+  </data>
+  <data name="SABT_Title_Credits" xml:space="preserve">
+    <value>Lizenz- und Autoreninformationen</value>
+  </data>
+  <data name="SABT_Tab_Tension" xml:space="preserve">
+    <value>Spannung</value>
+  </data>
+  <data name="SABT_Tab_Effects" xml:space="preserve">
+    <value>Effekte</value>
+  </data>
+  <data name="SABT_Tab_Connection" xml:space="preserve">
+    <value>Verbindung</value>
+  </data>
+  <data name="SABT_Button_TestMotor" xml:space="preserve">
+    <value>Motor testen</value>
+  </data>
+  <data name="SABT_Button_SetupMotors" xml:space="preserve">
+    <value>Motoren einrichten</value>
+  </data>
+  <data name="SABT_Label_Connection" xml:space="preserve">
+    <value>• Wählen Sie unten einen seriellen Port aus der Liste aus. Es werden nur Ports angezeigt, die zum Gurtstraffer-Gerät passen. Ist die Liste leer, prüfen Sie, ob der Controller angeschlossen ist. Er sollte auch ohne Stromversorgung oder angeschlossene Motoren angezeigt werden.
+• Bei zukünftigen SimHub-Starts sollte Ihre Portauswahl gespeichert und automatisch wiederverbunden werden. Die Option „Motoren aktivieren“ wird jedoch bei jedem Start zurückgesetzt, sofern nicht auch „Automatisch starten“ aktiviert ist.
+• Wenn Sie das System zum ersten Mal einrichten, klicken Sie anschließend auf „Motoren einrichten“ und folgen den Anweisungen. Das ist nur einmal nötig, da jeder Motor seine Konfiguration speichert.</value>
+  </data>
+  <data name="SABT_Slider_IdleTension" xml:space="preserve">
+    <value>Leerlaufspannung</value>
+  </data>
+  <data name="SABT_Label_IdleTension" xml:space="preserve">
+    <value>• Wird immer angewendet, wenn nicht gefahren wird (keine Wirkung während der Fahrt)
+• Verhält sich wie die Rückholfeder eines Automatikgurts
+• Auf null setzen zum Deaktivieren; begrenzt auf 25 % des maximalen Motordrehmoments</value>
+  </data>
+  <data name="SABT_Slider_DrivingTension" xml:space="preserve">
+    <value>Fahrspannung</value>
+  </data>
+  <data name="SABT_Label_DrivingTension" xml:space="preserve">
+    <value>• Minimale und maximale Spannung während der Fahrt
+• Ein höheres Minimum erzeugt eine konstante Spannung und verstärkt Beschleunigungs- und Sprungeffekte
+• Ein niedrigeres Maximum reduziert die gesamte Spannungsstärke</value>
+  </data>
+  <data name="SABT_Slider_LeftRightBias" xml:space="preserve">
+    <value>Links/Rechts-Balance</value>
+  </data>
+  <data name="SABT_Label_LeftRightBias" xml:space="preserve">
+    <value>• Wenn die Spannung zwischen den Seiten unausgewogen wirkt, nach links oder rechts anpassen
+• Prüfen und korrigieren Sie zuerst den Gurtverlauf und die Kontaktpunkte, bevor Sie diese Einstellung verwenden</value>
+  </data>
+  <data name="SABT_Slider_Cornering" xml:space="preserve">
+    <value>Kurvenfahrt</value>
+  </data>
+  <data name="SABT_Label_Cornering" xml:space="preserve">
+    <value>• Wie stark Kurvenkräfte die Spannungsdifferenz zwischen den beiden Gurten beeinflussen sollen</value>
+  </data>
+  <data name="SABT_Slider_Braking" xml:space="preserve">
+    <value>Bremsen</value>
+  </data>
+  <data name="SABT_Label_Braking" xml:space="preserve">
+    <value>• Wie stark Verzögerungskräfte die Spannung auf beiden Gurten erhöhen sollen</value>
+  </data>
+  <data name="SABT_Legend_Surge" xml:space="preserve">
+    <value>Surge</value>
+  </data>
+  <data name="SABT_Legend_Sway" xml:space="preserve">
+    <value>Sway</value>
+  </data>
+  <data name="SABT_Legend_Heave" xml:space="preserve">
+    <value>Heave</value>
+  </data>
+  <data name="SABT_Slider_Acceleration" xml:space="preserve">
+    <value>Beschleunigung</value>
+  </data>
+  <data name="SABT_Label_Acceleration" xml:space="preserve">
+    <value>• Wie stark Beschleunigungskräfte die Spannung auf beiden Gurten verringern sollen
+• Für beste Ergebnisse die minimale „Fahrspannung“ auf einen Wert ungleich null setzen (siehe Registerkarte „Spannung“)</value>
+  </data>
+  <data name="SABT_Slider_Jumping" xml:space="preserve">
+    <value>Sprünge</value>
+  </data>
+  <data name="SABT_Label_Jumping" xml:space="preserve">
+    <value>• Wie stark Sprünge die Spannung auf beiden Gurten verringern sollen
+• Für beste Ergebnisse die minimale „Fahrspannung“ auf einen Wert ungleich null setzen (siehe Registerkarte „Spannung“)</value>
+  </data>
+  <data name="SABT_Label_SetMinimumTensionToNonZero" xml:space="preserve">
+    <value>• Für beste Ergebnisse die minimale „Fahrspannung“ auf einen Wert ungleich null setzen (siehe Registerkarte „Spannung“)</value>
+  </data>
+  <data name="SABT_Slider_Landing" xml:space="preserve">
+    <value>Landung</value>
+  </data>
+  <data name="SABT_Label_Landing" xml:space="preserve">
+    <value>• Wie stark Landungen die Spannung auf beiden Gurten erhöhen sollen</value>
+  </data>
+  <data name="SABT_Slider_Shifting" xml:space="preserve">
+    <value>Schalten</value>
+  </data>
+  <data name="SABT_Label_Shifting" xml:space="preserve">
+    <value>• Fügt beim Hochschalten eine stärkere Entlastung der Spannung hinzu, als die Standard-Telemetrie bietet
+• Für beste Ergebnisse die minimale „Fahrspannung“ auf einen Wert ungleich null setzen (siehe Registerkarte „Spannung“)</value>
+  </data>
+  <data name="SABT_Slider_SurgeLimits" xml:space="preserve">
+    <value>Surge-Grenzen (Beschleunigung/Bremsen)</value>
+  </data>
+  <data name="SABT_Slider_SwayLimits" xml:space="preserve">
+    <value>Sway-Grenzen (Kurvenfahrt)</value>
+  </data>
+  <data name="SABT_Slider_HeaveLimits" xml:space="preserve">
+    <value>Heave-Grenzen (Sprünge)</value>
+  </data>
+  <data name="SABT_Label_TelemetryLimits" xml:space="preserve">
+    <value>• Zulässige Wertebereiche für eingehende Telemetrie (alles außerhalb wird abgeschnitten)
+• Passen Sie die Bereiche an die Fahrzeugtypen an, die Sie meist fahren (Standardwerte passen für die meisten Fälle)
+• Engere Bereiche erzeugen aggressivere Effekte, weitere Bereiche sorgen für mehr Feinheit
+• Starten Sie eine Wiederholung, um die Live-Telemetrie oben grafisch zu sehen und die Anpassung zu erleichtern</value>
+  </data>
+  <data name="SABT_Slider_SmoothingFactor" xml:space="preserve">
+    <value>Glättungsfaktor</value>
+  </data>
+  <data name="SABT_Label_SmoothingFactor" xml:space="preserve">
+    <value>• Wie stark die Spannungsausgabe geglättet werden soll</value>
+  </data>
+  <data name="SABT_Link_Website" xml:space="preserve">
+    <value>Website</value>
+  </data>
+  <data name="SABT_Link_Email" xml:space="preserve">
+    <value>E-Mail</value>
+  </data>
+  <data name="SABT_Link_GitHubProfile" xml:space="preserve">
+    <value>GitHub-Profil</value>
+  </data>
+  <data name="SABT_Link_ProjectLicense" xml:space="preserve">
+    <value>Projektlizenz</value>
+  </data>
+  <data name="SABT_Text_SimHub" xml:space="preserve">
+    <value>SimHub-Plugin basierend auf „SimHub Plugin Demo“ von SHWotever:</value>
+  </data>
+  <data name="SABT_Link_SDKDocumentation" xml:space="preserve">
+    <value>SDK-Dokumentation</value>
+  </data>
+  <data name="SABT_Text_Tester" xml:space="preserve">
+    <value>Pre-Release-Tests und Feedback von TurtleMenace:</value>
+  </data>
+  <data name="SABT_Text_Repository" xml:space="preserve">
+    <value>Für weitere Informationen, Fehlermeldungen oder Beiträge siehe das GitHub-Repository des Projekts:</value>
+  </data>
+  <data name="SABT_Link_GitHubRepository" xml:space="preserve">
+    <value>GitHub-Repository</value>
+  </data>
+  <data name="SABT_Text_Designer" xml:space="preserve">
+    <value>Hardware- und Software-Design von George Wilkins:</value>
+  </data>
+  <data name="SABT_Status_Connected" xml:space="preserve">
+    <value>Verbunden</value>
+  </data>
+  <data name="SABT_Status_NoDeviceDetected" xml:space="preserve">
+    <value>Kein Gerät erkannt</value>
+  </data>
+  <data name="SABT_Status_Connecting" xml:space="preserve">
+    <value>Verbinde...</value>
+  </data>
+  <data name="SABT_Status_AwaitingConnection" xml:space="preserve">
+    <value>Warte auf Verbindung...</value>
+  </data>
+  <data name="SABT_Status_CheckingMode" xml:space="preserve">
+    <value>Prüfe Modus...</value>
+  </data>
+  <data name="SABT_Status_SettingMode" xml:space="preserve">
+    <value>Setze Modus...</value>
+  </data>
+  <data name="SABT_Status_IdentifierSet" xml:space="preserve">
+    <value>Kennung gesetzt (Verbunden)</value>
+  </data>
+  <data name="SABT_Status_SettingIdentifier" xml:space="preserve">
+    <value>Setze Kennung</value>
+  </data>
+  <data name="SABT_Status_TestPassed" xml:space="preserve">
+    <value>Test bestanden</value>
+  </data>
+  <data name="SABT_Status_TestFailed" xml:space="preserve">
+    <value>Test fehlgeschlagen</value>
+  </data>
+  <data name="SABT_Status_Testing" xml:space="preserve">
+    <value>Teste...</value>
+  </data>
+  <data name="SABT_Status_Stopping" xml:space="preserve">
+    <value>Stoppe...</value>
+  </data>
+  <data name="SABT_Status_TestPartiallyFailed" xml:space="preserve">
+    <value>Test teilweise fehlgeschlagen</value>
+  </data>
+</root>
