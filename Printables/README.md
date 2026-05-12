@@ -6,7 +6,7 @@ Since there are a couple of options to choose from, you should read this before 
 
 ### Choosing Your Brackets
 
-<img align="right" width="30%" height="auto" style="margin: 0 0 5% 5%" alt="Printed Bracket Example" src="https://github.com/user-attachments/assets/02c48ec1-51da-48e7-ac1e-b915f9ce38fb" />
+<img align="right" width="30%" height="auto" style="margin: 0 0 5% 5%" alt="Flat Motor Bracket (30~40mm Hole Spacing)" src="https://github.com/user-attachments/assets/121acdba-215d-4968-9570-e6a5bc9e8709" />
 
 There are two main types of sim rig frame; _tubular_ and _profile_ (also known as _aluminium extrustion_):
 - **Profile rigs** (e.g. [GT Omega Prime](https://www.gtomega.co.uk/products/prime-cockpit)) typically use `40-Series` aluminium extrusion that is bolted together in a modular fashion
