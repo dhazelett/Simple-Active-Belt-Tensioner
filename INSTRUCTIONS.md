@@ -23,17 +23,17 @@ The rest of the parts can be obtained from virtually anywhere, including [Amazon
 | `25 GBP` | 5-Point 2" Harness | A low-cost Aliexpress model or used/expired FIA harness | [AliExpress](https://www.aliexpress.com/item/1005008051519590.html) |
 
 > 📢 **Important:**
-> - The `DDSM115` morors are _sometimes_ sold in **pairs**. Make sure you're only buying _two motors_, not _two sets of two_
+> - The `DDSM115` motors are _sometimes_ sold in **pairs**. Make sure you're only buying _two motors_, not _two sets of two_
 > - There are multiple motor models in the `DDSMXXX` series. Make sure you're buying the [DDSM115](https://www.waveshare.com/wiki/DDSM115)
 > - There are multiple control board models of similar appearance. Make sure you're buying the [DDSM Driver HAT (A)](https://www.waveshare.com/wiki/DDSM_Driver_HAT_(A))
 
 ### Optional Items
 
+Details of optional (but **highly recommended**) [Back-Driving Protection](#back-driving-protection) options are listed later in this document, including a solderless solution.
+
 You can reduce friction (and wear) on your seat's belt loops if you apply some low-friction tape over the contact points. I've had success with [2-3/8" PTFE Tape](https://www.amazon.co.uk/dp/B0F3XKJW2V). The best solution would be a roller, but given the variation in seat designs, you're going to have to implement that yourself. If looking for an off-the-shelf solution, [Winch Rollers](https://www.amazon.co.uk/s?k=winch+roller) _might_ be a good option, provided your seat offers somewhere to mount them.
 
 If using the tubular brackets, you'll need to order two [2" Truss Clamps](https://www.amazon.co.uk/dp/B07DP1FK33), a pair of [`M10` Nuts](https://www.amazon.co.uk/dp/B0CGQVMP45) and [`M10x16MM` Low-Profile Bolts](https://www.amazon.co.uk/dp/B0DYHY2DHB).
-
-Details of optional (but recommended) [Back-Driving Protection](#back-driving-protection) options are listed later in this document, including a solderless solution.
 
 ## Assembly
 
