@@ -45,11 +45,7 @@ namespace User.ActiveBeltTensioner
         {
             Logging.Current.Info("SABT: OnLoaded()...");
 
-            DataContext = new DeviceViewModel(
-                _plugin.Settings,
-                _plugin.MotorController,
-                _plugin.TelemetryGraphModel
-            );
+            DataContext = new DeviceViewModel(_plugin);
 
             _plugin.DoWithoutWaiting(
                 devicePlugin =>

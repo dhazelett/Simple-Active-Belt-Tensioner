@@ -1,17 +1,13 @@
-﻿using SimHub;
+﻿using Microsoft.VisualBasic;
+using SimHub;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Windows;
-using Microsoft.VisualBasic;
-using WoteverCommon.Extensions;
-using WoteverLocalization;
 
 namespace User.ActiveBeltTensioner
 {
@@ -22,6 +18,14 @@ namespace User.ActiveBeltTensioner
         private const string _deviceNotFound = "N/A";
 
         private readonly object _profilesLock = new object();
+
+        private bool _isInitialised = false;
+
+        public void Initialise()
+        {
+            _isInitialised = true;
+            ChangeActiveProfile();
+        }
 
         private void InvokePropertyChange([CallerMemberName] string name = null)
         {
@@ -472,6 +476,11 @@ namespace User.ActiveBeltTensioner
 
         public GameTuningProfile ChangeActiveProfile()
         {
+            if (!_isInitialised)
+            {
+                return null;
+            }
+
             Logging.Current.Info($"SABT: CHANGING ACTIVE PROFILE TO '{CurrentGame}' + '{CurrentVehicle}' ({Profiles.Count})");
 
             lock (_profilesLock)
@@ -481,7 +490,7 @@ namespace User.ActiveBeltTensioner
                     Profiles[i].IsActive = false;
                 }
 
-                RemoveDuplicateProfiles();
+                CleanProfiles();
 
                 GameTuningProfile profile = null;
 
@@ -517,16 +526,15 @@ namespace User.ActiveBeltTensioner
 
                 Profiles.Insert(0, profile);
 
-                RemoveDuplicateProfiles();
-
                 Logging.Current.Info($"SABT: DEFAULT PROFILE INSERTED '{Profiles.Count}'");
 
                 return profile;
             }
         }
 
-        private void RemoveDuplicateProfiles()
+        private void CleanProfiles()
         {
+            // Identify & Remove Duplicate Profiles
             HashSet<string> keys = new HashSet<string>(StringComparer.Ordinal);
 
             for (int i = Profiles.Count - 1; i >= 0; i--)
@@ -536,6 +544,22 @@ namespace User.ActiveBeltTensioner
                     Logging.Current.Info($"SABT: DUPLICATE PROFILE REMOVED AT {i}");
 
                     Profiles.RemoveAt(i);
+                }
+            }
+
+            // Sort By Game Label, Then Vehicle Label
+            var sorted = Profiles
+                .OrderBy(p => !p.IsDefault)
+                .ThenBy(p => p.GameLabel, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(p => p.VehicleLabel, StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            for (int i = 0; i < sorted.Count; i++)
+            {
+                int p = Profiles.IndexOf(sorted[i]);
+                if (p != i)
+                {
+                    Profiles.Move(p, i);
                 }
             }
         }

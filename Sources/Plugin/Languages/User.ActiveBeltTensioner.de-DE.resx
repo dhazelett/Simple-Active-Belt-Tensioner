@@ -338,8 +338,8 @@
   <data name="SABT_Slider_SmoothingFactor" xml:space="preserve">
     <value>Glättungsfaktor</value>
   </data>
-  <data name="SABT_Label_SmoothingFactor" xml:space="preserve">
-    <value>• Wie stark die Spannungsausgabe geglättet werden soll</value>
+  <data name="SABT_Label_SmoothingFactor" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Link_Website" xml:space="preserve">
     <value>Website</value>

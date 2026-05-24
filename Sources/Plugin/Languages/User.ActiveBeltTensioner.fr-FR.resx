@@ -338,8 +338,8 @@
   <data name="SABT_Slider_SmoothingFactor" xml:space="preserve">
     <value>Facteur de lissage</value>
   </data>
-  <data name="SABT_Label_SmoothingFactor" xml:space="preserve">
-    <value>• Intensité du lissage appliqué à la tension de sortie</value>
+  <data name="SABT_Label_SmoothingFactor" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Link_Website" xml:space="preserve">
     <value>Site web</value>

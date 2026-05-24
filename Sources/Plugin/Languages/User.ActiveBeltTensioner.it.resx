@@ -338,8 +338,8 @@
   <data name="SABT_Slider_SmoothingFactor" xml:space="preserve">
     <value>Fattore di smoothing</value>
   </data>
-  <data name="SABT_Label_SmoothingFactor" xml:space="preserve">
-    <value>• Quanto deve essere smussata l'uscita della tensione</value>
+  <data name="SABT_Label_SmoothingFactor" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Link_Website" xml:space="preserve">
     <value>Sito web</value>

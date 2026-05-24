@@ -341,7 +341,8 @@
     <value>Smoothing Factor</value>
   </data>
   <data name="SABT_Label_SmoothingFactor" xml:space="preserve">
-    <value>• How much the tension output should be smoothed</value>
+    <value>• How much the tension output should be smoothed
+• The tension output indicated above does not show this smoothing effect</value>
   </data>
   <data name="SABT_Link_Website" xml:space="preserve">
     <value>Website</value>
