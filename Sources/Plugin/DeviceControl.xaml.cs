@@ -39,10 +39,6 @@ namespace User.ActiveBeltTensioner
  
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            /*if (e.PropertyName == nameof(_plugin.Settings.SerialPort))
-            {
-                _plugin.MotorController.OpenSerialPort();
-            }*/
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -82,6 +78,77 @@ namespace User.ActiveBeltTensioner
                         devicePlugin.MotorController.UpdateSerialPorts();
                     }
                 );
+            }
+        }
+
+        private void DuplicateProfileForCurrentGame(object sender, RoutedEventArgs e)
+        {
+            if (((FrameworkElement)sender).Tag is GameTuningProfile profile)
+            {
+                string game = _plugin.Settings.CurrentGame;
+                string vehicle = string.Empty;
+
+                if (_plugin.Settings.FindProfile(game, vehicle) != null)
+                {
+                    MessageBox.Show(
+                        SLoc.GetValue("SABT_Message_Profiles_AlreadyExists"),
+                        SLoc.GetValue("SABT_Plugin"),
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation
+                    );
+
+                    return;
+                }
+
+                _plugin.Settings.AddProfile(
+                    _plugin.Settings.CloneProfile(
+                        profile,
+                        game,
+                        vehicle
+                    )
+                );
+            }
+        }
+
+        private void DuplicateProfileForCurrentGameAndVehicle(object sender, RoutedEventArgs e)
+        {
+            if (((FrameworkElement)sender).Tag is GameTuningProfile profile)
+            {
+                string game = _plugin.Settings.CurrentGame;
+                string vehicle = _plugin.Settings.CurrentVehicle;
+
+                if (_plugin.Settings.FindProfile(game, vehicle) != null)
+                {
+                    MessageBox.Show(
+                        SLoc.GetValue("SABT_Message_Profiles_AlreadyExists"),
+                        SLoc.GetValue("SABT_Plugin"),
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation
+                    );
+
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(vehicle))
+                {
+                    return;
+                }
+
+                _plugin.Settings.AddProfile(
+                    _plugin.Settings.CloneProfile(
+                        profile,
+                        game,
+                        vehicle
+                    )
+                );
+            }
+        }
+
+        private void DeleteProfile(object sender, RoutedEventArgs e)
+        {
+            if (((FrameworkElement)sender).Tag is GameTuningProfile profile)
+            {
+                _plugin.Settings.RemoveProfile(profile);
             }
         }
 

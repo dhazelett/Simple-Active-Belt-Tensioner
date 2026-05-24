@@ -1,6 +1,17 @@
-﻿using System;
+﻿using SimHub;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
+using System.Linq;
+using System.Runtime;
 using System.Runtime.CompilerServices;
+using System.Text;
+using System.Windows;
+using Microsoft.VisualBasic;
+using WoteverCommon.Extensions;
+using WoteverLocalization;
 
 namespace User.ActiveBeltTensioner
 {
@@ -10,9 +21,21 @@ namespace User.ActiveBeltTensioner
 
         private const string _deviceNotFound = "N/A";
 
+        private readonly object _profilesLock = new object();
+
         private void InvokePropertyChange([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
+            GameTuningProfile profile = FindProfile(this.CurrentGame, this.CurrentVehicle, true);
+
+            if (profile is GameTuningProfile)
+            {
+                profile.SetTuningProperty(
+                    name,
+                    this.GetType().GetProperty(name)?.GetValue(this)
+                );
+            }
         }
 
         private string _serialPort = _deviceNotFound;
@@ -70,6 +93,25 @@ namespace User.ActiveBeltTensioner
                     InvokePropertyChange(nameof(IsFlipped));
                 }
             }
+        }
+
+        private bool _isAutomaticallyTuning = false;
+        public bool IsAutomaticallyTuning
+        {
+            get { return _isAutomaticallyTuning; }
+            set
+            {
+                if (_isAutomaticallyTuning != value)
+                {
+                    _isAutomaticallyTuning = value;
+                    InvokePropertyChange(nameof(IsAutomaticallyTuning));
+                    InvokePropertyChange(nameof(IsNotAutomaticallyTuning));
+                }
+            }
+        }
+        public bool IsNotAutomaticallyTuning
+        {
+            get { return !_isAutomaticallyTuning; }
         }
 
         private int _idleTension = 150;
@@ -153,7 +195,6 @@ namespace User.ActiveBeltTensioner
                 {
                     _minimumSway = Math.Min(value, _maximumSway);
                     InvokePropertyChange(nameof(MinimumSway));
-
                 }
             }
         }
@@ -168,7 +209,6 @@ namespace User.ActiveBeltTensioner
                 {
                     _maximumSway = Math.Max(value, _minimumSway);
                     InvokePropertyChange(nameof(MaximumSway));
-
                 }
             }
         }
@@ -312,6 +352,193 @@ namespace User.ActiveBeltTensioner
             }
         }
 
+        private string _currentGame = string.Empty;
+        public string CurrentGame
+        {
+            get { return _currentGame; }
+            set
+            {
+                string newValue = value ?? string.Empty;
+                if (_currentGame != newValue)
+                {
+                    _currentGame = newValue;
+                    InvokePropertyChange(nameof(CurrentGame));
+                    ChangeActiveProfile();
+                }
+            }
+        }
+
+        private string _currentVehicle = string.Empty;
+        public string CurrentVehicle
+        {
+            get { return _currentVehicle; }
+            set
+            {
+                string newValue = value ?? string.Empty;
+                if (_currentVehicle != newValue)
+                {
+                    _currentVehicle = newValue;
+                    InvokePropertyChange(nameof(CurrentVehicle));
+                    InvokePropertyChange(nameof(HasCurrentVehicle));
+                    ChangeActiveProfile();
+                }
+            }
+        }
+
+        public bool HasCurrentVehicle
+        {
+            get { return _currentVehicle != string.Empty; }
+        }
+
+        public ObservableCollection<GameTuningProfile> Profiles { get; set; } = new ObservableCollection<GameTuningProfile>();
+
+        public void AddProfile(GameTuningProfile profile)
+        {
+            if (profile == null)
+            {
+                return;
+            }
+
+            if (profile.Game == String.Empty)
+            {
+                return;
+            }
+
+            lock (_profilesLock)
+            {
+                Profiles.Add(profile);
+            }
+
+            ChangeActiveProfile();
+        }
+
+        public void RemoveProfile(GameTuningProfile profile)
+        {
+            lock (_profilesLock)
+            {
+                Profiles.Remove(profile);
+            }
+
+            ChangeActiveProfile();
+        }
+
+        public GameTuningProfile CreateProfile(string game, string vehicle)
+        {
+            return GameTuningProfile.Make(this, game, vehicle);
+        }
+
+        public GameTuningProfile CloneProfile(GameTuningProfile profile, string game, string vehicle)
+        {
+            return profile == null ? null : profile.Clone(game, vehicle);
+        }
+
+        public void LoadProfile(GameTuningProfile profile)
+        {
+            MinimumSurge = profile.MinimumSurge;
+            MaximumSurge = profile.MaximumSurge;
+            MinimumSway = profile.MinimumSway;
+            MaximumSway = profile.MaximumSway;
+            MinimumHeave = profile.MinimumHeave;
+            MaximumHeave = profile.MaximumHeave;
+            SmoothingFactor = profile.SmoothingFactor;
+        }
+
+        public GameTuningProfile FindProfile(string game, string vehicle, bool useDefault = false)
+        {
+            lock (_profilesLock)
+            {
+                for (int i = Profiles.Count - 1; i >= 0; i--)
+                {
+                    if (Profiles[i].Matches(game, vehicle))
+                    {
+                        return Profiles[i];
+                    }
+                }
+
+                if (useDefault && Profiles.Count > 0)
+                {
+                    for (int i = Profiles.Count - 1; i >= 0; i--)
+                    {
+                        if (Profiles[i].Matches(string.Empty, string.Empty))
+                        {
+                            return Profiles[i];
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public GameTuningProfile ChangeActiveProfile()
+        {
+            Logging.Current.Info($"SABT: CHANGING ACTIVE PROFILE TO '{CurrentGame}' + '{CurrentVehicle}' ({Profiles.Count})");
+
+            lock (_profilesLock)
+            {
+                for (int i = 0; i < Profiles.Count; i++)
+                {
+                    Profiles[i].IsActive = false;
+                }
+
+                RemoveDuplicateProfiles();
+
+                GameTuningProfile profile = null;
+
+                // Use Game & Vehicle Profile
+                profile = FindProfile(CurrentGame, CurrentVehicle);
+
+                if (profile is GameTuningProfile)
+                {
+                    profile.IsActive = true;
+
+                    LoadProfile(profile);
+
+                    return profile;
+                }
+
+                // Use Game Profile (Or Default)
+                profile = FindProfile(CurrentGame, string.Empty, true);
+
+                if (profile is GameTuningProfile)
+                {
+                    profile.IsActive = true;
+
+                    LoadProfile(profile);
+
+                    return profile;
+                }
+
+                Logging.Current.Info($"SABT: DEFAULT PROFILE MISSING '{Profiles.Count}'");
+
+                // Create Default Profile
+                profile = CreateProfile(string.Empty, string.Empty);
+                profile.IsActive = true;
+
+                Profiles.Insert(0, profile);
+
+                RemoveDuplicateProfiles();
+
+                Logging.Current.Info($"SABT: DEFAULT PROFILE INSERTED '{Profiles.Count}'");
+
+                return profile;
+            }
+        }
+
+        private void RemoveDuplicateProfiles()
+        {
+            HashSet<string> keys = new HashSet<string>(StringComparer.Ordinal);
+
+            for (int i = Profiles.Count - 1; i >= 0; i--)
+            {
+                if (!keys.Add(Profiles[i].GetKey()))
+                {
+                    Logging.Current.Info($"SABT: DUPLICATE PROFILE REMOVED AT {i}");
+
+                    Profiles.RemoveAt(i);
+                }
+            }
+        }
 
         public bool IsMinimumTensionNonZero
         {
@@ -321,6 +548,246 @@ namespace User.ActiveBeltTensioner
         public bool IsSerialPortValid
         {
             get { return !String.IsNullOrEmpty(_serialPort) && (_serialPort != _deviceNotFound); }
+        }
+    }
+
+
+
+
+    public class GameTuningProfile : INotifyPropertyChanged
+    {
+        private const string _wildcardSymbol = "✱";
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void InvokePropertyChange([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        public bool IsDefault { get; }
+
+        public bool IsNotDefault {
+            get { return !IsDefault; }
+        }
+        
+        public string Game { get; }
+        public string GameLabel { get; set; }
+        
+        public string Vehicle { get; }
+        public string VehicleLabel { get; set; }
+
+        private bool _isActive;
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set
+            {
+                if (_isActive != value)
+                {
+                    _isActive = value;
+                    InvokePropertyChange(nameof(IsActive));
+                }
+            }
+        }
+
+        public int MinimumSurge { get; set; }
+        public int MaximumSurge { get; set; }
+        public int MinimumSway { get; set; }
+        public int MaximumSway { get; set; }
+        public int MinimumHeave { get; set; }
+        public int MaximumHeave { get; set; }
+        public int SmoothingFactor { get; set; }
+
+        public GameTuningProfile(string game, string vehicle, bool promptForLabels = false)
+        {
+            Game = game;
+            Vehicle = vehicle;
+            IsDefault = (game == string.Empty && vehicle == string.Empty);
+
+            if (promptForLabels)
+            {
+Logging.Current.Info($"SABT: PROMPTING FOR LABELS FOR '{game}' + '{vehicle}'");
+                GameLabel = (game == string.Empty) ? _wildcardSymbol : Interaction.InputBox(
+                    Prompt: "You may alter the game name from the one given by SimHub if desired:",
+                    Title: "Set Game Name",
+                    DefaultResponse: PrettifyLabelPart(game)
+                );
+
+                if (string.IsNullOrEmpty(GameLabel))
+                {
+                    GameLabel = PrettifyLabelPart(game);
+                }
+
+                VehicleLabel = (vehicle == string.Empty) ? _wildcardSymbol : Interaction.InputBox(
+                    Prompt: "You may alter the vehicle name from the one given by SimHub if desired:",
+                    Title: "Set Vehicle Name",
+                    DefaultResponse: PrettifyLabelPart(vehicle)
+                );
+
+                if (string.IsNullOrEmpty(VehicleLabel))
+                {
+                    VehicleLabel = PrettifyLabelPart(vehicle);
+                }
+            }
+            else {
+Logging.Current.Info($"SABT: NOT PROMPTING FOR LABELS FOR '{game}' + '{vehicle}'");
+            }
+        }
+
+        public static GameTuningProfile Make(DeviceSettings settings, string game, string vehicle)
+        {
+            Logging.Current.Info($"SABT: MAKE PROFILE '{game}' + '{vehicle}'");
+
+            return new GameTuningProfile(game, vehicle, true)
+            {
+                IsActive = false,
+
+                MinimumSurge = settings.MinimumSurge,
+                MaximumSurge = settings.MaximumSurge,
+                MinimumSway = settings.MinimumSway,
+                MaximumSway = settings.MaximumSway,
+                MinimumHeave = settings.MinimumHeave,
+                MaximumHeave = settings.MaximumHeave,
+                SmoothingFactor = settings.SmoothingFactor
+            };
+        }
+
+        public GameTuningProfile Clone(string game, string vehicle)
+        {
+            Logging.Current.Info($"SABT: CLONE PROFILE TO '{game}' + '{vehicle}'");
+
+            return new GameTuningProfile(game, vehicle, true)
+            {
+                IsActive = false,
+
+                MinimumSurge = this.MinimumSurge,
+                MaximumSurge = this.MaximumSurge,
+                MinimumSway = this.MinimumSway,
+                MaximumSway = this.MaximumSway,
+                MinimumHeave = this.MinimumHeave,
+                MaximumHeave = this.MaximumHeave,
+                SmoothingFactor = this.SmoothingFactor
+            };
+        }
+
+        public bool Matches(string game, string vehicle)
+        {
+            return (
+                string.Equals(SimplifyKeyPart(Game), SimplifyKeyPart(game), StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(SimplifyKeyPart(Vehicle), SimplifyKeyPart(vehicle), StringComparison.OrdinalIgnoreCase)
+            );
+        }
+
+        public string GetKey()
+        {
+            return $"{SimplifyKeyPart(Game)}|{SimplifyKeyPart(Vehicle)}";
+        }
+
+        public void SetTuningProperty(string propertyName, object value)
+        {
+            var property = this.GetType().GetProperty(propertyName);
+            if (property != null && property.CanWrite)
+            {
+                property.SetValue(this, value);
+            }
+        }
+
+        private static string PrettifyLabelPart(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return _wildcardSymbol;
+            }
+
+            value = value.Trim();
+
+            StringBuilder words = new StringBuilder(value.Length * 2);
+
+            bool hasPreviousAlphaNumeric = false;
+            bool previousWasLower = false;
+            bool previousWasUpper = false;
+            bool previousWasDigit = false;
+
+            for (int i = 0; i < value.Length; i++)
+            {
+                char current = value[i];
+
+                if (!char.IsLetterOrDigit(current))
+                {
+                    if (words.Length > 0 && words[words.Length - 1] != ' ')
+                    {
+                        words.Append(' ');
+                    }
+
+                    hasPreviousAlphaNumeric = false;
+                    previousWasLower = false;
+                    previousWasUpper = false;
+                    previousWasDigit = false;
+                    continue;
+                }
+
+                bool currentIsLetter = char.IsLetter(current);
+                bool currentIsLower = currentIsLetter && char.IsLower(current);
+                bool currentIsUpper = currentIsLetter && char.IsUpper(current);
+                bool currentIsDigit = char.IsDigit(current);
+
+                if (hasPreviousAlphaNumeric)
+                {
+                    bool splitBeforeCurrent = (
+                        (previousWasLower && currentIsUpper) ||
+                        (previousWasDigit && !currentIsDigit) ||
+                        (!previousWasDigit && currentIsDigit)
+                    );
+
+                    if (splitBeforeCurrent && words.Length > 0 && words[words.Length - 1] != ' ')
+                    {
+                        words.Append(' ');
+                    }
+                }
+
+                words.Append(current);
+
+                hasPreviousAlphaNumeric = true;
+                previousWasLower = currentIsLower;
+                previousWasUpper = currentIsUpper;
+                previousWasDigit = currentIsDigit;
+            }
+
+            string separated = words.ToString().Trim();
+
+            if (string.IsNullOrWhiteSpace(separated))
+            {
+                return "*";
+            }
+
+            return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(
+                separated.ToLowerInvariant()
+            );
+        }
+
+        private static string SimplifyKeyPart(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return "*";
+            }
+
+            value = value.Trim();
+
+            StringBuilder simplified = new StringBuilder(value.Length);
+
+            for (int i = 0; i < value.Length; i++)
+            {
+                char current = value[i];
+
+                if (char.IsLetterOrDigit(current))
+                {
+                    simplified.Append(char.ToLowerInvariant(current));
+                }
+            }
+
+            return simplified.ToString();
         }
     }
 }

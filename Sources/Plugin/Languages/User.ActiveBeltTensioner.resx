@@ -126,14 +126,14 @@
   <data name="SABT_Title_Connection" xml:space="preserve">
     <value>Status &amp; Setup</value>
   </data>
-  <data name="SABT_Title_Effects" xml:space="preserve">
-    <value>Effect Strength Adjustment</value>
-  </data>
   <data name="SABT_Title_Tension" xml:space="preserve">
     <value>Belt Tension Adjustment</value>
   </data>
   <data name="SABT_Title_Tuning" xml:space="preserve">
     <value>Telemetry Handling</value>
+  </data>
+  <data name="SABT_Title_Profiles" xml:space="preserve">
+    <value>Profiles</value>
   </data>
   <data name="SABT_Status_Disconnected" xml:space="preserve">
     <value>Disconnected</value>
@@ -144,11 +144,20 @@
   <data name="SABT_Message_ActivationWarning" xml:space="preserve">
     <value>The belt tensioner motors will be activated. Proceed?</value>
   </data>
+  <data name="SABT_Message_AutomaticTuningReset" xml:space="preserve">
+    <value>The current tuning slider values will be reset to facilitate automatic tuning. Proceed?</value>
+  </data>
   <data name="SABT_Message_SimHubLicenseRequired" xml:space="preserve">
     <value>Your installation of SimHub is not licensed, so telemetry updates will be limited to 10Hz</value>
   </data>
   <data name="SABT_Message_Setup_TurnOffPower" xml:space="preserve">
     <value>We'll now set up the motors. The first step is to TURN OFF THE POWER to the tensioner. Have you done this?</value>
+  </data>
+  <data name="SABT_Message_Profiles_AlreadyExists" xml:space="preserve">
+    <value>A profile for this combination of game a vehicle already exists</value>
+  </data>
+  <data name="SABT_Message_Profiles_NoActiveVehicle" xml:space="preserve">
+    <value>A profile for this combination of game a vehicle already exists</value>
   </data>
   <data name="SABT_Message_Setup_Complete" xml:space="preserve">
     <value>Great, the RIGHT MOTOR has been configured. Both motors are now ready to go...</value>
@@ -186,6 +195,12 @@
   <data name="SABT_Label_StartAutomatically" xml:space="preserve">
     <value>Start Automatically</value>
   </data>
+  <data name="SABT_Prefix_Game" xml:space="preserve">
+    <value>Game</value>
+  </data>
+  <data name="SABT_Prefix_Vehicle" xml:space="preserve">
+    <value>Vehicle</value>
+  </data>
   <data name="SABT_Title_Credits" xml:space="preserve">
     <value>Licensing &amp; Author Information</value>
   </data>
@@ -195,19 +210,37 @@
   <data name="SABT_Tab_Effects" xml:space="preserve">
     <value>Effects</value>
   </data>
+  <data name="SABT_Title_Effects" xml:space="preserve">
+    <value>Effects</value>
+  </data>
   <data name="SABT_Tab_Connection" xml:space="preserve">
     <value>Connection</value>
   </data>
   <data name="SABT_Button_TestMotor" xml:space="preserve">
     <value>Test Motor</value>
   </data>
+  <data name="SABT_Button_CopyForGameAndVehicle" xml:space="preserve">
+    <value>⧉ Game &amp; Vehicle</value>
+  </data>
+  <data name="SABT_Button_Delete" xml:space="preserve">
+    <value>🗑 Delete</value>
+  </data>
+  <data name="SABT_Button_CopyForGame" xml:space="preserve">
+    <value>⧉ Game</value>
+  </data>
   <data name="SABT_Button_SetupMotors" xml:space="preserve">
     <value>Setup Motors</value>
   </data>
   <data name="SABT_Label_Connection" xml:space="preserve">
-    <value>• Select a serial port from the drop-down list below. Only ports that appear to be the belt tensioner device will be shown. If the list is empty, check that the controller is plugged in. It should appear even without power or any motors connected.
-• Future launches of SimHub should remember your port selection and reconnect automatically. However the 'Enable Motors' option will be reset every launch unless 'Start Automatically' is also enabled.
-• If this is your first time setting up, you'll need to then click 'Setup Motors' and follow the instructions given. You'll only need to do this once, as each motor stores its configuration once set.</value>
+    <value>• Select a serial port from the drop-down list below. Only ports that appear to be the belt tensioner device will be shown. If the list is empty, check that the controller is plugged in. It should appear even without power or any motors connected
+• Future launches of SimHub should remember your port selection and reconnect automatically. However the 'Enable Motors' option will be reset every launch unless 'Start Automatically' is also enabled
+• If this is your first time setting up, you'll need to then click 'Setup Motors' and follow the instructions given. You'll only need to do this once, as each motor stores its configuration once set</value>
+  </data>
+  <data name="SABT_Label_Profiles" xml:space="preserve">
+    <value>• Tuning profiles are automatically loaded for the current game (and vehicle class, where known), the the most specific profile taking priority
+• Copying an existing profile will result in its tuning parameters being loaded into a new profile for the currently active game (and vehicle class, where known)
+• Vehicle class profiles cannot be created if the game does not report a vehicle class or model
+• Changes made to profiles are automatically saved</value>
   </data>
   <data name="SABT_Slider_IdleTension" xml:space="preserve">
     <value>Idle Tension</value>
@@ -242,7 +275,7 @@
     <value>Braking</value>
   </data>
   <data name="SABT_Label_Braking" xml:space="preserve">
-    <value>• How much decceleration forces should increase the tension on both belts</value>
+    <value>• How much deceleration forces should increase the tension on both belts</value>
   </data>
   <data name="SABT_Legend_Surge" xml:space="preserve">
     <value>Surge</value>
@@ -266,6 +299,12 @@
   <data name="SABT_Label_Jumping" xml:space="preserve">
     <value>• How much jumping should decrease the tension on both belts
 • Set minimum 'Driving Tension' to non-zero for best results (see 'Tension' tab)</value>
+  </data>
+  <data name="SABT_Label_AutomaticTuning" xml:space="preserve">
+    <value>• When enabled, the slider values below will be automatically adjusted to match the minimum and maximum values reported by the game telemetry
+• Drive aggressively (maximum throttle, braking and cornering) to generate appropriate telemetry
+• Disable the option once complete and fine-tune the sliders manually if needed
+• Motor output is disabled during tuning for safety reasons</value>
   </data>
   <data name="SABT_Label_SetMinimumTensionToNonZero" xml:space="preserve">
     <value>• Set minimum 'Driving Tension' to non-zero for best results (see 'Tension' tab)</value>

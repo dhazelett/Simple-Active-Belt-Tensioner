@@ -126,14 +126,14 @@
   <data name="SABT_Title_Connection" xml:space="preserve">
     <value>État et configuration</value>
   </data>
-  <data name="SABT_Title_Effects" xml:space="preserve">
-    <value>Réglage de l'intensité des effets</value>
-  </data>
   <data name="SABT_Title_Tension" xml:space="preserve">
     <value>Réglage de la tension de ceinture</value>
   </data>
   <data name="SABT_Title_Tuning" xml:space="preserve">
     <value>Gestion de la télémétrie</value>
+  </data>
+  <data name="SABT_Title_Profiles" xml:space="preserve">
+    <value>Profils</value>
   </data>
   <data name="SABT_Status_Disconnected" xml:space="preserve">
     <value>Déconnecté</value>
@@ -144,11 +144,21 @@
   <data name="SABT_Message_ActivationWarning" xml:space="preserve">
     <value>Les moteurs du tendeur de ceinture vont être activés. Continuer ?</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="SABT_Message_AutomaticTuningReset" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
   <data name="SABT_Message_SimHubLicenseRequired" xml:space="preserve">
     <value>Votre installation SimHub n'est pas sous licence, les mises à jour de télémétrie seront donc limitées à 10 Hz</value>
   </data>
   <data name="SABT_Message_Setup_TurnOffPower" xml:space="preserve">
     <value>Nous allons maintenant configurer les moteurs. La première étape est de COUPER L'ALIMENTATION du tendeur. L'avez-vous fait ?</value>
+  </data>
+  <data name="SABT_Message_Profiles_AlreadyExists" xml:space="preserve">
+    <value>Un profil pour cette combinaison de jeu et de véhicule existe déjà</value>
+  </data>
+  <data name="SABT_Message_Profiles_NoActiveVehicle" xml:space="preserve">
+    <value>Un véhicule n'est pas actuellement sélectionné dans le jeu</value>
   </data>
   <data name="SABT_Message_Setup_Complete" xml:space="preserve">
     <value>Parfait, le MOTEUR DROIT a été configuré. Les deux moteurs sont maintenant prêts...</value>
@@ -186,6 +196,12 @@
   <data name="SABT_Label_StartAutomatically" xml:space="preserve">
     <value>Démarrer automatiquement</value>
   </data>
+  <data name="SABT_Prefix_Game" xml:space="preserve">
+    <value>Jeu</value>
+  </data>
+  <data name="SABT_Prefix_Vehicle" xml:space="preserve">
+    <value>Véhicule</value>
+  </data>
   <data name="SABT_Title_Credits" xml:space="preserve">
     <value>Licence et informations auteur</value>
   </data>
@@ -195,11 +211,23 @@
   <data name="SABT_Tab_Effects" xml:space="preserve">
     <value>Effets</value>
   </data>
+  <data name="SABT_Title_Effects" xml:space="preserve">
+    <value>Effets</value>
+  </data>
   <data name="SABT_Tab_Connection" xml:space="preserve">
     <value>Connexion</value>
   </data>
   <data name="SABT_Button_TestMotor" xml:space="preserve">
     <value>Tester le moteur</value>
+  </data>
+  <data name="SABT_Button_CopyForGameAndVehicle" xml:space="preserve">
+    <value>⧉ Jeu &amp; Véhicule</value>
+  </data>
+  <data name="SABT_Button_Delete" xml:space="preserve">
+    <value>🗑 Supprimer</value>
+  </data>
+  <data name="SABT_Button_CopyForGame" xml:space="preserve">
+    <value>⧉ Jeu</value>
   </data>
   <data name="SABT_Button_SetupMotors" xml:space="preserve">
     <value>Configurer les moteurs</value>
@@ -208,6 +236,12 @@
     <value>• Sélectionnez un port série dans la liste ci-dessous. Seuls les ports correspondant au tendeur de ceinture seront affichés. Si la liste est vide, vérifiez que le contrôleur est branché. Il doit apparaître même sans alimentation ni moteurs connectés.
 • Aux prochains lancements de SimHub, votre sélection de port devrait être conservée et reconnectée automatiquement. Cependant l'option « Activer les moteurs » sera réinitialisée à chaque lancement sauf si « Démarrer automatiquement » est activé.
 • Si c'est votre première configuration, cliquez ensuite sur « Configurer les moteurs » et suivez les instructions. Cette opération n'est à faire qu'une seule fois, chaque moteur conservant sa configuration.</value>
+  </data>
+  <data name="SABT_Label_Profiles" xml:space="preserve">
+    <value>• Les profils de réglage sont automatiquement chargés pour le jeu actuel (et la classe de véhicule, si connue), le profil le plus spécifique ayant la priorité
+• La copie d'un profil existant entraînera le chargement de ses paramètres de réglage dans un nouveau profil pour le jeu actuellement actif (et la classe de véhicule, si connue)
+• Les profils de classe de véhicule ne peuvent pas être créés si le jeu ne signale pas de classe ou de modèle de véhicule
+• Les modifications apportées aux profils sont automatiquement enregistrées</value>
   </data>
   <data name="SABT_Slider_IdleTension" xml:space="preserve">
     <value>Tension au repos</value>
@@ -266,6 +300,9 @@
   <data name="SABT_Label_Jumping" xml:space="preserve">
     <value>• Intensité de la diminution de tension sur les deux ceintures lors des sauts
 • Pour de meilleurs résultats, définissez la « Tension en conduite » minimale à une valeur non nulle (voir onglet « Tension »)</value>
+  </data>
+  <data name="SABT_Label_AutomaticTuning" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Label_SetMinimumTensionToNonZero" xml:space="preserve">
     <value>• Pour de meilleurs résultats, définissez la « Tension en conduite » minimale à une valeur non nulle (voir onglet « Tension »)</value>
