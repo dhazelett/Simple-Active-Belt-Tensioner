@@ -144,9 +144,8 @@
   <data name="SABT_Message_ActivationWarning" xml:space="preserve">
     <value>Les moteurs du tendeur de ceinture vont être activés. Continuer ?</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="SABT_Message_AutomaticTuningReset" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Message_AutomaticTuningReset" xml:space="preserve">
+    <value>Les valeurs actuelles des curseurs de réglage seront réduites pour faciliter le réglage automatique. Continuer ?</value>
   </data>
   <data name="SABT_Message_SimHubLicenseRequired" xml:space="preserve">
     <value>Votre installation SimHub n'est pas sous licence, les mises à jour de télémétrie seront donc limitées à 10 Hz</value>
@@ -301,8 +300,11 @@
     <value>• Intensité de la diminution de tension sur les deux ceintures lors des sauts
 • Pour de meilleurs résultats, définissez la « Tension en conduite » minimale à une valeur non nulle (voir onglet « Tension »)</value>
   </data>
-  <data name="SABT_Label_AutomaticTuning" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_AutomaticTuning" xml:space="preserve">
+    <value>• Lorsque cette option est activée, les valeurs des curseurs ci-dessous seront automatiquement ajustées pour correspondre aux valeurs minimales et maximales rapportées par la télémétrie du jeu
+• Conduisez de manière agressive (accélération, freinage et virages au maximum) pour générer une télémétrie appropriée
+• Désactivez l'option une fois terminé et ajustez manuellement les curseurs si nécessaire
+• La sortie moteur est désactivée pendant le réglage pour des raisons de sécurité</value>
   </data>
   <data name="SABT_Label_SetMinimumTensionToNonZero" xml:space="preserve">
     <value>• Pour de meilleurs résultats, définissez la « Tension en conduite » minimale à une valeur non nulle (voir onglet « Tension »)</value>
@@ -338,8 +340,9 @@
   <data name="SABT_Slider_SmoothingFactor" xml:space="preserve">
     <value>Facteur de lissage</value>
   </data>
-  <data name="SABT_Label_SmoothingFactor" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_SmoothingFactor" xml:space="preserve">
+    <value>• Dans quelle mesure la sortie de tension doit être lissée
+• La sortie de tension indiquée ci-dessus n'inclut pas cet effet de lissage</value>
   </data>
   <data name="SABT_Link_Website" xml:space="preserve">
     <value>Site web</value>

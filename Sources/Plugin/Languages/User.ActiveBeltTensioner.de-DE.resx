@@ -144,9 +144,8 @@
   <data name="SABT_Message_ActivationWarning" xml:space="preserve">
     <value>Die Motoren des Gurtstraffers werden aktiviert. Fortfahren?</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="SABT_Message_AutomaticTuningReset" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Message_AutomaticTuningReset" xml:space="preserve">
+    <value>Die aktuellen Werte der Tuning-Regler werden reduziert, um die automatische Abstimmung zu ermöglichen. Fortfahren?</value>
   </data>
   <data name="SABT_Message_SimHubLicenseRequired" xml:space="preserve">
     <value>Ihre SimHub-Installation ist nicht lizenziert, daher sind Telemetrie-Updates auf 10 Hz begrenzt</value>
@@ -301,8 +300,11 @@
     <value>• Wie stark Sprünge die Spannung auf beiden Gurten verringern sollen
 • Für beste Ergebnisse die minimale „Fahrspannung“ auf einen Wert ungleich null setzen (siehe Registerkarte „Spannung“)</value>
   </data>
-  <data name="SABT_Label_AutomaticTuning" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_AutomaticTuning" xml:space="preserve">
+    <value>• Wenn aktiviert, werden die Schiebereglerwerte unten automatisch angepasst, um mit den von der Spieltelemetrie gemeldeten Minimal- und Maximalwerten übereinzustimmen
+• Fahren Sie aggressiv (maximales Gas, Bremsen und Kurvenfahrt), um geeignete Telemetriedaten zu erzeugen
+• Deaktivieren Sie die Option nach Abschluss und passen Sie die Schieberegler bei Bedarf manuell an
+• Die Motorausgabe ist während der Abstimmung aus Sicherheitsgründen deaktiviert</value>
   </data>
   <data name="SABT_Label_SetMinimumTensionToNonZero" xml:space="preserve">
     <value>• Für beste Ergebnisse die minimale „Fahrspannung“ auf einen Wert ungleich null setzen (siehe Registerkarte „Spannung“)</value>
@@ -338,8 +340,9 @@
   <data name="SABT_Slider_SmoothingFactor" xml:space="preserve">
     <value>Glättungsfaktor</value>
   </data>
-  <data name="SABT_Label_SmoothingFactor" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_SmoothingFactor" xml:space="preserve">
+    <value>• Wie stark die Spannungsausgabe geglättet werden soll
+• Die oben angegebene Spannungsausgabe enthält diesen Glättungseffekt nicht</value>
   </data>
   <data name="SABT_Link_Website" xml:space="preserve">
     <value>Website</value>

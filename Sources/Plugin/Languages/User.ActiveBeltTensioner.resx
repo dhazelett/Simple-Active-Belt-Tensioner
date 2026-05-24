@@ -145,7 +145,7 @@
     <value>The belt tensioner motors will be activated. Proceed?</value>
   </data>
   <data name="SABT_Message_AutomaticTuningReset" xml:space="preserve">
-    <value>The current tuning slider values will be reset to facilitate automatic tuning. Proceed?</value>
+    <value>The current tuning slider values will be reduced to facilitate automatic tuning. Proceed?</value>
   </data>
   <data name="SABT_Message_SimHubLicenseRequired" xml:space="preserve">
     <value>Your installation of SimHub is not licensed, so telemetry updates will be limited to 10Hz</value>
@@ -342,7 +342,7 @@
   </data>
   <data name="SABT_Label_SmoothingFactor" xml:space="preserve">
     <value>• How much the tension output should be smoothed
-• The tension output indicated above does not show this smoothing effect</value>
+• The tension output indicated above does not include this smoothing effect</value>
   </data>
   <data name="SABT_Link_Website" xml:space="preserve">
     <value>Website</value>

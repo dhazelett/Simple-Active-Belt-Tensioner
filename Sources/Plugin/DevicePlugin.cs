@@ -515,16 +515,14 @@ namespace User.ActiveBeltTensioner
         private LineAnnotation _targetDividerAnnotation;
         private RectangleAnnotation _leftTargetBarAnnotation;
         private RectangleAnnotation _rightTargetBarAnnotation;
-        private TextAnnotation _leftTargetLabelAnnotation;
-        private TextAnnotation _rightTargetLabelAnnotation;
 
         private LinearAxis _yAxis;
         private LinearAxis _xAxis;
+        private LinearAxis _targetAxis;
 
         private int _plotPointIndex = 0;
-        private const int _maximumPlotPoints = 200;
-        private const double _targetBarWidth = 3.0;
-        private const double _targetSectionPadding = 2.0;
+        private const int _maximumPlotPoints = 100;
+        private const string _targetAxisKey = "targetAxis";
 
         private DateTime _lastPlotRefresh = DateTime.MinValue;
         private static readonly TimeSpan PlotRefreshInterval = TimeSpan.FromMilliseconds(33);
@@ -554,7 +552,7 @@ namespace User.ActiveBeltTensioner
                 MinorGridlineColor = grey,
                 TicklineColor = OxyColors.Transparent,
                 Minimum = -50,
-                Maximum = 100,
+                Maximum = 70,
                 IsPanEnabled = false,
                 IsZoomEnabled = false
             };
@@ -566,10 +564,27 @@ namespace User.ActiveBeltTensioner
                 Position = AxisPosition.Bottom,
                 IsAxisVisible = false,
                 IsPanEnabled = false,
-                IsZoomEnabled = false
+                IsZoomEnabled = false,
+                StartPosition = 0.0,
+                EndPosition = 0.9
             };
 
             TelemetryGraphModel.Axes.Add(_xAxis);
+
+            _targetAxis = new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                Key = _targetAxisKey,
+                Minimum = 0,
+                Maximum = 1,
+                IsAxisVisible = false,
+                IsPanEnabled = false,
+                IsZoomEnabled = false,
+                StartPosition = 0.90,
+                EndPosition = 1.0
+            };
+
+            TelemetryGraphModel.Axes.Add(_targetAxis);
 
             _surgeSeries = AddTelemetryLine(SLoc.GetValue("SABT_Legend_Surge"), OxyColors.Red);
             _surgeMinimumAnnotation = AddThresholdLine(OxyColors.Red);
@@ -585,58 +600,39 @@ namespace User.ActiveBeltTensioner
 
             _targetDividerAnnotation = new LineAnnotation
             {
+                XAxisKey = _targetAxisKey,
                 Type = LineAnnotationType.Vertical,
                 Color = grey,
-                StrokeThickness = 1,
+                StrokeThickness = 2,
                 LineStyle = LineStyle.Dot,
                 X = 0
             };
 
             _leftTargetBarAnnotation = new RectangleAnnotation
             {
-                Fill = OxyColor.FromAColor(180, OxyColors.OrangeRed),
+                XAxisKey = _targetAxisKey,
+                Fill = blue,
                 Layer = AnnotationLayer.AboveSeries,
-                MinimumX = 0,
-                MaximumX = 0,
+                MinimumX = 0.1,
+                MaximumX = 0.45,
                 MinimumY = _yAxis.Minimum,
                 MaximumY = _yAxis.Minimum
             };
 
             _rightTargetBarAnnotation = new RectangleAnnotation
             {
-                Fill = OxyColor.FromAColor(180, OxyColors.Gold),
+                XAxisKey = _targetAxisKey,
+                Fill = blue,
                 Layer = AnnotationLayer.AboveSeries,
-                MinimumX = 0,
-                MaximumX = 0,
+                MinimumX = 0.55,
+                MaximumX = 0.9,
                 MinimumY = _yAxis.Minimum,
                 MaximumY = _yAxis.Minimum
-            };
-
-            _leftTargetLabelAnnotation = new TextAnnotation
-            {
-                Text = "L",
-                TextColor = OxyColors.White,
-                Stroke = OxyColors.Transparent,
-                TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Center,
-                TextVerticalAlignment = OxyPlot.VerticalAlignment.Top,
-                TextPosition = new DataPoint(0, _yAxis.Minimum + 12)
-            };
-
-            _rightTargetLabelAnnotation = new TextAnnotation
-            {
-                Text = "R",
-                TextColor = OxyColors.White,
-                Stroke = OxyColors.Transparent,
-                TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Center,
-                TextVerticalAlignment = OxyPlot.VerticalAlignment.Top,
-                TextPosition = new DataPoint(0, _yAxis.Minimum + 12)
             };
 
             TelemetryGraphModel.Annotations.Add(_targetDividerAnnotation);
             TelemetryGraphModel.Annotations.Add(_leftTargetBarAnnotation);
             TelemetryGraphModel.Annotations.Add(_rightTargetBarAnnotation);
-            TelemetryGraphModel.Annotations.Add(_leftTargetLabelAnnotation);
-            TelemetryGraphModel.Annotations.Add(_rightTargetLabelAnnotation);
         }
 
         /// <summary>Redraws the telemetry graph, providing enough time has passed since the last redraw to achieve the desired refresh rate</summary>
@@ -666,52 +662,15 @@ namespace User.ActiveBeltTensioner
                 _heaveSeries.Points.RemoveAt(0);
             }
 
-            double windowStartX = Math.Max(0, _plotPointIndex - _maximumPlotPoints);
-            double plotEndX = windowStartX + _maximumPlotPoints - 1;
-
-            double dividerX = plotEndX + 4.0;
-            double leftBarMinX = dividerX + _targetSectionPadding;
-            double leftBarMaxX = leftBarMinX + _targetBarWidth;
-            double rightBarMinX = leftBarMaxX + 2.0;
-            double rightBarMaxX = rightBarMinX + _targetBarWidth;
-            double sectionEndX = rightBarMaxX + _targetSectionPadding;
-
-            _xAxis.Minimum = windowStartX;
-            _xAxis.Maximum = sectionEndX;
-
-            _targetDividerAnnotation.X = dividerX;
-
-            _surgeMinimumAnnotation.MinimumX = windowStartX;
-            _surgeMinimumAnnotation.MaximumX = plotEndX;
-            _surgeMaximumAnnotation.MinimumX = windowStartX;
-            _surgeMaximumAnnotation.MaximumX = plotEndX;
-            _swayMinimumAnnotation.MinimumX = windowStartX;
-            _swayMinimumAnnotation.MaximumX = plotEndX;
-            _swayMaximumAnnotation.MinimumX = windowStartX;
-            _swayMaximumAnnotation.MaximumX = plotEndX;
-            _heaveMinimumAnnotation.MinimumX = windowStartX;
-            _heaveMinimumAnnotation.MaximumX = plotEndX;
-            _heaveMaximumAnnotation.MinimumX = windowStartX;
-            _heaveMaximumAnnotation.MaximumX = plotEndX;
-
             double leftTargetClamped = ClampTo(leftTarget, 0.0, 1.0);
             double rightTargetClamped = ClampTo(rightTarget, 0.0, 1.0);
-            double minY = _yAxis.Minimum;
-            double maxY = _yAxis.Maximum;
-            double graphHeight = maxY - minY;
+            double graphHeight = _yAxis.Maximum - _yAxis.Minimum;
 
-            _leftTargetBarAnnotation.MinimumX = leftBarMinX;
-            _leftTargetBarAnnotation.MaximumX = leftBarMaxX;
-            _leftTargetBarAnnotation.MinimumY = minY;
-            _leftTargetBarAnnotation.MaximumY = minY + (leftTargetClamped * graphHeight);
+            _leftTargetBarAnnotation.MinimumY = _yAxis.Minimum;
+            _leftTargetBarAnnotation.MaximumY = _yAxis.Minimum + (leftTargetClamped * graphHeight);
 
-            _rightTargetBarAnnotation.MinimumX = rightBarMinX;
-            _rightTargetBarAnnotation.MaximumX = rightBarMaxX;
-            _rightTargetBarAnnotation.MinimumY = minY;
-            _rightTargetBarAnnotation.MaximumY = minY + (rightTargetClamped * graphHeight);
-
-            _leftTargetLabelAnnotation.TextPosition = new DataPoint((leftBarMinX + leftBarMaxX) * 0.5, minY + 12);
-            _rightTargetLabelAnnotation.TextPosition = new DataPoint((rightBarMinX + rightBarMaxX) * 0.5, minY + 12);
+            _rightTargetBarAnnotation.MinimumY = _yAxis.Minimum;
+            _rightTargetBarAnnotation.MaximumY = _yAxis.Minimum + (rightTargetClamped * graphHeight);
 
             RedrawGraph();
         }

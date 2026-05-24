@@ -216,7 +216,7 @@
                                         <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,20" LineHeight="20" Text="{SLoc SABT_Label_AutomaticTuning}" />
                                     </StackPanel>
 
-                                    <oxy:PlotView Height="600" HorizontalAlignment="Stretch" Margin="-14,-10,-14,15" Background="#202020" Model="{Binding TelemetryGraphModel}" />
+                                    <oxy:PlotView Height="700" HorizontalAlignment="Stretch" Margin="-14,-10,-14,15" Background="#202020" Model="{Binding TelemetryGraphModel}" />
 
                                     <ui:TitledRangeSlider Title="{SLoc SABT_Slider_SurgeLimits}" Maximum="50" Minimum="-50" LowerValue="{Binding Settings.MinimumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Settings.IsNotAutomaticallyTuning}" />
                                     <ui:TitledRangeSlider Title="{SLoc SABT_Slider_SwayLimits}" Maximum="50" Minimum="-50" LowerValue="{Binding Settings.MinimumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Settings.IsNotAutomaticallyTuning}" />
