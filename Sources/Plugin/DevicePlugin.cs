@@ -86,6 +86,11 @@ namespace User.ActiveBeltTensioner
                 IsBackground = true,
                 Name = "SABT.ControlLoop"
             };
+
+            pluginManager.AddAction("toggleSabtMotors", (manager, inp) => {
+                Settings.IsEnabled = !Settings.IsEnabled;
+            });
+
             _controlThread.Start();
         }
 
