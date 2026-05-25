@@ -144,6 +144,9 @@
   <data name="SABT_Message_ActivationWarning" xml:space="preserve">
     <value>Les moteurs du tendeur de ceinture vont être activés. Continuer ?</value>
   </data>
+  <data name="SABT_Message_DisableActivationWarningWarning" xml:space="preserve">
+    <value>Cela désactivera l'invite de confirmation avant l'activation des moteurs ; n'activez cette option que si vous savez ce que vous faites. Continuer ?</value>
+  </data>
   <data name="SABT_Message_SimHubLicenseRequired" xml:space="preserve">
     <value>Votre installation SimHub n'est pas sous licence, les mises à jour de télémétrie seront donc limitées à 10 Hz</value>
   </data>
@@ -179,6 +182,9 @@
   </data>
   <data name="SABT_Label_EnableMotors" xml:space="preserve">
     <value>Activer les moteurs</value>
+  </data>
+  <data name="SABT_Label_DisableActivationConfirmation" xml:space="preserve">
+    <value>Désactiver l'invite de confirmation d'activation</value>
   </data>
   <data name="SABT_Label_FlipChannels" xml:space="preserve">
     <value>Inverser les canaux</value>

@@ -144,6 +144,9 @@
   <data name="SABT_Message_ActivationWarning" xml:space="preserve">
     <value>I motori del tensionatore cintura verranno attivati. Procedere?</value>
   </data>
+  <data name="SABT_Message_DisableActivationWarningWarning" xml:space="preserve">
+    <value>Questa opzione disabiliterà la richiesta di conferma prima dell'attivazione dei motori; abilitala solo se sai cosa stai facendo. Procedere?</value>
+  </data>
   <data name="SABT_Message_SimHubLicenseRequired" xml:space="preserve">
     <value>La tua installazione di SimHub non è licenziata, quindi gli aggiornamenti telemetrici saranno limitati a 10 Hz</value>
   </data>
@@ -179,6 +182,9 @@
   </data>
   <data name="SABT_Label_EnableMotors" xml:space="preserve">
     <value>Abilita motori</value>
+  </data>
+  <data name="SABT_Label_DisableActivationConfirmation" xml:space="preserve">
+    <value>Disabilita la richiesta di conferma di attivazione</value>
   </data>
   <data name="SABT_Label_FlipChannels" xml:space="preserve">
     <value>Inverti canali</value>

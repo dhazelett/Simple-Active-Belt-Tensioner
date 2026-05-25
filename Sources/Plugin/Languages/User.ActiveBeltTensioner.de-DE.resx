@@ -144,6 +144,9 @@
   <data name="SABT_Message_ActivationWarning" xml:space="preserve">
     <value>Die Motoren des Gurtstraffers werden aktiviert. Fortfahren?</value>
   </data>
+  <data name="SABT_Message_DisableActivationWarningWarning" xml:space="preserve">
+    <value>Dadurch wird die Bestätigungsabfrage vor der Aktivierung der Motoren deaktiviert; aktivieren Sie diese Option nur, wenn Sie genau wissen, was Sie tun. Fortfahren?</value>
+  </data>
   <data name="SABT_Message_SimHubLicenseRequired" xml:space="preserve">
     <value>Ihre SimHub-Installation ist nicht lizenziert, daher sind Telemetrie-Updates auf 10 Hz begrenzt</value>
   </data>
@@ -179,6 +182,9 @@
   </data>
   <data name="SABT_Label_EnableMotors" xml:space="preserve">
     <value>Motoren aktivieren</value>
+  </data>
+  <data name="SABT_Label_DisableActivationConfirmation" xml:space="preserve">
+    <value>Aktivierungsbestätigung deaktivieren</value>
   </data>
   <data name="SABT_Label_FlipChannels" xml:space="preserve">
     <value>Kanäle tauschen</value>
