@@ -195,6 +195,12 @@
   <data name="SABT_Label_StartAutomatically" xml:space="preserve">
     <value>Automatisch starten</value>
   </data>
+  <data name="SABT_Label_AutomaticSwitching" xml:space="preserve">
+    <value>Automatische Umschaltung</value>
+  </data>
+  <data name="SABT_Label_AutomaticTuning" xml:space="preserve">
+    <value>Auto-Tuning</value>
+  </data>
   <data name="SABT_Prefix_Game" xml:space="preserve">
     <value>Spiel</value>
   </data>
@@ -231,52 +237,6 @@
   <data name="SABT_Button_SetupMotors" xml:space="preserve">
     <value>Motoren einrichten</value>
   </data>
-  <data name="SABT_Label_Connection" xml:space="preserve">
-    <value>• Wählen Sie unten einen seriellen Port aus der Liste aus. Es werden nur Ports angezeigt, die zum Gurtstraffer-Gerät passen. Ist die Liste leer, prüfen Sie, ob der Controller angeschlossen ist. Er sollte auch ohne Stromversorgung oder angeschlossene Motoren angezeigt werden.
-• Bei zukünftigen SimHub-Starts sollte Ihre Portauswahl gespeichert und automatisch wiederverbunden werden. Die Option „Motoren aktivieren“ wird jedoch bei jedem Start zurückgesetzt, sofern nicht auch „Automatisch starten“ aktiviert ist.
-• Wenn Sie das System zum ersten Mal einrichten, klicken Sie anschließend auf „Motoren einrichten“ und folgen den Anweisungen. Das ist nur einmal nötig, da jeder Motor seine Konfiguration speichert.</value>
-  </data>
-  <data name="SABT_Label_Profiles" xml:space="preserve">
-    <value>• Tuning-Profile werden automatisch für das aktuelle Spiel (und die Fahrzeugklasse, falls bekannt) geladen, wobei das spezifischste Profil Vorrang hat
-• Das Kopieren eines vorhandenen Profils führt dazu, dass dessen Tuning-Parameter in ein neues Profil für das aktuell aktive Spiel (und die Fahrzeugklasse, falls bekannt) geladen werden
-• Fahrzeugklassen-Profile können nicht erstellt werden, wenn das Spiel keine Fahrzeugklasse oder kein Modell meldet
-• Änderungen an Profilen werden automatisch gespeichert</value>
-  </data>
-  <data name="SABT_Slider_IdleTension" xml:space="preserve">
-    <value>Leerlaufspannung</value>
-  </data>
-  <data name="SABT_Label_IdleTension" xml:space="preserve">
-    <value>• Wird immer angewendet, wenn nicht gefahren wird (keine Wirkung während der Fahrt)
-• Verhält sich wie die Rückholfeder eines Automatikgurts
-• Auf null setzen zum Deaktivieren; begrenzt auf 25 % des maximalen Motordrehmoments</value>
-  </data>
-  <data name="SABT_Slider_DrivingTension" xml:space="preserve">
-    <value>Fahrspannung</value>
-  </data>
-  <data name="SABT_Label_DrivingTension" xml:space="preserve">
-    <value>• Minimale und maximale Spannung während der Fahrt
-• Ein höheres Minimum erzeugt eine konstante Spannung und verstärkt Beschleunigungs- und Sprungeffekte
-• Ein niedrigeres Maximum reduziert die gesamte Spannungsstärke</value>
-  </data>
-  <data name="SABT_Slider_LeftRightBias" xml:space="preserve">
-    <value>Links/Rechts-Balance</value>
-  </data>
-  <data name="SABT_Label_LeftRightBias" xml:space="preserve">
-    <value>• Wenn die Spannung zwischen den Seiten unausgewogen wirkt, nach links oder rechts anpassen
-• Prüfen und korrigieren Sie zuerst den Gurtverlauf und die Kontaktpunkte, bevor Sie diese Einstellung verwenden</value>
-  </data>
-  <data name="SABT_Slider_Cornering" xml:space="preserve">
-    <value>Kurvenfahrt</value>
-  </data>
-  <data name="SABT_Label_Cornering" xml:space="preserve">
-    <value>• Wie stark Kurvenkräfte die Spannungsdifferenz zwischen den beiden Gurten beeinflussen sollen</value>
-  </data>
-  <data name="SABT_Slider_Braking" xml:space="preserve">
-    <value>Bremsen</value>
-  </data>
-  <data name="SABT_Label_Braking" xml:space="preserve">
-    <value>• Wie stark Verzögerungskräfte die Spannung auf beiden Gurten erhöhen sollen</value>
-  </data>
   <data name="SABT_Legend_Surge" xml:space="preserve">
     <value>Ansturm</value>
   </data>
@@ -289,63 +249,12 @@
   <data name="SABT_Legend_Heave" xml:space="preserve">
     <value>Heben</value>
   </data>
-  <data name="SABT_Slider_Acceleration" xml:space="preserve">
-    <value>Beschleunigung</value>
-  </data>
-  <data name="SABT_Label_Acceleration" xml:space="preserve">
-    <value>• Wie stark Beschleunigungskräfte die Spannung auf beiden Gurten verringern sollen
-• Für beste Ergebnisse die minimale „Fahrspannung“ auf einen Wert ungleich null setzen (siehe Registerkarte „Spannung“)</value>
-  </data>
-  <data name="SABT_Slider_Jumping" xml:space="preserve">
-    <value>Sprünge</value>
-  </data>
-  <data name="SABT_Label_Jumping" xml:space="preserve">
-    <value>• Wie stark Sprünge die Spannung auf beiden Gurten verringern sollen
-• Für beste Ergebnisse die minimale „Fahrspannung“ auf einen Wert ungleich null setzen (siehe Registerkarte „Spannung“)</value>
-  </data>
-  <data name="SABT_Label_AutomaticTuning" xml:space="preserve">
-    <value>• Aktivieren Sie dies nach dem Laden einer zuvor aufgezeichneten Wiederholung für das Spiel, für das Sie die Telemetrie anpassen möchten
-• Nach der Aktivierung passen sich die Schiebereglerwerte unten automatisch an die Werte der wiedergegebenen Telemetrie an
-• Während die Wiederholung noch geöffnet ist, deaktivieren Sie dies und passen Sie die Schieberegler bei Bedarf manuell an
-• Die Motorausgabe ist während der Abstimmung aus Sicherheitsgründen deaktiviert
-• Die automatische Abstimmung wird automatisch deaktiviert, wenn sich das aktive Profil ändert</value>
-  </data>
   <data name="SABT_Label_SetMinimumTensionToNonZero" xml:space="preserve">
     <value>• Für beste Ergebnisse die minimale „Fahrspannung“ auf einen Wert ungleich null setzen (siehe Registerkarte „Spannung“)</value>
-  </data>
-  <data name="SABT_Slider_Landing" xml:space="preserve">
-    <value>Landung</value>
-  </data>
-  <data name="SABT_Label_Landing" xml:space="preserve">
-    <value>• Wie stark Landungen die Spannung auf beiden Gurten erhöhen sollen</value>
-  </data>
-  <data name="SABT_Slider_Shifting" xml:space="preserve">
-    <value>Schalten</value>
   </data>
   <data name="SABT_Label_Shifting" xml:space="preserve">
     <value>• Fügt beim Hochschalten eine stärkere Entlastung der Spannung hinzu, als die Standard-Telemetrie bietet
 • Für beste Ergebnisse die minimale „Fahrspannung“ auf einen Wert ungleich null setzen (siehe Registerkarte „Spannung“)</value>
-  </data>
-  <data name="SABT_Slider_SurgeLimits" xml:space="preserve">
-    <value>Surge-Grenzen (Beschleunigung/Bremsen)</value>
-  </data>
-  <data name="SABT_Slider_SwayLimits" xml:space="preserve">
-    <value>Sway-Grenzen (Kurvenfahrt)</value>
-  </data>
-  <data name="SABT_Slider_HeaveLimits" xml:space="preserve">
-    <value>Heave-Grenzen (Sprünge)</value>
-  </data>
-  <data name="SABT_Label_TelemetryLimits" xml:space="preserve">
-    <value>• Die zulässigen Wertebereiche für eingehende Telemetriedaten (alles darüber oder darunter wird beschnitten, was zu null oder maximaler Motorleistung führt)
-• Engere Bereiche führen zu aggressiveren Effekten, breitere Bereiche führen zu größerer Subtilität
-• Vermeiden Sie eine zu enge Einstellung der `Heave Limits`, da dies andere Effekte unterdrücken kann; denken Sie daran, dass nur große Sprünge/Landungen in den Gurten spürbar sein sollten</value>
-  </data>
-  <data name="SABT_Slider_SmoothingFactor" xml:space="preserve">
-    <value>Glättungsfaktor</value>
-  </data>
-  <data name="SABT_Label_SmoothingFactor" xml:space="preserve">
-    <value>• Wie stark die Spannungsausgabe geglättet werden soll
-• Die oben angegebene Spannungsausgabe enthält diesen Glättungseffekt nicht</value>
   </data>
   <data name="SABT_Link_Website" xml:space="preserve">
     <value>Website</value>
@@ -415,5 +324,99 @@
   </data>
   <data name="SABT_Status_TestPartiallyFailed" xml:space="preserve">
     <value>Test teilweise fehlgeschlagen</value>
+  </data>
+  <data name="SABT_Text_Connection" xml:space="preserve">
+    <value>• Wählen Sie unten einen seriellen Port aus der Liste aus. Es werden nur Ports angezeigt, die zum Gurtstraffer-Gerät passen. Ist die Liste leer, prüfen Sie, ob der Controller angeschlossen ist. Er sollte auch ohne Stromversorgung oder angeschlossene Motoren angezeigt werden.
+• Bei zukünftigen SimHub-Starts sollte Ihre Portauswahl gespeichert und automatisch wiederverbunden werden. Die Option „Motoren aktivieren“ wird jedoch bei jedem Start zurückgesetzt, sofern nicht auch „Automatisch starten“ aktiviert ist.
+• Wenn Sie das System zum ersten Mal einrichten, klicken Sie anschließend auf „Motoren einrichten“ und folgen den Anweisungen. Das ist nur einmal nötig, da jeder Motor seine Konfiguration speichert.</value>
+  </data>
+  <data name="SABT_Text_IdleTension" xml:space="preserve">
+    <value>• Wird immer angewendet, wenn nicht gefahren wird (keine Wirkung während der Fahrt)
+• Verhält sich wie die Rückholfeder eines Automatikgurts
+• Auf null setzen zum Deaktivieren; begrenzt auf 25 % des maximalen Motordrehmoments</value>
+  </data>
+  <data name="SABT_Text_DrivingTension" xml:space="preserve">
+    <value>• Minimale und maximale Spannung während der Fahrt
+• Ein höheres Minimum erzeugt eine konstante Spannung und verstärkt Beschleunigungs- und Sprungeffekte
+• Ein niedrigeres Maximum reduziert die gesamte Spannungsstärke</value>
+  </data>
+  <data name="SABT_Text_LeftRightBias" xml:space="preserve">
+    <value>• Wenn die Spannung zwischen den Seiten unausgewogen wirkt, nach links oder rechts anpassen
+• Prüfen und korrigieren Sie zuerst den Gurtverlauf und die Kontaktpunkte, bevor Sie diese Einstellung verwenden</value>
+  </data>
+  <data name="SABT_Text_Cornering" xml:space="preserve">
+    <value>• Wie stark Kurvenkräfte die Spannungsdifferenz zwischen den beiden Gurten beeinflussen sollen</value>
+  </data>
+  <data name="SABT_Text_Braking" xml:space="preserve">
+    <value>• Wie stark Verzögerungskräfte die Spannung auf beiden Gurten erhöhen sollen</value>
+  </data>
+  <data name="SABT_Text_Acceleration" xml:space="preserve">
+    <value>• Wie stark Beschleunigungskräfte die Spannung auf beiden Gurten verringern sollen
+• Für beste Ergebnisse die minimale „Fahrspannung“ auf einen Wert ungleich null setzen (siehe Registerkarte „Spannung“)</value>
+  </data>
+  <data name="SABT_Text_Jumping" xml:space="preserve">
+    <value>• Wie stark Sprünge die Spannung auf beiden Gurten verringern sollen
+• Für beste Ergebnisse die minimale „Fahrspannung“ auf einen Wert ungleich null setzen (siehe Registerkarte „Spannung“)</value>
+  </data>
+  <data name="SABT_Text_Landing" xml:space="preserve">
+    <value>• Wie stark Landungen die Spannung auf beiden Gurten erhöhen sollen</value>
+  </data>
+  <data name="SABT_Text_Profiles" xml:space="preserve">
+    <value>• Mit aktiviertem 'Auto-Switching' werden Tuning-Profile automatisch für das aktuelle Spiel (und die Fahrzeugklasse, falls bekannt) geladen, wobei das spezifischste Profil Vorrang hat
+• Das Kopieren eines vorhandenen Profils führt dazu, dass dessen Tuning-Parameter in ein neues Profil für das aktuell aktive Spiel (und die Fahrzeugklasse, falls bekannt) geladen werden
+• Fahrzeugklassen-Profile können nicht erstellt werden, wenn das Spiel keine Fahrzeugklasse oder kein Modell meldet
+• Änderungen an Profilen werden automatisch gespeichert</value>
+  </data>
+  <data name="SABT_Text_Tuning" xml:space="preserve">
+    <value>• Mit aktiviertem 'Auto-Tuning' passen sich die Schiebereglerwerte unten automatisch an die Werte der wiedergegebenen Telemetrie an
+• Verwenden Sie zur Erleichterung der Abstimmung eine zuvor aufgezeichnete Spielwiedergabe (optional mit der spezifischen Fahrzeugklasse, für die abgestimmt werden soll)
+• Die Motorausgabe ist während der Abstimmung aus Sicherheitsgründen deaktiviert
+• 'Auto-Switching' wird bei Verwendung der automatischen Abstimmungsfunktion automatisch deaktiviert
+• 'Auto-Tuning' wird automatisch deaktiviert, wenn das aktive Profil geändert wird</value>
+  </data>
+  <data name="SABT_Text_Telemetry" xml:space="preserve">
+    <value>• Die zulässigen Wertebereiche für eingehende Telemetriedaten (alles darüber oder darunter wird beschnitten, was zu null oder maximaler Motorleistung führt)
+• Engere Bereiche führen zu aggressiveren Effekten, breitere Bereiche führen zu größerer Subtilität
+• Vermeiden Sie eine zu enge Einstellung der `Heave Limits`, da dies andere Effekte unterdrücken kann; denken Sie daran, dass nur große Sprünge/Landungen in den Gurten spürbar sein sollten</value>
+  </data>
+  <data name="SABT_Text_Smoothing" xml:space="preserve">
+    <value>• Wie stark die Spannungsausgabe geglättet werden soll
+• Die oben angegebene Spannungsausgabe enthält diesen Glättungseffekt nicht</value>
+  </data>
+  <data name="SABT_Label_IdleTension" xml:space="preserve">
+    <value>Leerlaufspannung</value>
+  </data>
+  <data name="SABT_Label_DrivingTension" xml:space="preserve">
+    <value>Fahrspannung</value>
+  </data>
+  <data name="SABT_Label_LeftRightBias" xml:space="preserve">
+    <value>Links/Rechts-Balance</value>
+  </data>
+  <data name="SABT_Label_Cornering" xml:space="preserve">
+    <value>Kurvenfahrt</value>
+  </data>
+  <data name="SABT_Label_Braking" xml:space="preserve">
+    <value>Bremsen</value>
+  </data>
+  <data name="SABT_Label_Acceleration" xml:space="preserve">
+    <value>Beschleunigung</value>
+  </data>
+  <data name="SABT_Label_Jumping" xml:space="preserve">
+    <value>Sprünge</value>
+  </data>
+  <data name="SABT_Label_Landing" xml:space="preserve">
+    <value>Landung</value>
+  </data>
+  <data name="SABT_Label_SurgeLimits" xml:space="preserve">
+    <value>Surge-Grenzen (Beschleunigung/Bremsen)</value>
+  </data>
+  <data name="SABT_Label_SwayLimits" xml:space="preserve">
+    <value>Sway-Grenzen (Kurvenfahrt)</value>
+  </data>
+  <data name="SABT_Label_HeaveLimits" xml:space="preserve">
+    <value>Heave-Grenzen (Sprünge)</value>
+  </data>
+  <data name="SABT_Label_SmoothingFactor" xml:space="preserve">
+    <value>Glättungsfaktor</value>
   </data>
 </root>

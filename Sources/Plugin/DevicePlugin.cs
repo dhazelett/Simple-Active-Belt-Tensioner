@@ -714,6 +714,8 @@ Logging.Current.Info("SABT: RESETTING SLIDERS FOR AUTO TUNING");
             TelemetryGraphModel.Annotations.Add(_targetDividerAnnotation);
             TelemetryGraphModel.Annotations.Add(_leftTargetBarAnnotation);
             TelemetryGraphModel.Annotations.Add(_rightTargetBarAnnotation);
+
+            UpdateTelemetryGraphFilters();
         }
 
         /// <summary>Redraws the telemetry graph, providing enough time has passed since the last redraw to achieve the desired refresh rate</summary>

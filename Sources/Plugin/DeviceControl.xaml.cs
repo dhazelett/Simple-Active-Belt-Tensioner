@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using WoteverLocalization;
 
@@ -140,6 +142,24 @@ namespace User.ActiveBeltTensioner
             }
         }
 
+        private void SelectProfile(object sender, RoutedEventArgs e)
+        {
+            if (e.OriginalSource is DependencyObject source && FindParent<Button>(source) != null)
+            {
+                return;
+            }
+
+            if (sender is FrameworkElement element && element.DataContext is GameTuningProfile profile)
+            {
+                if (_plugin.Settings.IsAutomaticallySwitching)
+                {
+                    _plugin.Settings.IsAutomaticallySwitching = false;
+                }
+
+                _plugin.Settings.LoadProfile(profile);
+            }
+        }
+
         private void DeleteProfile(object sender, RoutedEventArgs e)
         {
             if (((FrameworkElement)sender).Tag is GameTuningProfile profile)
@@ -190,6 +210,21 @@ namespace User.ActiveBeltTensioner
         private void OpenHyperlink(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start(((Hyperlink)sender).NavigateUri.ToString());
+        }
+
+        private static T FindParent<T>(DependencyObject current) where T : DependencyObject
+        {
+            while (current != null)
+            {
+                if (current is T ancestor)
+                {
+                    return ancestor;
+                }
+
+                current = VisualTreeHelper.GetParent(current);
+            }
+
+            return null;
         }
     }
 }

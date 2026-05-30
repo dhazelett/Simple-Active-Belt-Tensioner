@@ -30,6 +30,7 @@ namespace User.ActiveBeltTensioner
         public void Initialise()
         {
             _isInitialised = true;
+
             ChangeActiveProfile();
         }
 
@@ -37,7 +38,7 @@ namespace User.ActiveBeltTensioner
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
-            GameTuningProfile profile = FindProfile(this.CurrentGame, this.CurrentVehicle, true);
+            GameTuningProfile profile = GetActiveProfile();
 
             if (profile is GameTuningProfile)
             {
@@ -105,6 +106,25 @@ namespace User.ActiveBeltTensioner
             }
         }
 
+        private bool _isAutomaticallySwitching = true;
+        public bool IsAutomaticallySwitching
+        {
+            get { return _isAutomaticallySwitching; }
+            set
+            {
+                if (_isAutomaticallySwitching != value)
+                {
+                    _isAutomaticallySwitching = value;
+                    InvokePropertyChange(nameof(IsAutomaticallySwitching));
+
+                    if (_isAutomaticallySwitching)
+                    {
+                        ChangeActiveProfile();
+                    }
+                }
+            }
+        }
+
         private bool _isAutomaticallyTuning = false;
         public bool IsAutomaticallyTuning
         {
@@ -116,6 +136,11 @@ namespace User.ActiveBeltTensioner
                     _isAutomaticallyTuning = value;
                     InvokePropertyChange(nameof(IsAutomaticallyTuning));
                     InvokePropertyChange(nameof(IsNotAutomaticallyTuning));
+
+                    if (_isAutomaticallyTuning)
+                    {
+                        IsAutomaticallySwitching = false;
+                    }
                 }
             }
         }
@@ -418,8 +443,6 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-
-
         private string _currentGame = string.Empty;
         public string CurrentGame
         {
@@ -431,7 +454,11 @@ namespace User.ActiveBeltTensioner
                 {
                     _currentGame = newValue;
                     InvokePropertyChange(nameof(CurrentGame));
-                    ChangeActiveProfile();
+
+                    if (IsAutomaticallySwitching)
+                    {
+                        ChangeActiveProfile();
+                    }
                 }
             }
         }
@@ -448,7 +475,11 @@ namespace User.ActiveBeltTensioner
                     _currentVehicle = newValue;
                     InvokePropertyChange(nameof(CurrentVehicle));
                     InvokePropertyChange(nameof(HasCurrentVehicle));
-                    ChangeActiveProfile();
+
+                    if (IsAutomaticallySwitching)
+                    {
+                        ChangeActiveProfile();
+                    }
                 }
             }
         }
@@ -477,7 +508,7 @@ namespace User.ActiveBeltTensioner
                 Profiles.Add(profile);
             }
 
-            ChangeActiveProfile();
+            ChangeActiveProfile(profile);
         }
 
         public void RemoveProfile(GameTuningProfile profile)
@@ -502,6 +533,11 @@ namespace User.ActiveBeltTensioner
 
         public void LoadProfile(GameTuningProfile profile)
         {
+            for (int i = 0; i < Profiles.Count; i++)
+            {
+                Profiles[i].IsActive = false;
+            }
+
             IsAutomaticallyTuning = false;
 
             Persist?.Invoke();
@@ -513,6 +549,24 @@ namespace User.ActiveBeltTensioner
             MinimumHeave = profile.MinimumHeave;
             MaximumHeave = profile.MaximumHeave;
             SmoothingFactor = profile.SmoothingFactor;
+
+            profile.IsActive = true;
+        }
+
+        public GameTuningProfile GetActiveProfile()
+        {
+            lock (_profilesLock)
+            {
+                for (int i = Profiles.Count - 1; i >= 0; i--)
+                {
+                    if (Profiles[i].IsActive)
+                    {
+                        return Profiles[i];
+                    }
+                }
+            }
+
+            return null;
         }
 
         public GameTuningProfile FindProfile(string game, string vehicle, bool useDefault = false)
@@ -542,33 +596,38 @@ namespace User.ActiveBeltTensioner
             return null;
         }
 
-        public GameTuningProfile ChangeActiveProfile()
+        public GameTuningProfile ChangeActiveProfile(GameTuningProfile profile = null)
         {
             if (!_isInitialised)
             {
                 return null;
             }
 
-            Logging.Current.Info($"SABT: CHANGING ACTIVE PROFILE TO '{CurrentGame}' + '{CurrentVehicle}' ({Profiles.Count})");
-
             lock (_profilesLock)
             {
-                for (int i = 0; i < Profiles.Count; i++)
-                {
-                    Profiles[i].IsActive = false;
-                }
-
                 CleanProfiles();
 
-                GameTuningProfile profile = null;
+                // Use Given Profile
+                if (profile != null)
+                {
+                    for (int i = 0; i < Profiles.Count; i++)
+                    {
+                        if (Profiles[i] == profile)
+                        {
+                            LoadProfile(profile);
+
+                            return profile;
+                        }
+                    }
+
+                    Logging.Current.Info($"SABT: GIVEN PROFILE MISSING, AUTO-SELECTING...");
+                }
 
                 // Use Game & Vehicle Profile
                 profile = FindProfile(CurrentGame, CurrentVehicle);
 
                 if (profile is GameTuningProfile)
                 {
-                    profile.IsActive = true;
-
                     LoadProfile(profile);
 
                     return profile;
@@ -579,8 +638,6 @@ namespace User.ActiveBeltTensioner
 
                 if (profile is GameTuningProfile)
                 {
-                    profile.IsActive = true;
-
                     LoadProfile(profile);
 
                     return profile;
@@ -590,7 +647,6 @@ namespace User.ActiveBeltTensioner
 
                 // Create Default Profile
                 profile = CreateProfile(string.Empty, string.Empty);
-                profile.IsActive = true;
 
                 Profiles.Insert(0, profile);
 
