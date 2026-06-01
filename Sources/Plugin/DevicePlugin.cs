@@ -263,6 +263,8 @@ namespace User.ActiveBeltTensioner
 
                             continue;
                         }
+
+                        motorController.Connect();
                     }
 
                     _hasBeenInactive = false;
