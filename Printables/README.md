@@ -89,3 +89,11 @@ At some point I'd love to see machined aluminium parts become available; but the
 Some of the parts would need to be adapted considerably to work with the latter process.
 
 If you have the means to do this and want to make them available, please get in touch.
+
+## Downloading
+
+The printable files are provided in the `STEP` format. This provides the highest quality of geometry while being compatible with all major 3D printer slicing sofware _and_ commercial printing and CNC services.
+
+GitHub treats these as _text_ files, so displays their contents rather than offering a download. To download a printable `STEP` file, use the `Download Raw File` option, which looks like a _tray and arrow_ icon:
+![Download STEP File](https://github.com/user-attachments/assets/0109cad7-64ec-42a7-b945-4ba9ba94bee7)
+
