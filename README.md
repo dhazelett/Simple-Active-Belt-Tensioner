@@ -41,6 +41,11 @@ Note that you'll need either an _aluminium profile_ (e.g. [GT Omega Prime](https
 
 I would recommend installing tactile transducers (bass shakers) before embarking on belt tensioners and other more exotic haptic systems. Transducers are by far the simplest and cheapest way of adding real immersion to your experience. They provide detail that belt tensioners cannot (road bumps, curbs, etc), while tensioners provide constant forces that transducers cannot (braking, cornering, etc).
 
+### Community Builds
+Several members of the sim racing community have [provided photographs](https://photos.app.goo.gl/ju7rso1PFKGxnRhJ8) of their SABT builds. Many have also _forked_ the project and customised it to their needs.
+
+If you build a SABT, you're encouraged to photograph and document your completed installation. A good way to do that is by [creating a new](https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/discussions/new?category=sabt-builds) GitHub discussion.
+
 ## What Does It Cost?
 
 If you have your own 3D printer, as little as **215 GBP** including taxes and delivery. If not, **250~300 GBP** depending on your choice of printed parts supplier.

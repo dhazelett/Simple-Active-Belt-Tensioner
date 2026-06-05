@@ -445,6 +445,13 @@ Logging.Current.Info("SABT: RESETTING SLIDERS FOR AUTO TUNING");
                         continue;
                     }
 
+                    // 
+                    MotorController motorController;
+                    lock (_motorControllerLock)
+                    {
+                        motorController = MotorController;
+                    }
+
                     if (_hasBeenInactive)
                     {
                         if (!_hasBypassedActivationWarning)
@@ -467,6 +474,8 @@ Logging.Current.Info("SABT: RESETTING SLIDERS FOR AUTO TUNING");
 
                                 continue;
                             }
+
+                            motorController.Connect();
                         }
 
                         _hasBeenInactive = false;
@@ -475,12 +484,6 @@ Logging.Current.Info("SABT: RESETTING SLIDERS FOR AUTO TUNING");
                     _hasBypassedActivationWarning = false;
 
                     // Send To Motors
-                    MotorController motorController;
-                    lock (_motorControllerLock)
-                    {
-                        motorController = MotorController;
-                    }
-
                     if (!motorController.IsBusy)
                     {
                         if (!motorController.SetTorques(leftTarget, rightTarget, smoothingFactor))
