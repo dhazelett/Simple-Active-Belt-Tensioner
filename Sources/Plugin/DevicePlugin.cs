@@ -445,7 +445,6 @@ Logging.Current.Info("SABT: RESETTING SLIDERS FOR AUTO TUNING");
                         continue;
                     }
 
-                    // 
                     MotorController motorController;
                     lock (_motorControllerLock)
                     {

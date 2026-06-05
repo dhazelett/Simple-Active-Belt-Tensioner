@@ -10,6 +10,7 @@ using System.Linq;
 using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Text;
+using WoteverLocalization;
 
 namespace User.ActiveBeltTensioner
 {
@@ -496,6 +497,7 @@ namespace User.ActiveBeltTensioner
 
         public ObservableCollection<GameTuningProfile> Profiles { get; set; } = new ObservableCollection<GameTuningProfile>();
 
+        /// <summary>Adds the given <see cref="GameTuningProfile" /> instance to our collection of profiles</summary>
         public void AddProfile(GameTuningProfile profile)
         {
             if (profile == null)
@@ -516,6 +518,7 @@ namespace User.ActiveBeltTensioner
             ChangeActiveProfile(profile);
         }
 
+        /// <summary>Removes the given <see cref="GameTuningProfile" /> instance from our collection of profiles</summary>
         public void RemoveProfile(GameTuningProfile profile)
         {
             lock (_profilesLock)
@@ -526,16 +529,19 @@ namespace User.ActiveBeltTensioner
             ChangeActiveProfile();
         }
 
+        /// <summary>Creates a <see cref="GameTuningProfile" /> instance for the given game and vehicle</summary>
         public GameTuningProfile CreateProfile(string game, string vehicle)
         {
             return GameTuningProfile.Make(this, game, vehicle);
         }
 
+        /// <summary>Clones the given <see cref="GameTuningProfile" /> instance, overwriting its game and vehicle with those given</summary>
         public GameTuningProfile CloneProfile(GameTuningProfile profile, string game, string vehicle)
         {
             return profile == null ? null : profile.Clone(game, vehicle);
         }
 
+        /// <summary>Applies the given <see cref="GameTuningProfile" /> instance properties to the current settings properties and marks it as active</summary>
         public void LoadProfile(GameTuningProfile profile)
         {
             for (int i = 0; i < Profiles.Count; i++)
@@ -558,6 +564,7 @@ namespace User.ActiveBeltTensioner
             profile.IsActive = true;
         }
 
+        /// <summary>Returns the <see cref="GameTuningProfile" /> instance that is currently marked as active</summary>
         public GameTuningProfile GetActiveProfile()
         {
             lock (_profilesLock)
@@ -574,6 +581,7 @@ namespace User.ActiveBeltTensioner
             return null;
         }
 
+        /// <summary>Returns the <see cref="GameTuningProfile" /> that matches the given game and vehicle; optionally returning the default if none are found</summary>
         public GameTuningProfile FindProfile(string game, string vehicle, bool useDefault = false)
         {
             lock (_profilesLock)
@@ -601,6 +609,7 @@ namespace User.ActiveBeltTensioner
             return null;
         }
 
+        /// <summary>Refreshes the active profile, loading whichever matches the current (or given) game and vehicle</summary>
         public GameTuningProfile ChangeActiveProfile(GameTuningProfile profile = null)
         {
             if (!_isInitialised)
@@ -624,8 +633,6 @@ namespace User.ActiveBeltTensioner
                             return profile;
                         }
                     }
-
-                    Logging.Current.Info($"SABT: GIVEN PROFILE MISSING, AUTO-SELECTING...");
                 }
 
                 // Use Game & Vehicle Profile
@@ -648,19 +655,16 @@ namespace User.ActiveBeltTensioner
                     return profile;
                 }
 
-                Logging.Current.Info($"SABT: DEFAULT PROFILE MISSING '{Profiles.Count}'");
-
                 // Create Default Profile
                 profile = CreateProfile(string.Empty, string.Empty);
 
                 Profiles.Insert(0, profile);
 
-                Logging.Current.Info($"SABT: DEFAULT PROFILE INSERTED '{Profiles.Count}'");
-
                 return profile;
             }
         }
 
+        /// <summary>Sorts and deduplicates the profiles collection</summary>
         private void CleanProfiles()
         {
             // Identify & Remove Duplicate Profiles
@@ -704,9 +708,7 @@ namespace User.ActiveBeltTensioner
         }
     }
 
-
-
-
+    /// <summary>A representation of the tuning parameters making up a game (and optionnaly vehicle) profile</summary>
     public class GameTuningProfile : INotifyPropertyChanged
     {
         private const string _wildcardSymbol = "✱";
@@ -760,10 +762,9 @@ namespace User.ActiveBeltTensioner
 
             if (promptForLabels)
             {
-Logging.Current.Info($"SABT: PROMPTING FOR LABELS FOR '{game}' + '{vehicle}'");
                 GameLabel = (game == string.Empty) ? _wildcardSymbol : Interaction.InputBox(
-                    Prompt: "You may alter the game name from the one given by SimHub if desired:",
-                    Title: "Set Game Name",
+                    Prompt: SLoc.GetValue("SABT_Message_AlterGameName"),
+                    Title: SLoc.GetValue("SABT_Title_AlterGameName"),
                     DefaultResponse: PrettifyLabelPart(game)
                 );
 
@@ -773,8 +774,8 @@ Logging.Current.Info($"SABT: PROMPTING FOR LABELS FOR '{game}' + '{vehicle}'");
                 }
 
                 VehicleLabel = (vehicle == string.Empty) ? _wildcardSymbol : Interaction.InputBox(
-                    Prompt: "You may alter the vehicle name from the one given by SimHub if desired:",
-                    Title: "Set Vehicle Name",
+                    Prompt: SLoc.GetValue("SABT_Message_AlterVehicleName"),
+                    Title: SLoc.GetValue("SABT_Title_AlterVehicleName"),
                     DefaultResponse: PrettifyLabelPart(vehicle)
                 );
 
@@ -783,15 +784,11 @@ Logging.Current.Info($"SABT: PROMPTING FOR LABELS FOR '{game}' + '{vehicle}'");
                     VehicleLabel = PrettifyLabelPart(vehicle);
                 }
             }
-            else {
-Logging.Current.Info($"SABT: NOT PROMPTING FOR LABELS FOR '{game}' + '{vehicle}'");
-            }
         }
 
+        /// <summary>Returns a new <see cref="GameTuningProfile" /> instance for the given game and vehicle, applying the current global settings as its base values</summary>
         public static GameTuningProfile Make(DeviceSettings settings, string game, string vehicle)
         {
-            Logging.Current.Info($"SABT: MAKE PROFILE '{game}' + '{vehicle}'");
-
             return new GameTuningProfile(game, vehicle, true)
             {
                 IsActive = false,
@@ -806,10 +803,9 @@ Logging.Current.Info($"SABT: NOT PROMPTING FOR LABELS FOR '{game}' + '{vehicle}'
             };
         }
 
+        /// <summary>Returns a new <see cref="GameTuningProfile" /> instance for the given game and vehicle, applying the current instance properties as its base values</summary>
         public GameTuningProfile Clone(string game, string vehicle)
         {
-            Logging.Current.Info($"SABT: CLONE PROFILE TO '{game}' + '{vehicle}'");
-
             return new GameTuningProfile(game, vehicle, true)
             {
                 IsActive = false,
@@ -824,6 +820,7 @@ Logging.Current.Info($"SABT: NOT PROMPTING FOR LABELS FOR '{game}' + '{vehicle}'
             };
         }
 
+        /// <summary>Indicates if the given game and vehicle match the current instance</summary>
         public bool Matches(string game, string vehicle)
         {
             return (
@@ -832,20 +829,24 @@ Logging.Current.Info($"SABT: NOT PROMPTING FOR LABELS FOR '{game}' + '{vehicle}'
             );
         }
 
+        /// <summary>Returns a string key representing this instance's game and vehicle associations</summary>
         public string GetKey()
         {
             return $"{SimplifyKeyPart(Game)}|{SimplifyKeyPart(Vehicle)}";
         }
 
-        public void SetTuningProperty(string propertyName, object value)
+        /// <summary>Sets the property matching the given name to the given value, if it exists and is writable</summary>
+        public void SetTuningProperty(string name, object value)
         {
-            var property = this.GetType().GetProperty(propertyName);
+            var property = this.GetType().GetProperty(name);
+
             if (property != null && property.CanWrite)
             {
                 property.SetValue(this, value);
             }
         }
 
+        /// <summary>Returns a cleaned-up version of the given (highly variable) game or vehicle name string reported by SimHub</summary>
         private static string PrettifyLabelPart(string value)
         {
             if (string.IsNullOrWhiteSpace(value))
@@ -919,6 +920,7 @@ Logging.Current.Info($"SABT: NOT PROMPTING FOR LABELS FOR '{game}' + '{vehicle}'
             );
         }
 
+        /// <summary>Returns a simplified version of the given (highly variable) game or vehicle name string reported by SimHub</summary>
         private static string SimplifyKeyPart(string value)
         {
             if (string.IsNullOrWhiteSpace(value))

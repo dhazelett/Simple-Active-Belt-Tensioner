@@ -144,6 +144,18 @@
   <data name="SABT_Message_ActivationWarning" xml:space="preserve">
     <value>The belt tensioner motors will be activated. Proceed?</value>
   </data>
+  <data name="SABT_Message_AlterGameName" xml:space="preserve">
+    <value>You may alter the game name from the one given by SimHub if desired:</value>
+  </data>
+  <data name="SABT_Title_AlterGameName" xml:space="preserve">
+    <value>Set Game Name</value>
+  </data>
+  <data name="SABT_Title_AlterVehicleName" xml:space="preserve">
+    <value>Set Vehicle Name</value>
+  </data>
+  <data name="SABT_Message_AlterVehicleName" xml:space="preserve">
+    <value>You may alter the vehicle name from the one given by SimHub if desired:</value>
+  </data>
   <data name="SABT_Message_AutomaticTuningReset" xml:space="preserve">
     <value>The current tuning slider values will be reduced to facilitate automatic tuning. Proceed?</value>
   </data>

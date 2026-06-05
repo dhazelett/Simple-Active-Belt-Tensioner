@@ -144,6 +144,18 @@
   <data name="SABT_Message_ActivationWarning" xml:space="preserve">
     <value>Les moteurs du tendeur de ceinture vont être activés. Continuer ?</value>
   </data>
+  <data name="SABT_Message_AlterGameName" xml:space="preserve">
+    <value>Vous pouvez modifier le nom du jeu fourni par SimHub si vous le souhaitez :</value>
+  </data>
+  <data name="SABT_Title_AlterGameName" xml:space="preserve">
+    <value>Définir le nom du jeu</value>
+  </data>
+  <data name="SABT_Title_AlterVehicleName" xml:space="preserve">
+    <value>Définir le nom du véhicule</value>
+  </data>
+  <data name="SABT_Message_AlterVehicleName" xml:space="preserve">
+    <value>Vous pouvez modifier le nom du véhicule donné par SimHub si vous le souhaitez :</value>
+  </data>
   <data name="SABT_Message_AutomaticTuningReset" xml:space="preserve">
     <value>Les valeurs actuelles des curseurs de réglage seront réduites pour faciliter le réglage automatique. Continuer ?</value>
   </data>

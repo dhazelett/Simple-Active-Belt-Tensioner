@@ -144,6 +144,18 @@
   <data name="SABT_Message_ActivationWarning" xml:space="preserve">
     <value>Die Motoren des Gurtstraffers werden aktiviert. Fortfahren?</value>
   </data>
+  <data name="SABT_Message_AlterGameName" xml:space="preserve">
+    <value>Sie können den von SimHub vorgegebenen Spielnamen bei Bedarf ändern:</value>
+  </data>
+  <data name="SABT_Title_AlterGameName" xml:space="preserve">
+    <value>Spielname festlegen</value>
+  </data>
+  <data name="SABT_Title_AlterVehicleName" xml:space="preserve">
+    <value>Fahrzeugnamen festlegen</value>
+  </data>
+  <data name="SABT_Message_AlterVehicleName" xml:space="preserve">
+    <value>Sie können den von SimHub angegebenen Fahrzeugnamen bei Bedarf ändern:</value>
+  </data>
   <data name="SABT_Message_AutomaticTuningReset" xml:space="preserve">
     <value>Die aktuellen Werte der Tuning-Regler werden reduziert, um die automatische Abstimmung zu ermöglichen. Fortfahren?</value>
   </data>

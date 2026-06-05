@@ -144,6 +144,18 @@
   <data name="SABT_Message_ActivationWarning" xml:space="preserve">
     <value>I motori del tensionatore cintura verranno attivati. Procedere?</value>
   </data>
+  <data name="SABT_Message_AlterGameName" xml:space="preserve">
+    <value>Puoi modificare il nome del gioco da quello fornito da SimHub se desiderato:</value>
+  </data>
+  <data name="SABT_Title_AlterGameName" xml:space="preserve">
+    <value>Imposta Nome Gioco</value>
+  </data>
+  <data name="SABT_Title_AlterVehicleName" xml:space="preserve">
+    <value>Imposta nome veicolo</value>
+  </data>
+  <data name="SABT_Message_AlterVehicleName" xml:space="preserve">
+    <value>Puoi modificare il nome del veicolo da quello fornito da SimHub se desiderato:</value>
+  </data>
   <data name="SABT_Message_AutomaticTuningReset" xml:space="preserve">
     <value>I valori correnti dei cursori di sintonizzazione saranno ridotti per facilitare la sintonizzazione automatica. Procedere?</value>
   </data>
