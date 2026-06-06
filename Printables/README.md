@@ -6,7 +6,7 @@ Since there are a couple of options to choose from, you should read this before 
 
 ### Choosing Your Brackets
 
-<img align="right" width="30%" height="auto" style="margin: 0 0 5% 5%" alt="Flat Motor Bracket (30~40mm Hole Spacing)" src="https://github.com/user-attachments/assets/121acdba-215d-4968-9570-e6a5bc9e8709" />
+<img align="right" width="30%" height="auto" style="margin: 0 0 0 5%" alt="Flat Motor Bracket (30~40mm Hole Spacing)" src="https://github.com/user-attachments/assets/121acdba-215d-4968-9570-e6a5bc9e8709" />
 
 There are two main types of sim rig frame; _tubular_ and _profile_ (also known as _aluminium extrustion_):
 - **Profile rigs** (e.g. [GT Omega Prime](https://www.gtomega.co.uk/products/prime-cockpit)) typically use `40-Series` aluminium extrusion that is bolted together in a modular fashion
@@ -31,24 +31,17 @@ Since there are a variety of belt types and terminations, a few options are avai
 
 The **Through Clamp** is probably the easiest to integrate, while the **End Clamp** is the neatest; but needing the belts to be shortened specifically for the tensioner (or shortened non-destructively with buckles).
 
-### Belt Rollers
+### Opting For Belt Rollers
 
-<img align="right" width="50%" height="auto" style="margin: 0 0 5% 5%" alt="Fitted Belt Rollers" src="https://github.com/user-attachments/assets/b70e5811-1807-4324-8516-fc43be2e35a0" />
+There's a lot of variation in seat design. In cases where the belt guides have horizontal bottom surfaces (perpendicular to your pulley cords), you don't _need_ belt rollers; the belts will just slide through the guides without issue. Low-friction tape is recommended for a smoother experience and to protect your belt guides, but it shouldn't be _necessary_.
 
-There's a lot of variation in seat design; specifically the (usually plastic) belt guide holes:
+However with irregular or angled bottom surfaces, you may run into issues with the belts bunching up in the corners of the guides and not sliding smoothly. For such cases, you can print and assemble two [belt rollers](/Printables/Belt%20Roller/), which have been designed with an array of mounting holes to accommodate most belt guide shapes and angles.
 
-(IMAGE)
+Simply pick the holes that achieve the closest to horizontal alignment. Usually only two hole positions per roller are needed, but in some cases you may wish to add a third to provide lateral support and prevent the roller from slipping sideways:
 
-In cases where the guides have horizontal button surfaces (perpendicular to your pulley cords), you don't _need_ belt rollers; the belts will just slide through the guides without issue. Low-fritction tape is recommended to protect your belt guides and reduce friction, but it shouldn't be _necessary_.
-
- However with irregular or angled bottom surfaces, you may run into issues with the belts bunching up in the corners of the guides and not sliding smoothly. For such cases, you can print and assemble two [Belt Rollers](/Printables/Belt%20Roller/), which allow you to achieve a horizontal belt path by selecting the appropriate mounting holes for your seat:
-
-(IMAGE)
-
+![Belt Guide Shapes](https://github.com/user-attachments/assets/628b7daf-8fbb-4096-8d56-a2028e78651a)
 
 ## Printables List
-
-<img align="right" width="50%" height="auto" style="margin: 0 0 5% 5%" alt="Printed Parts" src="https://github.com/user-attachments/assets/ad8dff22-55bb-4067-9ee4-b4830107c591" />
 
 Regardless of your choices above, you should end up with:
 - 2x Belt `End`|`Loop`|`Through` Clamp (Front)
@@ -63,6 +56,14 @@ Regardless of your choices above, you should end up with:
 If you're making the [Back-Driving Protection Unit](/INSTRUCTIONS.md#back-driving-protection) you'll additionally need:
 - 1x Back-Driving Protection Case (Top)
 - 1x Back-Driving Protection Case (Base)
+
+If you're making the [Belt Rollers](/Belt%20Rollers) you'll additionally need:
+- 2x Belt Roller (Bracket)
+- 2x Belt Roller (Plate)
+- 2x Belt Roller (Roller)
+- 4x Belt Roller (Spacer) \*
+
+\* These can either be stacked in multiples, or vertically scaled in your slicer software to be slightly shorter than the depth of your belt guide (usually `12~40mm`). They only serve to protect your plastic belt guides from the screws used to hold the assembly together. You can omit these if you're not bothered about that.
 
 ### Self Printing
 
