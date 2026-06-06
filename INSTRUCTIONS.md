@@ -116,7 +116,7 @@ You are strongly encouraged to use [Back-Driving Protection](#back-driving-prote
 | 9 | Line up the bracket with the face plate and bolts, then insert the `M5` nuts and tighten from the other side. The face plate and bracket should _lightly_ clamp to the front and back faces of the seat's belt guide. | <img alt="Bracket Installation" src="https://github.com/user-attachments/assets/cbfdded9-015e-4a1d-b791-eb379cb9d14b" /> |
 | 10 | Repeat for the other side and if you haven't already, feed the belts through and check that everything is moving freely. | <img alt="Installed" src="https://github.com/user-attachments/assets/7000174e-5d14-47a2-84d9-4a895e18c4bd" /> |
 
-The choice of which holes to use is up to you and very much specific to your seat design. Here are some placement examples for common seat belt guide shapes:
+The choice of which holes to use is up to you and very much specific to your seat design. Below are some placement examples for common seat belt guide shapes. Note that some configurations use additional bolts to stablise the assembly within the belt guide.
 
 ![Belt Guide Shapes](https://github.com/user-attachments/assets/628b7daf-8fbb-4096-8d56-a2028e78651a)
 
@@ -228,7 +228,7 @@ We also want there to _always_ be at least some cord wrapped around the pulleys 
 
 It is important that the cord is aligned such that it does not rub against the _sides_ of the pulley housing. The housing is designed to freely rotate with the cord at any angle along the axis of the motor; so if you move your chair backwards or forwards, it doesn't cause a problem. However the motor pulleys must line up perfectly underneath the seat's belt holes to avoid rubbing. In other words, the motor axles must be _perpendicular_ to the cords:
 
-![Pulley Alignment](https://github.com/user-attachments/assets/74b92307-cd40-4cbd-a4ae-80142aa51d28)
+![Pulley Alignment](https://github.com/user-attachments/assets/458a506e-d968-46da-b6e9-95d0174b4486)
 
 _(Instructional Video TBC)_
 
