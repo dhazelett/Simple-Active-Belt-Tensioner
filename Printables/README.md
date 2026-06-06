@@ -31,6 +31,20 @@ Since there are a variety of belt types and terminations, a few options are avai
 
 The **Through Clamp** is probably the easiest to integrate, while the **End Clamp** is the neatest; but needing the belts to be shortened specifically for the tensioner (or shortened non-destructively with buckles).
 
+### Belt Rollers
+
+There's a lot of variation in seat design; specifically the (usually plastic) belt guide holes:
+
+(IMAGE)
+
+In cases where the guides have horizontal button surfaces (perpendicular to your pulley cords), you don't _need_ belt rollers; the belts will just slide through the guides without issue. Low-fritction tape is recommended to protect your belt guides and reduce friction, but it shouldn't be _necessary_.
+
+ However with irregular or angled bottom surfaces, you may run into issues with the belts bunching up in the corners of the guides and not sliding smoothly. For such cases, you can print and assemble two [belt rollers](/Printables/Belt%20Roller/), which allow you to achieve a horizontal belt path by selecting the appropriate mounting holes for your seat:
+
+(IMAGE)
+
+
+
 ## Printables List
 
 <img align="right" width="50%" height="auto" style="margin: 0 0 5% 5%" alt="Printed Parts" src="https://github.com/user-attachments/assets/ad8dff22-55bb-4067-9ee4-b4830107c591" />
