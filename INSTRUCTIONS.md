@@ -87,6 +87,21 @@ If using the tubular brackets, you'll need to order two [2" Truss Clamps](https:
 | 4 | Insert the board into the lower half of the printed case. The _Raspberry Pi_ header on the rear may be a tight fit here; push down on the white circles either side of the header to press this in. | <img alt="Board Inserted" src="https://github.com/user-attachments/assets/e3a8817d-76d7-4f4c-a74f-d56d9005a955" /> |
 | 5 | Place the upper half of the case on top and secure with four `M2.5x16` bolts. | <img alt="Case Assembled" src="https://github.com/user-attachments/assets/986af12a-4858-4d80-8412-7975f14e810f" /> |
 
+### Belt Rollers
+
+| Step | Instructions | Illustration |
+| :-: | ------- | :-: |
+| 1 | Gather the parts for each belt roller; the four `M5` bolts (length according to your belt guide depth), four `M5` nuts, two `605` bearings, two spacers, bracket, plate and roller. | <img alt="Belt Roller Parts" src="https://github.com/user-attachments/assets/6d63f725-313d-4d9e-b69f-4a526df867df" /> |
+| 2 | Press-fit the bearings into the ends of the roller. | <img alt="Fitting The Bearings" src="https://github.com/user-attachments/assets/8131e0b5-44e1-49d6-8490-dbcde63bac78" /> |
+| 3 | Insert two `M5` nuts into the inside faces of the bracket ends and thread in the `M5` bolts from the outside; no more than a couple turns (so their ends are flush with the nuts). | <img alt="Inserting Nuts &amp; Bolts" src="https://github.com/user-attachments/assets/30ec19c5-ffd8-4b66-9886-5d0a59cf98fb" /> |
+| 4 | Position the roller between the bracket ends and start screwing in the bolts all the way, securing the roller in place. | <img alt="Attaching The Roller" src="https://github.com/user-attachments/assets/338092c1-5afb-42e1-bf11-466ec6de9b88" /> |
+| 5 | Take the partially assembled roller and remaining parts to your sim rig. | <img alt="Partially Assembled" src="https://github.com/user-attachments/assets/3ffca7dd-2bd9-46b1-ba57-1ad740ed98a1" /> |
+| 6 | Establish where you'd like to mount the roller and which holes you'll use. The roller must be as close to horizontal as possible and nideally cover the entire width of the belt guide hole. | <img alt="Positioning" src="https://github.com/user-attachments/assets/d3137559-1444-4194-bb93-3fb397a6fc0b" /> |
+| 7 | On the face plate, find the corresponding holes to the ones you previously chose and insert two `M5` bolts. Place the printed spacers over those. | <img alt="Bolts &amp; Spacers" src="https://github.com/user-attachments/assets/bdc1d8c4-473c-4288-af75-3b34a11f1ddd" /> |
+| 8 | Position the face plate inside the belt guide, with the bolts resting on the bottom face of the belt guide hole. At this point you may need to feed through your belt, as there may not be space to do so once the roller is fitted. | <img alt="Face Plate" src="https://github.com/user-attachments/assets/1c5f9365-3fa1-412e-a063-d15ad5c2c189" /> |
+| 9 | Line up the bracket with the face plate and bolts, then insert the `M5` nuts and tighten from the other side. The face plate and bracket should _lightly_ clamp to the front and back faces of the seat's belt guide. | <img alt="Bracket Installation" src="https://github.com/user-attachments/assets/cbfdded9-015e-4a1d-b791-eb379cb9d14b" /> |
+| 10 | Repeat for the other side and if you haven't already, feed the belts through and check that everything is moving freely. | <img alt="Installed" src="https://github.com/user-attachments/assets/7000174e-5d14-47a2-84d9-4a895e18c4bd" /> |
+
 ### Back-Driving Protection
 
 There are a few options if you wish to add back-driving protection to your setup, which is **strongly recommended**. Which you choose will depend on your background:
