@@ -564,26 +564,40 @@ namespace User.ActiveBeltTensioner
         /// <returns>Whether the serial port was successfully opened</returns>
         public bool Connect()
         {
-            if (_serialPort != null && _serialPort.IsOpen)
-            {
-                if (_plugin.Settings.IsEnabled && !IsBusy)
-                {
-                    Check();
-                }
-
-                return true;
-            }
-
-            string action = StartAction();
+            StartAction(out string action);
 
             bool didConnect = false;
 
             lock (_serialLock)
             {
+                if (_serialPort != null && _serialPort.IsOpen)
+                {
+                    if (_plugin.IsEnabled)
+                    {
+                        Check();
+                    }
+
+                    EndAction(action);
+
+                    return true;
+                }
+
+                if (!_plugin.Settings.IsSerialPortValid)
+                {
+                    Logging.Current.Warn("SABT: Invalid serial port selection");
+
+                    EndAction(action);
+
+                    return false;
+                }
+
                 try
                 {
                     _serialPort?.Dispose();
-                    _serialPort = new SerialPort(_plugin.Settings.SerialPort, 115200)
+                    _serialPort = new SerialPort(
+                        portName: _plugin.Settings.SerialPort,
+                        baudRate: 115200
+                    )
                     {
                         Parity = Parity.None,
                         StopBits = StopBits.One,
@@ -594,19 +608,46 @@ namespace User.ActiveBeltTensioner
                         NewLine = "\n"
                     };
 
-                    _serialPort.Open();
+                    int retry = 0;
+                    const int retries = 10;
 
-                    didConnect = true;
+                    while (retry < retries)
+                    {
+                        try
+                        {
+                            _serialPort.Open();
+
+                            didConnect = true;
+
+                            break;
+                        }
+                        catch (UnauthorizedAccessException)
+                        {
+                            _serialPort.Close();
+
+                            retry++;
+
+                            Logging.Current.Warn("SABT: Serial port opening failure (" + retry + "/" + retries + " retries)");
+
+                            Thread.Sleep(100);
+                        }
+                    }
+
+                    if (!didConnect)
+                    {
+                        _serialPort?.Dispose();
+                        _serialPort = null;
+                    }
                 }
-                catch
+                catch (Exception exception)
                 {
-                    _serialPort = null;
+                    Logging.Current.Warn($"SABT: Unexpected serial communication error: {exception.Message}");
                 }
             }
 
             EndAction(action);
 
-            if (didConnect && _plugin.Settings.IsEnabled)
+            if (didConnect && _plugin.IsEnabled)
             {
                 Check();
             }
@@ -629,18 +670,7 @@ namespace User.ActiveBeltTensioner
                 );
             }
 
-            string action = StartAction();
-
-            if (_serialPort == null || !_serialPort.IsOpen)
-            {
-                _serialPort = null;
-
-                Connect();
-
-                EndAction(action);
-
-                return false;
-            }
+            StartAction(out string action);
 
             bool didConnect = true;
 
@@ -657,7 +687,7 @@ namespace User.ActiveBeltTensioner
         /// <summary>Invokes the <see cref="Motor.Stop()" /> method on each motor then closes the serial port</summary>
         public void Disconnect()
         {
-            string action = StartAction();
+            StartAction(out string action);
 
             lock (_serialLock)
             {
@@ -675,7 +705,7 @@ namespace User.ActiveBeltTensioner
                     }
                     catch
                     {
-                        Logging.Current.Warn("SABT: Serial Port Release Failure");
+                        Logging.Current.Warn("SABT: Serial port release failure");
                     }
                 }
             }
@@ -693,7 +723,7 @@ namespace User.ActiveBeltTensioner
         /// <returns>Whether the motor commands were sent successfully (if applicable)</returns>
         public bool SetTorques(double left, double right, double smoothingFactor = 0.0)
         {
-            string action = StartAction();
+            StartAction(out string action);
 
             if (_serialPort == null || !_serialPort.IsOpen)
             {
@@ -751,7 +781,7 @@ namespace User.ActiveBeltTensioner
         /// <summary>Records the (optionally) given action name as being in-progress. Uses the parent caller name if omitted</summary>
         /// <remarks>Consult <see cref="IsBusy" /> to check if any actions are in-progress and <see cref="EndAction" /> to mark an action as complete</remarks>
         /// <returns>The identifier of the action</returns>
-        private string StartAction([CallerMemberName] string name = "")
+        private void StartAction(out string action, [CallerMemberName] string name = "")
         {
             lock (_actionLock)
             {
@@ -759,7 +789,7 @@ namespace User.ActiveBeltTensioner
 
                 _actionsIdentifiers.Add(name);
 
-                return name;
+                action = name;
             }
         }
 
@@ -775,11 +805,11 @@ namespace User.ActiveBeltTensioner
         }
 
         /// <summary>Restricts the given value to the given range</summary>
-        private static short ClampValue(short value, short min, short max)
+        private static short ClampValue(short value, short minimum, short maximum)
         {
-            if (value < min) { return min; }
+            if (value < minimum) { return minimum; }
 
-            if (value > max) { return max; }
+            if (value > maximum) { return maximum; }
 
             return value;
         }
@@ -949,7 +979,12 @@ namespace User.ActiveBeltTensioner
         /// <returns>A list of <see cref="DeviceInstance" /> instances that appear to match</returns>
         public string[] UpdateSerialPorts()
         {
-            Logging.Current.Info("SABT: Updating serial ports...");
+            if (_serialPort != null && _serialPort.IsOpen && _plugin.IsEnabled && SerialPorts?.Length > 0)
+            {
+                return SerialPorts;
+            }
+
+            Logging.Current.Info("SABT: Detecting serial ports...");
 
             const string vidPid = "VID_1A86&PID_55D3";
 
@@ -1014,12 +1049,10 @@ namespace User.ActiveBeltTensioner
             }
 
             if (
-                !string.IsNullOrWhiteSpace(_plugin.Settings.SerialPort) ||
+                string.IsNullOrWhiteSpace(_plugin.Settings.SerialPort) ||
                 !serialPorts.Contains(_plugin.Settings.SerialPort, StringComparer.OrdinalIgnoreCase)
             ) {
                 _plugin.Settings.SerialPort = serialPorts[0];
-
-                Connect();
             }
 
             return SerialPorts;

@@ -126,14 +126,14 @@
   <data name="SABT_Title_Connection" xml:space="preserve">
     <value>Stato e configurazione</value>
   </data>
-  <data name="SABT_Title_Effects" xml:space="preserve">
-    <value>Regolazione intensità effetti</value>
-  </data>
   <data name="SABT_Title_Tension" xml:space="preserve">
     <value>Regolazione tensione cintura</value>
   </data>
   <data name="SABT_Title_Tuning" xml:space="preserve">
     <value>Gestione telemetria</value>
+  </data>
+  <data name="SABT_Title_Profiles" xml:space="preserve">
+    <value>Profili</value>
   </data>
   <data name="SABT_Status_Disconnected" xml:space="preserve">
     <value>Disconnesso</value>
@@ -144,11 +144,35 @@
   <data name="SABT_Message_ActivationWarning" xml:space="preserve">
     <value>I motori del tensionatore cintura verranno attivati. Procedere?</value>
   </data>
+  <data name="SABT_Message_AlterGameName" xml:space="preserve">
+    <value>Puoi modificare il nome del gioco da quello fornito da SimHub se desiderato:</value>
+  </data>
+  <data name="SABT_Title_AlterGameName" xml:space="preserve">
+    <value>Imposta Nome Gioco</value>
+  </data>
+  <data name="SABT_Title_AlterVehicleName" xml:space="preserve">
+    <value>Imposta nome veicolo</value>
+  </data>
+  <data name="SABT_Message_AlterVehicleName" xml:space="preserve">
+    <value>Puoi modificare il nome del veicolo da quello fornito da SimHub se desiderato:</value>
+  </data>
+  <data name="SABT_Message_AutomaticTuningReset" xml:space="preserve">
+    <value>I valori correnti dei cursori di sintonizzazione saranno ridotti per facilitare la sintonizzazione automatica. Procedere?</value>
+  </data>
+  <data name="SABT_Message_AutomaticTuningRequiresTelemetry" xml:space="preserve">
+    <value>Una sessione di gioco in finestra o una replay deve essere aperta e inviare telemetria per abilitare l'auto-tuning!</value>
+  </data>
   <data name="SABT_Message_SimHubLicenseRequired" xml:space="preserve">
     <value>La tua installazione di SimHub non è licenziata, quindi gli aggiornamenti telemetrici saranno limitati a 10 Hz</value>
   </data>
   <data name="SABT_Message_Setup_TurnOffPower" xml:space="preserve">
     <value>Ora configureremo i motori. Il primo passaggio è SPEGNERE L'ALIMENTAZIONE del tensionatore. L'hai fatto?</value>
+  </data>
+  <data name="SABT_Message_Profiles_AlreadyExists" xml:space="preserve">
+    <value>Esiste già un profilo per questa combinazione di gioco e veicolo</value>
+  </data>
+  <data name="SABT_Message_Profiles_NoActiveVehicle" xml:space="preserve">
+    <value>Un veicolo non è attualmente selezionato nel gioco</value>
   </data>
   <data name="SABT_Message_Setup_Complete" xml:space="preserve">
     <value>Perfetto, il MOTORE DESTRO è stato configurato. Entrambi i motori sono ora pronti...</value>
@@ -186,6 +210,18 @@
   <data name="SABT_Label_StartAutomatically" xml:space="preserve">
     <value>Avvio automatico</value>
   </data>
+  <data name="SABT_Label_AutomaticSwitching" xml:space="preserve">
+    <value>Commutazione automatica</value>
+  </data>
+  <data name="SABT_Label_AutomaticTuning" xml:space="preserve">
+    <value>Auto-Tuning</value>
+  </data>
+  <data name="SABT_Prefix_Game" xml:space="preserve">
+    <value>Gioco</value>
+  </data>
+  <data name="SABT_Prefix_Vehicle" xml:space="preserve">
+    <value>Veicolo</value>
+  </data>
   <data name="SABT_Title_Credits" xml:space="preserve">
     <value>Licenze e informazioni autore</value>
   </data>
@@ -195,120 +231,51 @@
   <data name="SABT_Tab_Effects" xml:space="preserve">
     <value>Effetti</value>
   </data>
+  <data name="SABT_Title_Effects" xml:space="preserve">
+    <value>Effetti</value>
+  </data>
   <data name="SABT_Tab_Connection" xml:space="preserve">
     <value>Connessione</value>
   </data>
   <data name="SABT_Button_TestMotor" xml:space="preserve">
     <value>Test motore</value>
   </data>
+  <data name="SABT_Button_CopyForGameAndVehicle" xml:space="preserve">
+    <value>⧉ Gioco &amp; Veicolo</value>
+  </data>
+  <data name="SABT_Button_Delete" xml:space="preserve">
+    <value>🗑 Elimina</value>
+  </data>
+  <data name="SABT_Button_CopyForGame" xml:space="preserve">
+    <value>⧉ Gioco</value>
+  </data>
   <data name="SABT_Button_SetupMotors" xml:space="preserve">
     <value>Configura motori</value>
   </data>
-  <data name="SABT_Label_Connection" xml:space="preserve">
-    <value>• Seleziona una porta seriale dall'elenco a discesa qui sotto. Verranno mostrate solo le porte che sembrano appartenere al dispositivo tensionatore cintura. Se l'elenco è vuoto, controlla che il controller sia collegato. Dovrebbe apparire anche senza alimentazione o senza motori collegati.
-• Ai futuri avvii di SimHub, la selezione della porta dovrebbe essere ricordata e la riconnessione automatica. Tuttavia l'opzione 'Abilita motori' verrà reimpostata a ogni avvio a meno che non sia attivo anche 'Avvio automatico'.
-• Se è la prima configurazione, dovrai cliccare su 'Configura motori' e seguire le istruzioni. Dovrai farlo solo una volta, perché ogni motore salva la propria configurazione.</value>
-  </data>
-  <data name="SABT_Slider_IdleTension" xml:space="preserve">
-    <value>Tensione a riposo</value>
-  </data>
-  <data name="SABT_Label_IdleTension" xml:space="preserve">
-    <value>• Sempre applicata quando non stai guidando (nessun effetto durante la guida)
-• Si comporta come la molla di riavvolgimento di una cintura inerziale
-• Imposta a zero per disattivarla; limitata al 25% della coppia massima del motore</value>
-  </data>
-  <data name="SABT_Slider_DrivingTension" xml:space="preserve">
-    <value>Tensione in guida</value>
-  </data>
-  <data name="SABT_Label_DrivingTension" xml:space="preserve">
-    <value>• Tensione minima e massima da applicare durante la guida
-• Aumentare il minimo applica una tensione costante e migliora gli effetti di accelerazione e salti
-• Ridurre il massimo riduce l'intensità complessiva della tensione</value>
-  </data>
-  <data name="SABT_Slider_LeftRightBias" xml:space="preserve">
-    <value>Bilanciamento sinistra/destra</value>
-  </data>
-  <data name="SABT_Label_LeftRightBias" xml:space="preserve">
-    <value>• Se la tensione sembra sbilanciata tra i lati, regola verso sinistra o destra
-• Controlla e correggi il percorso della cintura e i punti di contatto prima di usare questa impostazione</value>
-  </data>
-  <data name="SABT_Slider_Cornering" xml:space="preserve">
-    <value>Curva</value>
-  </data>
-  <data name="SABT_Label_Cornering" xml:space="preserve">
-    <value>• Quanto le forze in curva devono influire sulla differenza di tensione tra le due cinture</value>
-  </data>
-  <data name="SABT_Slider_Braking" xml:space="preserve">
-    <value>Frenata</value>
-  </data>
-  <data name="SABT_Label_Braking" xml:space="preserve">
-    <value>• Quanto le forze di decelerazione devono aumentare la tensione su entrambe le cinture</value>
-  </data>
   <data name="SABT_Legend_Surge" xml:space="preserve">
-    <value>Surge</value>
+    <value>Ondata</value>
   </data>
   <data name="SABT_Legend_Sway" xml:space="preserve">
-    <value>Sway</value>
+    <value>Ondeggiare</value>
+  </data>
+  <data name="SABT_Legend_Torque" xml:space="preserve">
+    <value>Coppia</value>
   </data>
   <data name="SABT_Legend_Heave" xml:space="preserve">
-    <value>Heave</value>
-  </data>
-  <data name="SABT_Slider_Acceleration" xml:space="preserve">
-    <value>Accelerazione</value>
-  </data>
-  <data name="SABT_Label_Acceleration" xml:space="preserve">
-    <value>• Quanto le forze di accelerazione devono ridurre la tensione su entrambe le cinture
-• Per risultati migliori, imposta la 'Tensione in guida' minima a un valore diverso da zero (vedi scheda 'Tensione')</value>
-  </data>
-  <data name="SABT_Slider_Jumping" xml:space="preserve">
-    <value>Salti</value>
-  </data>
-  <data name="SABT_Label_Jumping" xml:space="preserve">
-    <value>• Quanto i salti devono ridurre la tensione su entrambe le cinture
-• Per risultati migliori, imposta la 'Tensione in guida' minima a un valore diverso da zero (vedi scheda 'Tensione')</value>
+    <value>Sollevare</value>
   </data>
   <data name="SABT_Label_SetMinimumTensionToNonZero" xml:space="preserve">
     <value>• Per risultati migliori, imposta la 'Tensione in guida' minima a un valore diverso da zero (vedi scheda 'Tensione')</value>
-  </data>
-  <data name="SABT_Slider_Landing" xml:space="preserve">
-    <value>Atterraggio</value>
-  </data>
-  <data name="SABT_Label_Landing" xml:space="preserve">
-    <value>• Quanto l'atterraggio deve aumentare la tensione su entrambe le cinture</value>
-  </data>
-  <data name="SABT_Slider_Shifting" xml:space="preserve">
-    <value>Cambio marcia</value>
   </data>
   <data name="SABT_Label_Shifting" xml:space="preserve">
     <value>• Aggiunge un rilascio di tensione più pronunciato in cambiata rispetto a quanto offre la telemetria standard
 • Per risultati migliori, imposta la 'Tensione in guida' minima a un valore diverso da zero (vedi scheda 'Tensione')</value>
   </data>
-  <data name="SABT_Slider_SurgeLimits" xml:space="preserve">
-    <value>Limiti surge (Accelerazione/Frenata)</value>
-  </data>
-  <data name="SABT_Slider_SwayLimits" xml:space="preserve">
-    <value>Limiti sway (Curva)</value>
-  </data>
-  <data name="SABT_Slider_HeaveLimits" xml:space="preserve">
-    <value>Limiti heave (Salti)</value>
-  </data>
-  <data name="SABT_Label_TelemetryLimits" xml:space="preserve">
-    <value>• Intervalli consentiti per la telemetria in ingresso (qualsiasi valore fuori intervallo verrà limitato)
-• Impostali in base ai tipi di veicoli che guidi più spesso (i valori predefiniti vanno bene nella maggior parte dei casi)
-• Intervalli più stretti producono effetti più aggressivi, intervalli più ampi producono maggiore delicatezza
-• Avvia un replay per vedere la telemetria in tempo reale tracciata sopra e facilitare la regolazione</value>
-  </data>
-  <data name="SABT_Slider_SmoothingFactor" xml:space="preserve">
-    <value>Fattore di smoothing</value>
-  </data>
-  <data name="SABT_Label_SmoothingFactor" xml:space="preserve">
-    <value>• Quanto deve essere smussata l'uscita della tensione</value>
-  </data>
   <data name="SABT_Link_Website" xml:space="preserve">
     <value>Sito web</value>
   </data>
   <data name="SABT_Link_Email" xml:space="preserve">
-    <value>E-mail</value>
+    <value>E-Mail</value>
   </data>
   <data name="SABT_Link_GitHubProfile" xml:space="preserve">
     <value>Profilo GitHub</value>
@@ -372,5 +339,99 @@
   </data>
   <data name="SABT_Status_TestPartiallyFailed" xml:space="preserve">
     <value>Test parzialmente fallito</value>
+  </data>
+  <data name="SABT_Text_Connection" xml:space="preserve">
+    <value>• Seleziona una porta seriale dall'elenco a discesa qui sotto. Verranno mostrate solo le porte che sembrano appartenere al dispositivo tensionatore cintura. Se l'elenco è vuoto, controlla che il controller sia collegato. Dovrebbe apparire anche senza alimentazione o senza motori collegati.
+• Ai futuri avvii di SimHub, la selezione della porta dovrebbe essere ricordata e la riconnessione automatica. Tuttavia l'opzione 'Abilita motori' verrà reimpostata a ogni avvio a meno che non sia attivo anche 'Avvio automatico'.
+• Se è la prima configurazione, dovrai cliccare su 'Configura motori' e seguire le istruzioni. Dovrai farlo solo una volta, perché ogni motore salva la propria configurazione.</value>
+  </data>
+  <data name="SABT_Text_IdleTension" xml:space="preserve">
+    <value>• Sempre applicata quando non stai guidando (nessun effetto durante la guida)
+• Si comporta come la molla di riavvolgimento di una cintura inerziale
+• Imposta a zero per disattivarla; limitata al 25% della coppia massima del motore</value>
+  </data>
+  <data name="SABT_Text_DrivingTension" xml:space="preserve">
+    <value>• Tensione minima e massima da applicare durante la guida
+• Aumentare il minimo applica una tensione costante e migliora gli effetti di accelerazione e salti
+• Ridurre il massimo riduce l'intensità complessiva della tensione</value>
+  </data>
+  <data name="SABT_Text_LeftRightBias" xml:space="preserve">
+    <value>• Se la tensione sembra sbilanciata tra i lati, regola verso sinistra o destra
+• Controlla e correggi il percorso della cintura e i punti di contatto prima di usare questa impostazione</value>
+  </data>
+  <data name="SABT_Text_Cornering" xml:space="preserve">
+    <value>• Quanto le forze in curva devono influire sulla differenza di tensione tra le due cinture</value>
+  </data>
+  <data name="SABT_Text_Braking" xml:space="preserve">
+    <value>• Quanto le forze di decelerazione devono aumentare la tensione su entrambe le cinture</value>
+  </data>
+  <data name="SABT_Text_Acceleration" xml:space="preserve">
+    <value>• Quanto le forze di accelerazione devono ridurre la tensione su entrambe le cinture
+• Per risultati migliori, imposta la 'Tensione in guida' minima a un valore diverso da zero (vedi scheda 'Tensione')</value>
+  </data>
+  <data name="SABT_Text_Jumping" xml:space="preserve">
+    <value>• Quanto i salti devono ridurre la tensione su entrambe le cinture
+• Per risultati migliori, imposta la 'Tensione in guida' minima a un valore diverso da zero (vedi scheda 'Tensione')</value>
+  </data>
+  <data name="SABT_Text_Landing" xml:space="preserve">
+    <value>• Quanto l'atterraggio deve aumentare la tensione su entrambe le cinture</value>
+  </data>
+  <data name="SABT_Text_Profiles" xml:space="preserve">
+    <value>• Con 'Cambio automatico' abilitato, i profili di regolazione vengono caricati automaticamente per il gioco corrente (e la classe di veicolo, se nota), con priorità al profilo più specifico
+• Copiando un profilo esistente, i suoi parametri di regolazione verranno caricati in un nuovo profilo per il gioco attualmente attivo (e la classe di veicolo, se nota)
+• I profili di classe veicolo non possono essere creati se il gioco non riporta una classe di veicolo o un modello
+• Le modifiche apportate ai profili vengono salvate automaticamente</value>
+  </data>
+  <data name="SABT_Text_Tuning" xml:space="preserve">
+    <value>• Con 'Auto-Tuning' abilitato, i valori dei cursori sottostanti si regoleranno automaticamente per corrispondere ai valori della telemetria riprodotta
+• Per facilitare la regolazione, utilizzare un replay del gioco registrato in precedenza (opzionalmente con la specifica classe di veicolo da regolare)
+• L'output del motore è disabilitato durante la regolazione per motivi di sicurezza
+• 'Auto-Switching' verrà automaticamente disabilitato quando si utilizza la funzione di regolazione automatica
+• 'Auto-Tuning' verrà automaticamente disabilitato se il profilo attivo cambia</value>
+  </data>
+  <data name="SABT_Text_Telemetry" xml:space="preserve">
+    <value>• Gli intervalli di valori consentiti per la telemetria in ingresso (qualsiasi valore superiore o inferiore verrà limitato, risultando in un'uscita motore nulla o massima)
+• Intervalli più ristretti producono effetti più aggressivi, intervalli più ampi producono maggiore sottigliezza
+• Evitare di impostare `Heave Limits` in modo troppo ristretto, poiché questo può sopprimere altri effetti; ricordare che solo grandi salti/atterraggi dovrebbero essere percepiti nelle cinture</value>
+  </data>
+  <data name="SABT_Text_Smoothing" xml:space="preserve">
+    <value>• Quanto deve essere livellato l'output di tensione
+• L'output di tensione indicato sopra non include questo effetto di livellamento</value>
+  </data>
+  <data name="SABT_Label_IdleTension" xml:space="preserve">
+    <value>Tensione a riposo</value>
+  </data>
+  <data name="SABT_Label_DrivingTension" xml:space="preserve">
+    <value>Tensione in guida</value>
+  </data>
+  <data name="SABT_Label_LeftRightBias" xml:space="preserve">
+    <value>Bilanciamento sinistra/destra</value>
+  </data>
+  <data name="SABT_Label_Cornering" xml:space="preserve">
+    <value>Curva</value>
+  </data>
+  <data name="SABT_Label_Braking" xml:space="preserve">
+    <value>Frenata</value>
+  </data>
+  <data name="SABT_Label_Acceleration" xml:space="preserve">
+    <value>Accelerazione</value>
+  </data>
+  <data name="SABT_Label_Jumping" xml:space="preserve">
+    <value>Salti</value>
+  </data>
+  <data name="SABT_Label_Landing" xml:space="preserve">
+    <value>Atterraggio</value>
+  </data>
+  <data name="SABT_Label_SurgeLimits" xml:space="preserve">
+    <value>Limiti surge (Accelerazione/Frenata)</value>
+  </data>
+  <data name="SABT_Label_SwayLimits" xml:space="preserve">
+    <value>Limiti sway (Curva)</value>
+  </data>
+  <data name="SABT_Label_HeaveLimits" xml:space="preserve">
+    <value>Limiti heave (Salti)</value>
+  </data>
+  <data name="SABT_Label_SmoothingFactor" xml:space="preserve">
+    <value>Fattore di smoothing</value>
   </data>
 </root>
