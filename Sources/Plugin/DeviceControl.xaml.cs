@@ -20,8 +20,6 @@ namespace User.ActiveBeltTensioner
 
         public DeviceControl(DevicePlugin plugin)
         {
-            Logging.Current.Info("SABT: DeviceControl()...");
-
             _plugin = plugin;
 
             InitializeComponent();
@@ -29,7 +27,6 @@ namespace User.ActiveBeltTensioner
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
 
-            _plugin.Settings.IsEnabled = (_plugin.Settings.IsEnabled && _plugin.Settings.StartAutomatically);
             _plugin.Settings.PropertyChanged += OnPropertyChanged;
 
             _updateSerialPortsTimer = new DispatcherTimer
@@ -45,8 +42,6 @@ namespace User.ActiveBeltTensioner
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            Logging.Current.Info("SABT: OnLoaded()...");
-
             DataContext = new DeviceViewModel(_plugin);
 
             _plugin.DoWithoutWaiting(
@@ -61,8 +56,6 @@ namespace User.ActiveBeltTensioner
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
-            Logging.Current.Info("SABT: OnUnloaded()...");
-
             _updateSerialPortsTimer.Stop();
         }
 
@@ -83,7 +76,7 @@ namespace User.ActiveBeltTensioner
         {
             if (((FrameworkElement)sender).Tag is GameTuningProfile profile)
             {
-                string game = _plugin.Settings.CurrentGame;
+                string game = _plugin.CurrentGame;
                 string vehicle = string.Empty;
 
                 if (_plugin.Settings.FindProfile(game, vehicle) != null)
@@ -112,8 +105,8 @@ namespace User.ActiveBeltTensioner
         {
             if (((FrameworkElement)sender).Tag is GameTuningProfile profile)
             {
-                string game = _plugin.Settings.CurrentGame;
-                string vehicle = _plugin.Settings.CurrentVehicle;
+                string game = _plugin.CurrentGame;
+                string vehicle = _plugin.CurrentVehicle;
 
                 if (_plugin.Settings.FindProfile(game, vehicle) != null)
                 {

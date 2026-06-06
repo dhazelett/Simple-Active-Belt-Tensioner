@@ -7,7 +7,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Text;
 using WoteverLocalization;
@@ -18,7 +17,7 @@ namespace User.ActiveBeltTensioner
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private const string _deviceNotFound = "N/A";
+        private DevicePlugin _plugin;
 
         private readonly object _profilesLock = new object();
 
@@ -28,8 +27,9 @@ namespace User.ActiveBeltTensioner
         [JsonIgnore]
         public Action Persist { get; set; }
 
-        public void Initialise()
+        public void Initialise(DevicePlugin plugin)
         {
+            _plugin = plugin;
             _isInitialised = true;
 
             ChangeActiveProfile();
@@ -50,7 +50,7 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private string _serialPort = _deviceNotFound;
+        private string _serialPort = null;
         public string SerialPort
         {
             get { return _serialPort; }
@@ -58,28 +58,9 @@ namespace User.ActiveBeltTensioner
             {
                 if (_serialPort != value)
                 {
-                    _serialPort = value ?? _deviceNotFound;
+                    _serialPort = value;
                     InvokePropertyChange(nameof(SerialPort));
                     InvokePropertyChange(nameof(IsSerialPortValid));
-                }
-            }
-        }
-
-        private bool _isEnabled = false;
-        public bool IsEnabled
-        {
-            get { return _isEnabled; }
-            set
-            {
-                if (_isEnabled != value)
-                {
-                    _isEnabled = value;
-                    InvokePropertyChange(nameof(IsEnabled));
-
-                    if (_isEnabled)
-                    {
-                        IsAutomaticallyTuning = false;
-                    }
                 }
             }
         }
@@ -129,30 +110,6 @@ namespace User.ActiveBeltTensioner
                     }
                 }
             }
-        }
-
-        private bool _isAutomaticallyTuning = false;
-        public bool IsAutomaticallyTuning
-        {
-            get { return _isAutomaticallyTuning; }
-            set
-            {
-                if (_isAutomaticallyTuning != value)
-                {
-                    _isAutomaticallyTuning = value;
-                    InvokePropertyChange(nameof(IsAutomaticallyTuning));
-                    InvokePropertyChange(nameof(IsNotAutomaticallyTuning));
-
-                    if (_isAutomaticallyTuning)
-                    {
-                        IsAutomaticallySwitching = false;
-                    }
-                }
-            }
-        }
-        public bool IsNotAutomaticallyTuning
-        {
-            get { return !_isAutomaticallyTuning; }
         }
 
         private int _idleTension = 150;
@@ -449,50 +406,13 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private string _currentGame = string.Empty;
-        public string CurrentGame
+        public string ActiveProfileKey
         {
-            get { return _currentGame; }
-            set
+            get
             {
-                string newValue = value ?? string.Empty;
-                if (_currentGame != newValue)
-                {
-                    _currentGame = newValue;
-                    InvokePropertyChange(nameof(CurrentGame));
-
-                    if (IsAutomaticallySwitching)
-                    {
-                        ChangeActiveProfile();
-                    }
-                }
+                GameTuningProfile active = GetActiveProfile();
+                return active != null ? active.GetKey() : null;
             }
-        }
-
-        private string _currentVehicle = string.Empty;
-        public string CurrentVehicle
-        {
-            get { return _currentVehicle; }
-            set
-            {
-                string newValue = value ?? string.Empty;
-                if (_currentVehicle != newValue)
-                {
-                    _currentVehicle = newValue;
-                    InvokePropertyChange(nameof(CurrentVehicle));
-                    InvokePropertyChange(nameof(HasCurrentVehicle));
-
-                    if (IsAutomaticallySwitching)
-                    {
-                        ChangeActiveProfile();
-                    }
-                }
-            }
-        }
-
-        public bool HasCurrentVehicle
-        {
-            get { return _currentVehicle != string.Empty; }
         }
 
         public ObservableCollection<GameTuningProfile> Profiles { get; set; } = new ObservableCollection<GameTuningProfile>();
@@ -544,12 +464,12 @@ namespace User.ActiveBeltTensioner
         /// <summary>Applies the given <see cref="GameTuningProfile" /> instance properties to the current settings properties and marks it as active</summary>
         public void LoadProfile(GameTuningProfile profile)
         {
+            Logging.Current.Info($"SABT: Loading profile '{profile.GetKey()}'...");
+
             for (int i = 0; i < Profiles.Count; i++)
             {
                 Profiles[i].IsActive = false;
             }
-
-            IsAutomaticallyTuning = false;
 
             Persist?.Invoke();
 
@@ -562,6 +482,8 @@ namespace User.ActiveBeltTensioner
             SmoothingFactor = profile.SmoothingFactor;
 
             profile.IsActive = true;
+
+            InvokePropertyChange(nameof(ActiveProfileKey));
         }
 
         /// <summary>Returns the <see cref="GameTuningProfile" /> instance that is currently marked as active</summary>
@@ -612,7 +534,7 @@ namespace User.ActiveBeltTensioner
         /// <summary>Refreshes the active profile, loading whichever matches the current (or given) game and vehicle</summary>
         public GameTuningProfile ChangeActiveProfile(GameTuningProfile profile = null)
         {
-            if (!_isInitialised)
+            if (!_isInitialised || _plugin == null)
             {
                 return null;
             }
@@ -636,7 +558,7 @@ namespace User.ActiveBeltTensioner
                 }
 
                 // Use Game & Vehicle Profile
-                profile = FindProfile(CurrentGame, CurrentVehicle);
+                profile = FindProfile(_plugin.CurrentGame, _plugin.CurrentVehicle);
 
                 if (profile is GameTuningProfile)
                 {
@@ -646,7 +568,7 @@ namespace User.ActiveBeltTensioner
                 }
 
                 // Use Game Profile (Or Default)
-                profile = FindProfile(CurrentGame, string.Empty, true);
+                profile = FindProfile(_plugin.CurrentGame, string.Empty, true);
 
                 if (profile is GameTuningProfile)
                 {
@@ -674,8 +596,6 @@ namespace User.ActiveBeltTensioner
             {
                 if (!keys.Add(Profiles[i].GetKey()))
                 {
-                    Logging.Current.Info($"SABT: DUPLICATE PROFILE REMOVED AT {i}");
-
                     Profiles.RemoveAt(i);
                 }
             }
@@ -704,7 +624,7 @@ namespace User.ActiveBeltTensioner
 
         public bool IsSerialPortValid
         {
-            get { return !String.IsNullOrEmpty(_serialPort) && (_serialPort != _deviceNotFound); }
+            get { return !String.IsNullOrEmpty(_serialPort); }
         }
     }
 

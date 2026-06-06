@@ -10,6 +10,12 @@ namespace User.ActiveBeltTensioner
 {
     public class DeviceViewModel : INotifyPropertyChanged
     {
+        private readonly DevicePlugin _plugin;
+        public DevicePlugin Plugin
+        {
+            get { return _plugin; }
+        }
+
         public DeviceSettings Settings {
             get { return _plugin.Settings; }
         }
@@ -19,8 +25,6 @@ namespace User.ActiveBeltTensioner
         public PlotModel TelemetryGraphModel {
             get { return _plugin.TelemetryGraphModel; }
         }
-
-        private DevicePlugin _plugin;
 
         private int _selectedTabIndex = 0;
         public int SelectedTabIndex

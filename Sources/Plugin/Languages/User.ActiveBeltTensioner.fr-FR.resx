@@ -159,6 +159,9 @@
   <data name="SABT_Message_AutomaticTuningReset" xml:space="preserve">
     <value>Les valeurs actuelles des curseurs de réglage seront réduites pour faciliter le réglage automatique. Continuer ?</value>
   </data>
+  <data name="SABT_Message_AutomaticTuningRequiresTelemetry" xml:space="preserve">
+    <value>Une session de jeu ou un replay en mode fenêtré doit être ouvert et envoyer de la télémétrie pour activer le réglage automatique !</value>
+  </data>
   <data name="SABT_Message_SimHubLicenseRequired" xml:space="preserve">
     <value>Votre installation SimHub n'est pas sous licence, les mises à jour de télémétrie seront donc limitées à 10 Hz</value>
   </data>

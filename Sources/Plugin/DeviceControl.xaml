@@ -55,7 +55,7 @@
                                 <StackPanel>
                                     <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,20">
                                         <Label Content="{SLoc SABT_Label_EnableMotors}" Margin="-5,0,0,0" />
-                                        <styles:SHToggleCheckbox IsChecked="{Binding Settings.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Settings.IsSerialPortValid}" />
+                                        <styles:SHToggleCheckbox IsChecked="{Binding Plugin.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Settings.IsSerialPortValid}" />
                                         <Label Content="{SLoc SABT_Label_StartAutomatically}" Margin="-5,0,0,0" />
                                         <styles:SHToggleCheckbox IsChecked="{Binding Settings.StartAutomatically, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <Label Content="{SLoc SABT_Label_FlipChannels}" Margin="-5,0,0,0" />
@@ -214,7 +214,7 @@
                                                         <Button Grid.Column="1" Content="{SLoc SABT_Button_CopyForGame}" Margin="0,0,10,0" Click="DuplicateProfileForCurrentGame" Tag="{Binding}" />
                                                         <Button Grid.Column="2" Content="{SLoc SABT_Button_CopyForGameAndVehicle}" Margin="0,0,10,0"
                                                                 Click="DuplicateProfileForCurrentGameAndVehicle" Tag="{Binding}"
-                                                                IsEnabled="{Binding DataContext.Settings.HasCurrentVehicle, RelativeSource={RelativeSource AncestorType=ListBox}}" />
+                                                                IsEnabled="{Binding DataContext.Plugin.HasCurrentVehicle, RelativeSource={RelativeSource AncestorType=ListBox}}" />
                                                         <Button Grid.Column="3" Content="{SLoc SABT_Button_Delete}" Margin="0" Click="DeleteProfile" Tag="{Binding}" IsEnabled="{Binding IsNotDefault, Mode=OneTime}" />
                                                     </Grid>
                                                 </Border>
@@ -229,9 +229,9 @@
                                     <StackPanel>
                                         <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,5">
                                             <Label Content="{SLoc SABT_Label_AutomaticTuning}" Margin="-5,0,0,0" />
-                                            <styles:SHToggleCheckbox IsChecked="{Binding Settings.IsAutomaticallyTuning, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <styles:SHToggleCheckbox IsChecked="{Binding Plugin.IsAutomaticallyTuning, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <Label Content="{SLoc SABT_Label_EnableMotors}" Margin="-5,0,0,0" />
-                                            <styles:SHToggleCheckbox IsChecked="{Binding Settings.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Settings.IsSerialPortValid}" />
+                                            <styles:SHToggleCheckbox IsChecked="{Binding Plugin.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Settings.IsSerialPortValid}" />
                                         </TextBlock>
                                         <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,20" LineHeight="20" Text="{SLoc SABT_Text_Tuning}" />
                                     </StackPanel>
@@ -257,9 +257,9 @@
                                         </StackPanel>
                                     </StackPanel>
 
-                                    <ui:TitledRangeSlider Title="{SLoc SABT_Label_SurgeLimits}" Maximum="50" Minimum="-50" LowerValue="{Binding Settings.MinimumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Settings.IsNotAutomaticallyTuning}" />
-                                    <ui:TitledRangeSlider Title="{SLoc SABT_Label_SwayLimits}" Maximum="50" Minimum="-50" LowerValue="{Binding Settings.MinimumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Settings.IsNotAutomaticallyTuning}" />
-                                    <ui:TitledRangeSlider Title="{SLoc SABT_Label_HeaveLimits}" Maximum="100" Minimum="-50" LowerValue="{Binding Settings.MinimumHeave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumHeave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Settings.IsNotAutomaticallyTuning}" />
+                                    <ui:TitledRangeSlider Title="{SLoc SABT_Label_SurgeLimits}" Maximum="50" Minimum="-50" LowerValue="{Binding Settings.MinimumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Plugin.IsNotAutomaticallyTuning}" />
+                                    <ui:TitledRangeSlider Title="{SLoc SABT_Label_SwayLimits}" Maximum="50" Minimum="-50" LowerValue="{Binding Settings.MinimumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Plugin.IsNotAutomaticallyTuning}" />
+                                    <ui:TitledRangeSlider Title="{SLoc SABT_Label_HeaveLimits}" Maximum="100" Minimum="-50" LowerValue="{Binding Settings.MinimumHeave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumHeave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Plugin.IsNotAutomaticallyTuning}" />
 
                                     <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Telemetry}" />
 

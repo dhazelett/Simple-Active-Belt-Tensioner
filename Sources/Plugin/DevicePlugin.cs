@@ -19,8 +19,15 @@ namespace User.ActiveBeltTensioner
     [PluginDescription("A control panel for the 'Simple Active Belt Tensioner'")]
     [PluginAuthor("George Wilkins")]
     [PluginName("Simple Active Belt Tensioner")]
-    public class DevicePlugin : IPlugin, IDataPlugin, IWPFSettingsV2
+    public class DevicePlugin : IPlugin, IDataPlugin, IWPFSettingsV2, IReusable, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         public DeviceSettings Settings;
 
         public PluginManager PluginManager { get; set; }
@@ -56,6 +63,149 @@ namespace User.ActiveBeltTensioner
             public bool IsActive;
         }
 
+        private volatile bool _isEnabled = false;
+        public bool IsEnabled
+        {
+            get { return _isEnabled; }
+            set
+            {
+                if (_isEnabled != value)
+                {
+                    _isEnabled = value;
+                    OnPropertyChanged(nameof(IsEnabled));
+
+                    if (_isEnabled)
+                    {
+                        DoWithoutWaiting(devicePlugin =>
+                        {
+                            devicePlugin.MotorController?.Connect();
+                        });
+                    }
+                    else
+                    {
+                        _hasBeenInactive = true;
+
+                        DoWithoutWaiting(devicePlugin =>
+                        {
+                            devicePlugin.MotorController?.Disconnect();
+                        });
+                    }
+                }
+            }
+        }
+
+        private string _currentGame = string.Empty;
+        public string CurrentGame
+        {
+            get { return _currentGame; }
+            set
+            {
+                string newValue = value ?? string.Empty;
+                if (_currentGame != newValue)
+                {
+                    _currentGame = newValue;
+                    OnPropertyChanged(nameof(CurrentGame));
+
+                    if (Settings != null && Settings.IsAutomaticallySwitching)
+                    {
+                        Settings.ChangeActiveProfile();
+                    }
+                }
+            }
+        }
+
+        private string _currentVehicle = string.Empty;
+        public string CurrentVehicle
+        {
+            get { return _currentVehicle; }
+            set
+            {
+                string newValue = value ?? string.Empty;
+                if (_currentVehicle != newValue)
+                {
+                    _currentVehicle = newValue;
+                    OnPropertyChanged(nameof(CurrentVehicle));
+
+                    if (Settings != null && Settings.IsAutomaticallySwitching)
+                    {
+                        Settings.ChangeActiveProfile();
+                    }
+                }
+            }
+        }
+
+        public bool HasCurrentVehicle
+        {
+            get { return _currentVehicle != string.Empty; }
+        }
+
+        private bool _isAutomaticallyTuning = false;
+        public bool IsAutomaticallyTuning
+        {
+            get { return _isAutomaticallyTuning; }
+            set
+            {
+                if (_isAutomaticallyTuning != value)
+                {
+                    _isAutomaticallyTuning = value;
+                    OnPropertyChanged(nameof(IsAutomaticallyTuning));
+
+                    if (_isAutomaticallyTuning)
+                    {
+                        Settings.IsAutomaticallySwitching = false;
+
+                        if (!_latestTelemetry.IsActive)
+                        {
+                            MessageBox.Show(
+                                SLoc.GetValue("SABT_Message_AutomaticTuningRequiresTelemetry"),
+                                SLoc.GetValue("SABT_Plugin"),
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Warning
+                            );
+
+                            IsAutomaticallyTuning = false;
+
+                            return;
+                        }
+
+                        MessageBoxResult result = MessageBoxResult.No;
+
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            result = MessageBox.Show(
+                                SLoc.GetValue("SABT_Message_AutomaticTuningReset"),
+                                SLoc.GetValue("SABT_Plugin"),
+                                MessageBoxButton.YesNo,
+                                MessageBoxImage.Warning
+                            );
+                        });
+
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            Settings.MinimumSurge = -1;
+                            Settings.MaximumSurge = 1;
+                            Settings.MinimumSway = -1;
+                            Settings.MaximumSway = 1;
+                            Settings.MinimumHeave = -20;
+                            Settings.MaximumHeave = 40;
+
+                            IsEnabled = false;
+                        }
+                        else
+                        {
+                            IsAutomaticallyTuning = false;
+                        }
+                    }
+                }
+            }
+        }
+        public bool IsNotAutomaticallyTuning
+        {
+            get { return !_isAutomaticallyTuning; }
+        }
+
+
+
         public System.Windows.Controls.Control GetWPFSettingsControl(PluginManager pluginManager)
         {
             return new DeviceControl(this);
@@ -66,22 +216,24 @@ namespace User.ActiveBeltTensioner
         {
             Logging.Current.Info("SABT: Initialising...");
 
-            // Load Serialised Settings
-            Settings = this.ReadCommonSettings<DeviceSettings>(_settingsName, () => new DeviceSettings());
-            Settings.Persist = () => this.SaveCommonSettings(_settingsName, Settings);
-            Settings.PropertyChanged += OnSettingsChanged;
-
-            Settings.CurrentGame = (
+            // Obtain Game & Vehicle
+            CurrentGame = (
                 pluginManager.GetPropertyValue("DataCorePlugin.CurrentGame")?.ToString() ??
                 string.Empty
             );
-            Settings.CurrentVehicle = (
+            CurrentVehicle = (
                 pluginManager.GetPropertyValue("DataCorePlugin.NewData.CarClass")?.ToString() ??
                 pluginManager.GetPropertyValue("DataCorePlugin.NewData.CarModel")?.ToString() ??
                 string.Empty
             );
 
-            Settings.Initialise();
+            // Load Serialised Settings
+            Settings = this.ReadCommonSettings<DeviceSettings>(_settingsName, () => new DeviceSettings());
+            Settings.Persist = () => this.SaveCommonSettings(_settingsName, Settings);
+            Settings.PropertyChanged += OnSettingsChanged;
+            Settings.Initialise(this);
+
+            IsEnabled = IsEnabled || Settings.StartAutomatically;
 
             // Register Actions (For External Control)
             pluginManager.AddAction(
@@ -89,7 +241,7 @@ namespace User.ActiveBeltTensioner
                 actionStart: (PluginManager manager, string input) => {
                     Logging.Current.Info("SABT: Toggling motors from external input");
                     _hasBypassedActivationWarning = false;
-                    Settings.IsEnabled = !Settings.IsEnabled;
+                    IsEnabled = !IsEnabled;
                 }
             );
 
@@ -97,14 +249,14 @@ namespace User.ActiveBeltTensioner
                 actionName: "SABT.ToggleMotorsWithoutWarning",
                 actionStart: (PluginManager manager, string input) => {
                     Logging.Current.Info("SABT: Toggling motors from external input (without warning)");
-                    _hasBypassedActivationWarning = Settings.IsEnabled ? false : true;
-                    Settings.IsEnabled = !Settings.IsEnabled;
+                    _hasBypassedActivationWarning = IsEnabled ? false : true;
+                    IsEnabled = !IsEnabled;
                 }
             );
 
             // Initialise Motor Controller
             MotorController = new MotorController(this);
-            if (Settings.IsEnabled && Settings.IsSerialPortValid)
+            if (IsEnabled && Settings.IsSerialPortValid)
             {
                 DoWithoutWaiting(devicePlugin =>
                 {
@@ -131,82 +283,10 @@ namespace User.ActiveBeltTensioner
         private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)
         {
             if (
-                e.PropertyName == nameof(Settings.SerialPort) ||
-                e.PropertyName == nameof(Settings.IsEnabled)
+                e.PropertyName == nameof(Settings.SerialPort)
             )
             {
-                if (Settings.IsEnabled)
-                {
-                    if (Settings.IsSerialPortValid)
-                    {
-                        DoWithoutWaiting(devicePlugin =>
-                        {
-                            devicePlugin.MotorController.Connect();
-                        });
-                    }
-                }
-                else
-                {
-                    _hasBeenInactive = true;
-
-                    DoWithoutWaiting(devicePlugin =>
-                    {
-                        devicePlugin.MotorController.Disconnect();
-                    });
-                }
-
-                return;
-            }
-
-            if (
-                e.PropertyName == nameof(Settings.IsAutomaticallyTuning)
-            )
-            {
-                if (Settings.IsAutomaticallyTuning)
-                {
-                    if (!_latestTelemetry.IsActive)
-                    {
-                        MessageBox.Show(
-                            "A windowed game session or replay must be open and sending telemetry to enable auto-tuning!", //SLoc.GetValue("SABT_Message_AutomaticTuningReset"),
-                            SLoc.GetValue("SABT_Plugin"),
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Warning
-                        );
-
-                        Settings.IsAutomaticallyTuning = false;
-
-                        return;
-                    }
-
-                    MessageBoxResult result = MessageBoxResult.No;
-
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        result = MessageBox.Show(
-                            SLoc.GetValue("SABT_Message_AutomaticTuningReset"),
-                            SLoc.GetValue("SABT_Plugin"),
-                            MessageBoxButton.YesNo,
-                            MessageBoxImage.Warning
-                        );
-                    });
-
-                    if (result == MessageBoxResult.Yes)
-                    {
-Logging.Current.Info("SABT: RESETTING SLIDERS FOR AUTO TUNING");
-                        Settings.MinimumSurge = -1;
-                        Settings.MaximumSurge = 1;
-                        Settings.MinimumSway = -1;
-                        Settings.MaximumSway = 1;
-                        Settings.MinimumHeave = -20;
-                        Settings.MaximumHeave = 40;
-
-                        Settings.IsEnabled = false;
-                    }
-                    else
-                    {
-                        Settings.IsAutomaticallyTuning = false;
-                    }
-                }
+                IsEnabled = false;
 
                 return;
             }
@@ -236,6 +316,13 @@ Logging.Current.Info("SABT: RESETTING SLIDERS FOR AUTO TUNING");
 
                 return;
             }
+
+            if (
+                e.PropertyName == nameof(Settings.ActiveProfileKey)
+            )
+            {
+                IsAutomaticallyTuning = false;
+            }
         }
 
         /// <summary>Called by SimHub when new telemetry data is available</summary>
@@ -260,8 +347,8 @@ Logging.Current.Info("SABT: RESETTING SLIDERS FOR AUTO TUNING");
                 _latestTelemetry = telemetrySnapshot;
             }
 
-            Settings.CurrentGame = data.GameName ?? String.Empty;
-            Settings.CurrentVehicle = data.NewData?.CarClass ?? data.NewData?.CarModel ?? String.Empty;
+            CurrentGame = data.GameName ?? String.Empty;
+            CurrentVehicle = data.NewData?.CarClass ?? data.NewData?.CarModel ?? String.Empty;
 
             _hasTelemetryArrived.Set();
         }
@@ -281,6 +368,11 @@ Logging.Current.Info("SABT: RESETTING SLIDERS FOR AUTO TUNING");
             }
 
             MotorController.Disconnect();
+        }
+
+        public void FinalizePlugin()
+        {
+            Logging.Current.Info("SABT: Finalizing plugin");
         }
 
         /// <summary>Evaluates the <see cref="TelemetrySnapshot"/> properties, then performs auto-tuning and calculates the appropriate effects to apply (sending commands to the motors if enabled)</summary>
@@ -419,7 +511,7 @@ Logging.Current.Info("SABT: RESETTING SLIDERS FOR AUTO TUNING");
                     }
 
                     // Apply Automatic Tuning
-                    if (Settings.IsAutomaticallyTuning)
+                    if (IsAutomaticallyTuning)
                     {
                         int averagedSurge = GetAveragedTelemetryValue(telemetrySurgeBuffer, telemetrySnapshot.Surge ?? 0, telemetryBufferIndex);
                         int averagedSway = GetAveragedTelemetryValue(telemetrySwayBuffer, Math.Abs(telemetrySnapshot.Sway ?? 0), telemetryBufferIndex);
@@ -438,7 +530,7 @@ Logging.Current.Info("SABT: RESETTING SLIDERS FOR AUTO TUNING");
                     }
 
                     // Check State
-                    if (!Settings.IsEnabled)
+                    if (!IsEnabled)
                     {
                         _hasBeenInactive = true;
 
@@ -469,7 +561,7 @@ Logging.Current.Info("SABT: RESETTING SLIDERS FOR AUTO TUNING");
 
                             if (result != MessageBoxResult.Yes)
                             {
-                                Settings.IsEnabled = false;
+                                IsEnabled = false;
 
                                 continue;
                             }
@@ -483,7 +575,7 @@ Logging.Current.Info("SABT: RESETTING SLIDERS FOR AUTO TUNING");
                     _hasBypassedActivationWarning = false;
 
                     // Send To Motors
-                    if (!motorController.IsBusy)
+                    if (!motorController.IsBusy && motorController.HasSerial)
                     {
                         if (!motorController.SetTorques(leftTarget, rightTarget, smoothingFactor))
                         {
@@ -496,13 +588,13 @@ Logging.Current.Info("SABT: RESETTING SLIDERS FOR AUTO TUNING");
                                 MessageBoxImage.Warning
                             );
 
-                            Settings.IsEnabled = false;
+                            IsEnabled = false;
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception exception)
                 {
-                    Logging.Current.Error("SABT: " + ex.Message);
+                    Logging.Current.Error("SABT: " + exception.Message);
                 }
             }
         }

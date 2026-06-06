@@ -159,6 +159,9 @@
   <data name="SABT_Message_AutomaticTuningReset" xml:space="preserve">
     <value>The current tuning slider values will be reduced to facilitate automatic tuning. Proceed?</value>
   </data>
+  <data name="SABT_Message_AutomaticTuningRequiresTelemetry" xml:space="preserve">
+    <value>A windowed game session or replay must be open and sending telemetry to enable auto-tuning!</value>
+  </data>
   <data name="SABT_Message_SimHubLicenseRequired" xml:space="preserve">
     <value>Your installation of SimHub is not licensed, so telemetry updates will be limited to 10Hz</value>
   </data>
