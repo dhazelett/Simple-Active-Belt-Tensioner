@@ -4,9 +4,10 @@ Everything you need to know about building a tensioner of your own is in this do
 
 ## Printed Parts
 
-See the [/Printables/](/Printables/) directory to obtain the printable files, and detailed information on printing them.
+See the [/Printables/](/Printables/) directory to obtain the printable files, and detailed information on printing them. Make sure you read through this document and note which printable parts you _actually need_.
 
-## Motors, Electronics & Fixings
+## Ordering Components
+### Motors, Electronics & Fixings
 
 You should be able to order the _Waveshare_ [motors](https://www.waveshare.com/wiki/DDSM115) and [control board](http://www.waveshare.com/wiki/DDSM_Driver_HAT_(A)) from the same supplier, as they are almost always stocked together. They are designed for robotics projects, so those kinds of retailers are your best bet.
 
@@ -14,26 +15,39 @@ The rest of the parts can be obtained from virtually anywhere, including [Amazon
 
 | Guide Price | Part | Description | Example |
 | - | - | - | - |
-| `60 GBP` `x2` | 2 x Motors | Waveshare DDSM115 BLDC servo motors | [PiHut UK](https://thepihut.com/products/ddsm115-direct-drive-servo-motor) |
-| `20 GBP` | Controller | Waveshare DDSM Hub Motor Driver Board (Version 'A' For DDSM115 and DDSM210) | [PiHut UK](https://thepihut.com/products/ddsm-hub-motor-driver-board) |
-| `6 GBP` | 2 x Bearings | `6706` bearings for the pulleys | [Amazon UK](https://www.amazon.co.uk/dp/B0D4DN3RW8) |
-| `7 GBP` | M2.5 Screw & Nut Set | Eight `M2.5x16` (or `M2.5x18`) + eight `M2.5x10` + six `M2.5x12` + six `M2.5x20` + sixteen `M2.5` nuts | [Amazon UK](https://www.amazon.co.uk/dp/B0FSWHZPGD) |
-| `5 GBP` | ~1M UHMWPE/Dyneema Cord | The low-friction high-strength cord for the pulleys (1.6~2.0MM Diameter) | (any by-the-metre seller; eBay, etc) |
-| `20 GBP` | 15V 90W DC Power Supply | The power supply for the board and motors (standard 5.5x2.5MM centre-positive barrel plug) | [Amazon UK](https://www.amazon.co.uk/dp/B09RHC7QG9) |
-| `25 GBP` | 5-Point 2" Harness | A low-cost Aliexpress model or used/expired FIA harness | [AliExpress](https://www.aliexpress.com/item/1005008051519590.html) |
+| `60 GBP` `x2` | 2 x `DDSM115` Motors | Waveshare BLDC FOC servo motors | [PiHut UK](https://thepihut.com/products/ddsm115-direct-drive-servo-motor) |
+| `20 GBP` | `DDSM Driver HAT (A)` | Waveshare Controller Board (Version 'A' For `DDSM115` and `DDSM210`) | [PiHut UK](https://thepihut.com/products/ddsm-hub-motor-driver-board) |
+| `6 GBP` | 2 x `6706` Bearings | `30x37x4mm` bearings for the pulleys | [Amazon UK](https://www.amazon.co.uk/dp/B0D4DN3RW8) |
+| `7 GBP` | `M2.5` Screw & Nut Set | Eight `M2.5x16` (or `M2.5x18`) + eight `M2.5x10` + six `M2.5x12` + six `M2.5x20` + sixteen `M2.5` nuts | [Amazon UK](https://www.amazon.co.uk/dp/B0FSWHZPGD) |
+| `5 GBP` | `~1M` UHMWPE/Dyneema Cord | The low-friction high-strength cord for the pulleys (`1.6~2.0MM` Diameter) | (any by-the-metre seller; eBay, etc) |
+| `20 GBP` | `15V` `90W` DC Power Supply | The power supply for the board and motors (standard `5.5x2.5MM` centre-positive barrel plug) | [Amazon UK](https://www.amazon.co.uk/dp/B09RHC7QG9) |
+| `25 GBP` | 5-Point `2"` Harness | A low-cost Aliexpress model or used/expired FIA harness | [AliExpress](https://www.aliexpress.com/item/1005008051519590.html) |
 
 > 📢 **Important:**
 > - The `DDSM115` motors are _sometimes_ sold in **pairs**. Make sure you're only buying _two motors_, not _two sets of two_
 > - There are multiple motor models in the `DDSMXXX` series. Make sure you're buying the [DDSM115](https://www.waveshare.com/wiki/DDSM115)
 > - There are multiple control board models of similar appearance. Make sure you're buying the [DDSM Driver HAT (A)](https://www.waveshare.com/wiki/DDSM_Driver_HAT_(A))
+> - If using the _tubular_ brackets, you'll need to order two [2" Truss Clamps](https://www.amazon.co.uk/dp/B07DP1FK33), a pair of [`M10` Nuts](https://www.amazon.co.uk/dp/B0CGQVMP45) and [`M10x16MM` Low-Profile Bolts](https://www.amazon.co.uk/dp/B0DYHY2DHB)
 
-### Optional Items
+### Belt Rollers
 
-Details of optional (but **highly recommended**) [Back-Driving Protection](#back-driving-protection) options are listed later in this document, including a solderless solution.
+These are considered to be _optional_, but may be required for seats with angled or irregularly shaped belt guides.
 
-You can reduce friction (and wear) on your seat's belt loops if you apply some low-friction tape over the contact points. I've had success with [2-3/8" PTFE Tape](https://www.amazon.co.uk/dp/B0F3XKJW2V). The best solution would be a roller, but given the variation in seat designs, you're going to have to implement that yourself. If looking for an off-the-shelf solution, [Winch Rollers](https://www.amazon.co.uk/s?k=winch+roller) _might_ be a good option, provided your seat offers somewhere to mount them.
+| Guide Price | Part | Description | Example |
+| - | - | - | - |
+| `5 GBP` | 4 x `605` Bearings | `5x14x5mm` bearings for the rollers | [Amazon UK](https://www.amazon.co.uk/dp/B0CZ8DJ6YM) / [Amazon UK](https://www.amazon.co.uk/dp/B0F6LNSC75) |
+| `5 GBP` | 10 x `M5` Hex-Socket Bolts | Length depends on seat belt guide depth | [Amazon UK](https://www.amazon.co.uk/dp/B0F1XLQQJY) |
+| `5 GBP` | 10 x `M5` Half Nuts | Must be 3mm thick or less | [Amazon UK](https://www.amazon.co.uk/dp/B0DD7X41JF?th=1) / [eBay UK](https://www.ebay.co.uk/itm/222525332328?var=525412329633) |
 
-If using the tubular brackets, you'll need to order two [2" Truss Clamps](https://www.amazon.co.uk/dp/B07DP1FK33), a pair of [`M10` Nuts](https://www.amazon.co.uk/dp/B0CGQVMP45) and [`M10x16MM` Low-Profile Bolts](https://www.amazon.co.uk/dp/B0DYHY2DHB).
+> 📢 **Important:**
+> - For `M5` bolt length; measure your seat's belt guide/hole depth and _add_ `10mm`. So my `39mm` belt guides need `50mm` bolts
+> - If you make your bolts too long they'll interfere with the belts
+> - Technically you can get away with only _eight_ nuts and bolts, but the extra two are suggested to allow extra positioning control or clamping force if needed
+> - If _not_ using rollers, you can reduce friction (and wear) on your seat's belt loops if you apply some low-friction tape over the contact points. I've had success with [2-3/8" PTFE Tape](https://www.amazon.co.uk/dp/B0F3XKJW2V)
+
+### Back-Driving Protection
+
+You are strongly encouraged to use [Back-Driving Protection](#back-driving-protection), for which there are a number of options detailed later in this document. The parts required will depend on your chosen option, but none should exceed `15 GBP` in cost.
 
 ## Assembly
 
@@ -41,7 +55,7 @@ If using the tubular brackets, you'll need to order two [2" Truss Clamps](https:
 
 | Step | Instructions | Illustration |
 | :-: | :- | :-: |
-| 1 | Since the motors are technically _wheels_, they come pre-fitted with rubber treads, which we need to remove.<br /><br />Unscrew the three M2.5 bolts holding on motor face plate and remove it. You may need to remove a 'QA' sticker covering one of the screws.<br /><br />With the face plate removed, push the motor face (with the triangular hub) firmly with your thumbs, while holding the opposing face/rim of the tire with your fingers. Gradually working your way around the rim, moving small amounts at a time works best. | <img alt="Wheel Motor" src="https://github.com/user-attachments/assets/37161acb-f815-408a-b04b-bd79367bf17b" /> |
+| 1 | Since the motors are technically _wheels_, they come pre-fitted with rubber treads, which we need to remove.<br /><br />Unscrew the three `M2.5` bolts holding on motor face plate and remove it. You may need to remove a 'QA' sticker covering one of the screws.<br /><br />With the face plate removed, push the motor face (with the triangular hub) firmly with your thumbs, while holding the opposing face/rim of the tire with your fingers. Gradually working your way around the rim, moving small amounts at a time works best. | <img alt="Wheel Motor" src="https://github.com/user-attachments/assets/37161acb-f815-408a-b04b-bd79367bf17b" /> |
 | 2 | You'll be left with the bare motor. Keep the rubber tire, face plate and bolts safe though; in case you need to return the motors or repurpose them later. | <img alt="Motor Without Tire" src="https://github.com/user-attachments/assets/522b9d83-0a32-4464-8a26-77f0ff1cfd14" /> |
 
 ### Pulleys
@@ -102,6 +116,10 @@ If using the tubular brackets, you'll need to order two [2" Truss Clamps](https:
 | 9 | Line up the bracket with the face plate and bolts, then insert the `M5` nuts and tighten from the other side. The face plate and bracket should _lightly_ clamp to the front and back faces of the seat's belt guide. | <img alt="Bracket Installation" src="https://github.com/user-attachments/assets/cbfdded9-015e-4a1d-b791-eb379cb9d14b" /> |
 | 10 | Repeat for the other side and if you haven't already, feed the belts through and check that everything is moving freely. | <img alt="Installed" src="https://github.com/user-attachments/assets/7000174e-5d14-47a2-84d9-4a895e18c4bd" /> |
 
+The choice of which holes to use is up to you and very much specific to your seat design. Here are some placement examples for common seat belt guide shapes:
+
+![Belt Guide Shapes](https://github.com/user-attachments/assets/628b7daf-8fbb-4096-8d56-a2028e78651a)
+
 ### Back-Driving Protection
 
 There are a few options if you wish to add back-driving protection to your setup, which is **strongly recommended**. Which you choose will depend on your background:
@@ -109,11 +127,11 @@ There are a few options if you wish to add back-driving protection to your setup
 - [Soldered + Ideal Diode](#soldered--ideal-diode): Using an ideal diode module without terminals (requires soldering)
 - [Discrete Schottky Diode](#discrete-schottky-diode): Using a discrete Schottky diode (requires _trickier_ soldering)
 
-The printable case is design to accommodate all of these options.
+The printable case is designed to accommodate all of these options.
 
 ![Back Driving Protection Options](https://github.com/user-attachments/assets/a692c416-b0e0-4845-8425-ca056b65f534)
 
-> 📢 **Important:** All of these options add a modest capacitance between the power supply and controller board. If you disconnect this protection unit, the capacitor may remain charged at up to `~15V` for a period of time. Do not touch the terminals at either end of the unit, as doing so **may cause a shock**.
+> 📢 **Important:** All of these options add a modest capacitance between the power supply and controller board. If you disconnect this protection unit, the capacitor may remain charged at up to `~15V` for a period of time. Do not touch or short the terminals at either end of the unit, as doing so **may cause a shock or damage equipment**.
 
 #### Solderless + Ideal Diode
 
