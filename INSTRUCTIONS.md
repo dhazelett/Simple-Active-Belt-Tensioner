@@ -108,7 +108,9 @@ If you're at all uncomfortable with the idea of soldering or don't have the equi
 | - | - | - | - |
 | `5 GBP` | Ideal Diode Module | A pre-made diode board with soldered screw terminals | [AliExpress](https://www.aliexpress.com/item/1005009419896467.html) |
 | `5 GBP` | Capacitor | A `2200uF` `35V` electrolytic capacitor (just one; you'll have spares) | [Amazon UK](https://www.amazon.co.uk/dp/B07K87YFP9) |
-| `5 GBP` | DC Cable | A `5.5x2.5mm` DC extension cable (or `XT60` to same) | [Amazon UK](https://www.amazon.co.uk/dp/B004US2X8U) or [Amazon UK](https://www.amazon.co.uk/dp/B0BPKNG672) |
+| `5 GBP` | DC Cable | A `5.5x2.5mm` DC barrel plug to `XT60` adapter cable (or barrel-to-barrel extension)  | [Amazon UK](https://www.amazon.co.uk/dp/B0BPKNG672) or [Amazon UK](https://www.amazon.co.uk/dp/B0FJ8BKQCF) |
+
+> 📢 **Important:** The printable case for the protection unit is intended for cables with a `5~5.5mm` external diameter, which is fairly typical. Any larger and you'll struggle to fit the cable into the ends of the case. Note also that the screw terminals on the diode board have a maximum gauge of roughly `10 AWG` (or `2.6mm` core diameter); though yours may vary.
 
 | Step | Instructions | Illustration |
 | :-: | :- | :-: |
