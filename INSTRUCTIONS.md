@@ -64,6 +64,8 @@ The parts required will depend on your chosen option, but none should exceed `15
 
 If you're at all uncomfortable with the idea of soldering or don't have the equipment, you can choose this option. You will need to cut and strip some wires, but no soldering is required.
 
+We leverage the availability of premade 'Ideal Diode' modules with easy-to-use screw terminals and cheat a little by adding our capacitor across the output terminal, avoiding the need for any soldering at all.
+
 | Guide Price | Part | Description | Example |
 | - | - | - | - |
 | `5 GBP` | Ideal Diode Module | A pre-made diode board with soldered screw terminals | [AliExpress](https://www.aliexpress.com/item/1005009419896467.html) |
@@ -78,15 +80,17 @@ The assembly instructions for this solderless option are included below under th
 
 <img width="350" align="right" alt="Soldered Option" src="https://github.com/user-attachments/assets/8eefe655-81e7-454b-9835-d53c2832d935" />
 
-The instructions are the same for the solderless option; just with the screw terminals replaced by soldered joints. If you don't need the pre-soldered screw terminals, there are _many_ 'Ideal Diode' modules available. The one suggested for the solderless option can also be ordered without terminals, but you are not restricted to that model.
+This is essentially the same as the [Solderless + Ideal Diode](#solderless--ideal-diode) option; just using a premade 'Ideal Diode' module _without_ presoldered screw terimnals and soldering our wires and capacitor directly to the pads on the board.
+
+As soldering jobs go this is very easy, and opens up many more options when it comes to 'Ideal Diode' modules. The one suggested for the solderless option can also be ordered without terminals and is a known good option; but you are not restricted to that specific module.
 
 The main things you need to ensure of your chosen 'Ideal Diode' module are:
 - The module actually blocks reverse current; not all such modules do (for 'OR-ing' purposes)
 - The current handling exceeds `6A`
 - The voltage handling exceeds `24V` (ideally `30V+`)
-- The board has both positive and GND solder pads to make assembly easier (some do not)
+- The board has both `V+` and `GND` solder pads to make assembly easier (some omit the `GND` pads)
 
-As long as these requirements are met, the module _should_ do the trick. These are some examples:
+As long as these requirements are met, the module _should_ do the trick. These are some (unverified) examples:
 - [Pololu 5382](https://www.pololu.com/product/5382)
 - [Pololu 5383](https://www.pololu.com/product/5383)
 - [Pololu 5388](https://www.pololu.com/product/5388)
@@ -105,6 +109,8 @@ See the diagrams above for a reference circuit design.
 ## Assembly
 
 Depending on your choices above, some of these assembly instructions may not be relevant to you. Please read through the instructions and only follow the steps that are applicable to your build.
+
+The photographs provided are for illustrative purposes and may not show the absolute latest part designs; don't worry if they aren't _exactly_ the same as the parts you've printed.
 
 ### Motors
 
@@ -173,7 +179,7 @@ Depending on your choices above, some of these assembly instructions may not be 
 
 The choice of which holes to use is up to you and very much specific to your seat design. Below are some placement examples for common seat belt guide shapes. Note that horizontal belt guides can be fitted with only two `M5` positioning bolts, while angled guides usually need three to prevent sideways movement:
 
-![Belt Guide Shapes](https://github.com/user-attachments/assets/628b7daf-8fbb-4096-8d56-a2028e78651a)
+![Belt Guide Shapes](https://github.com/user-attachments/assets/94a605c8-a9ac-47c6-b105-aced3dc22706)
 
 ### Back-Driving Protection
 
