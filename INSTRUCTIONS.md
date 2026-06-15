@@ -4,9 +4,10 @@ Everything you need to know about building a tensioner of your own is in this do
 
 ## Printed Parts
 
-See the [/Printables/](/Printables/) directory to obtain the printable files, and detailed information on printing them.
+See the [/Printables/](/Printables/) directory to obtain the printable files, and detailed information on printing them. Make sure you read through this document and note which printable parts you _actually need_.
 
-## Motors, Electronics & Fixings
+## Ordering Components
+### Motors, Electronics & Fixings
 
 You should be able to order the _Waveshare_ [motors](https://www.waveshare.com/wiki/DDSM115) and [control board](http://www.waveshare.com/wiki/DDSM_Driver_HAT_(A)) from the same supplier, as they are almost always stocked together. They are designed for robotics projects, so those kinds of retailers are your best bet.
 
@@ -14,26 +15,39 @@ The rest of the parts can be obtained from virtually anywhere, including [Amazon
 
 | Guide Price | Part | Description | Example |
 | - | - | - | - |
-| `60 GBP` `x2` | 2 x Motors | Waveshare DDSM115 BLDC servo motors | [PiHut UK](https://thepihut.com/products/ddsm115-direct-drive-servo-motor) |
-| `20 GBP` | Controller | Waveshare DDSM Hub Motor Driver Board (Version 'A' For DDSM115 and DDSM210) | [PiHut UK](https://thepihut.com/products/ddsm-hub-motor-driver-board) |
-| `6 GBP` | 2 x Bearings | `6706` bearings for the pulleys | [Amazon UK](https://www.amazon.co.uk/dp/B0D4DN3RW8) |
-| `7 GBP` | M2.5 Screw & Nut Set | Eight `M2.5x16` (or `M2.5x18`) + eight `M2.5x10` + six `M2.5x12` + six `M2.5x20` + sixteen `M2.5` nuts | [Amazon UK](https://www.amazon.co.uk/dp/B0FSWHZPGD) |
-| `5 GBP` | ~1M UHMWPE/Dyneema Cord | The low-friction high-strength cord for the pulleys (1.6~2.0MM Diameter) | (any by-the-metre seller; eBay, etc) |
-| `20 GBP` | 15V 90W DC Power Supply | The power supply for the board and motors (standard 5.5x2.5MM centre-positive barrel plug) | [Amazon UK](https://www.amazon.co.uk/dp/B09RHC7QG9) |
-| `25 GBP` | 5-Point 2" Harness | A low-cost Aliexpress model or used/expired FIA harness | [AliExpress](https://www.aliexpress.com/item/1005008051519590.html) |
+| `60 GBP` `x2` | 2 x `DDSM115` Motors | Waveshare BLDC FOC servo motors | [PiHut UK](https://thepihut.com/products/ddsm115-direct-drive-servo-motor) |
+| `20 GBP` | `DDSM Driver HAT (A)` | Waveshare Controller Board (Version 'A' For `DDSM115` and `DDSM210`) | [PiHut UK](https://thepihut.com/products/ddsm-hub-motor-driver-board) |
+| `6 GBP` | 2 x `6706` Bearings | `30x37x4mm` bearings for the pulleys | [Amazon UK](https://www.amazon.co.uk/dp/B0D4DN3RW8) |
+| `7 GBP` | `M2.5` Screw & Nut Set | Eight `M2.5x16` (or `M2.5x18`) + eight `M2.5x10` + six `M2.5x12` + six `M2.5x20` + sixteen `M2.5` nuts | [Amazon UK](https://www.amazon.co.uk/dp/B0FSWHZPGD) |
+| `5 GBP` | `~1M` UHMWPE/Dyneema Cord | The low-friction high-strength cord for the pulleys (`1.6~2.0MM` Diameter) | (any by-the-metre seller; eBay, etc) |
+| `20 GBP` | `15V` `90W` DC Power Supply | The power supply for the board and motors (standard `5.5x2.5MM` centre-positive barrel plug) | [Amazon UK](https://www.amazon.co.uk/dp/B09RHC7QG9) |
+| `25 GBP` | 5-Point `2"` Harness | A low-cost Aliexpress model or used/expired FIA harness | [AliExpress](https://www.aliexpress.com/item/1005008051519590.html) |
 
 > 📢 **Important:**
 > - The `DDSM115` motors are _sometimes_ sold in **pairs**. Make sure you're only buying _two motors_, not _two sets of two_
 > - There are multiple motor models in the `DDSMXXX` series. Make sure you're buying the [DDSM115](https://www.waveshare.com/wiki/DDSM115)
 > - There are multiple control board models of similar appearance. Make sure you're buying the [DDSM Driver HAT (A)](https://www.waveshare.com/wiki/DDSM_Driver_HAT_(A))
+> - If using the _tubular_ brackets, you'll need to order two [2" Truss Clamps](https://www.amazon.co.uk/dp/B07DP1FK33), a pair of [`M10` Nuts](https://www.amazon.co.uk/dp/B0CGQVMP45) and [`M10x16MM` Low-Profile Bolts](https://www.amazon.co.uk/dp/B0DYHY2DHB)
 
-### Optional Items
+### Belt Rollers
 
-Details of optional (but **highly recommended**) [Back-Driving Protection](#back-driving-protection) options are listed later in this document, including a solderless solution.
+These are considered to be _optional_, but may be required for seats with angled or irregularly shaped belt guides.
 
-You can reduce friction (and wear) on your seat's belt loops if you apply some low-friction tape over the contact points. I've had success with [2-3/8" PTFE Tape](https://www.amazon.co.uk/dp/B0F3XKJW2V). The best solution would be a roller, but given the variation in seat designs, you're going to have to implement that yourself. If looking for an off-the-shelf solution, [Winch Rollers](https://www.amazon.co.uk/s?k=winch+roller) _might_ be a good option, provided your seat offers somewhere to mount them.
+| Guide Price | Part | Description | Example |
+| - | - | - | - |
+| `5 GBP` | 4 x `605` Bearings | `5x14x5mm` bearings for the rollers | [Amazon UK](https://www.amazon.co.uk/dp/B0CZ8DJ6YM) / [Amazon UK](https://www.amazon.co.uk/dp/B0F6LNSC75) |
+| `5 GBP` | 10 x `M5` Fully-Threaded Hex-Socket Bolts | Length depends on seat belt guide depth | [Amazon UK](https://www.amazon.co.uk/dp/B0F1XLQQJY) |
+| `5 GBP` | 10 x `M5` Half Nuts | Must be 3mm thick or less | [Amazon UK](https://www.amazon.co.uk/dp/B0DD7X41JF?th=1) / [eBay UK](https://www.ebay.co.uk/itm/222525332328?var=525412329633) |
 
-If using the tubular brackets, you'll need to order two [2" Truss Clamps](https://www.amazon.co.uk/dp/B07DP1FK33), a pair of [`M10` Nuts](https://www.amazon.co.uk/dp/B0CGQVMP45) and [`M10x16MM` Low-Profile Bolts](https://www.amazon.co.uk/dp/B0DYHY2DHB).
+> 📢 **Important:**
+> - For `M5` bolt length; measure your seat's belt guide/hole depth and _add_ `10mm`. So my `39mm` belt guides need `50mm` bolts
+> - The bolts _must_ be fully threaded; otherwise you won't be able to use them as the roller axles
+> - If you make your bolts too long they'll interfere with the belts
+> - If _not_ using rollers, you can reduce friction (and wear) on your seat's belt loops if you apply some low-friction tape over the contact points. I've had success with [2-3/8" PTFE Tape](https://www.amazon.co.uk/dp/B0F3XKJW2V)
+
+### Back-Driving Protection
+
+You are strongly encouraged to use [Back-Driving Protection](#back-driving-protection), for which there are a number of options detailed later in this document. The parts required will depend on your chosen option, but none should exceed `15 GBP` in cost.
 
 ## Assembly
 
@@ -41,7 +55,7 @@ If using the tubular brackets, you'll need to order two [2" Truss Clamps](https:
 
 | Step | Instructions | Illustration |
 | :-: | :- | :-: |
-| 1 | Since the motors are technically _wheels_, they come pre-fitted with rubber treads, which we need to remove.<br /><br />Unscrew the three M2.5 bolts holding on motor face plate and remove it. You may need to remove a 'QA' sticker covering one of the screws.<br /><br />With the face plate removed, push the motor face (with the triangular hub) firmly with your thumbs, while holding the opposing face/rim of the tire with your fingers. Gradually working your way around the rim, moving small amounts at a time works best. | <img alt="Wheel Motor" src="https://github.com/user-attachments/assets/37161acb-f815-408a-b04b-bd79367bf17b" /> |
+| 1 | Since the motors are technically _wheels_, they come pre-fitted with rubber treads, which we need to remove.<br /><br />Unscrew the three `M2.5` bolts holding on motor face plate and remove it. You may need to remove a 'QA' sticker covering one of the screws.<br /><br />With the face plate removed, push the motor face (with the triangular hub) firmly with your thumbs, while holding the opposing face/rim of the tire with your fingers. Gradually working your way around the rim, moving small amounts at a time works best. | <img alt="Wheel Motor" src="https://github.com/user-attachments/assets/37161acb-f815-408a-b04b-bd79367bf17b" /> |
 | 2 | You'll be left with the bare motor. Keep the rubber tire, face plate and bolts safe though; in case you need to return the motors or repurpose them later. | <img alt="Motor Without Tire" src="https://github.com/user-attachments/assets/522b9d83-0a32-4464-8a26-77f0ff1cfd14" /> |
 
 ### Pulleys
@@ -87,6 +101,25 @@ If using the tubular brackets, you'll need to order two [2" Truss Clamps](https:
 | 4 | Insert the board into the lower half of the printed case. The _Raspberry Pi_ header on the rear may be a tight fit here; push down on the white circles either side of the header to press this in. | <img alt="Board Inserted" src="https://github.com/user-attachments/assets/e3a8817d-76d7-4f4c-a74f-d56d9005a955" /> |
 | 5 | Place the upper half of the case on top and secure with four `M2.5x16` bolts. | <img alt="Case Assembled" src="https://github.com/user-attachments/assets/986af12a-4858-4d80-8412-7975f14e810f" /> |
 
+### Belt Rollers
+
+| Step | Instructions | Illustration |
+| :-: | ------- | :-: |
+| 1 | Gather the parts for each belt roller; the five `M5` bolts (length according to your belt guide depth), five `M5` nuts, three spacers, two `605` bearings, bracket, plate and roller. | <img alt="Belt Roller Parts" src="https://github.com/user-attachments/assets/6d63f725-313d-4d9e-b69f-4a526df867df" /> |
+| 2 | Press-fit the bearings into the ends of the roller. | <img alt="Fitting The Bearings" src="https://github.com/user-attachments/assets/8131e0b5-44e1-49d6-8490-dbcde63bac78" /> |
+| 3 | Insert two `M5` nuts into the inside faces of the bracket ends and thread in the `M5` bolts from the outside; no more than a couple turns (so their ends are flush with the nuts). | <img alt="Inserting Nuts &amp; Bolts" src="https://github.com/user-attachments/assets/30ec19c5-ffd8-4b66-9886-5d0a59cf98fb" /> |
+| 4 | Position the roller between the bracket ends and start screwing in the bolts all the way, securing the roller in place. | <img alt="Attaching The Roller" src="https://github.com/user-attachments/assets/338092c1-5afb-42e1-bf11-466ec6de9b88" /> |
+| 5 | Take the partially assembled roller and remaining parts to your sim rig. | <img alt="Partially Assembled" src="https://github.com/user-attachments/assets/3ffca7dd-2bd9-46b1-ba57-1ad740ed98a1" /> |
+| 6 | Establish where you'd like to mount the roller and which positioning holes you'll use. The roller must be as close to horizontal as possible and nideally cover the entire width of the belt guide hole. Horizontal guides only require two holes/bolts, while angled guides typically require three to prevent sideways movement. | <img alt="Positioning" src="https://github.com/user-attachments/assets/d3137559-1444-4194-bb93-3fb397a6fc0b" /> |
+| 7 | On the face plate, find the corresponding holes to the ones you previously chose and insert the `M5` bolts. Place the printed spacers over those. | <img alt="Bolts &amp; Spacers" src="https://github.com/user-attachments/assets/bdc1d8c4-473c-4288-af75-3b34a11f1ddd" /> |
+| 8 | Position the face plate inside the belt guide, with the bolts resting on the bottom face of the belt guide hole. At this point you may need to feed through your belt, as there may not be space to do so once the roller is fitted. | <img alt="Face Plate" src="https://github.com/user-attachments/assets/1c5f9365-3fa1-412e-a063-d15ad5c2c189" /> |
+| 9 | Line up the bracket with the face plate and bolts, then insert the `M5` nuts and tighten from the other side. The face plate and bracket should _lightly_ clamp to the front and back faces of the seat's belt guide. | <img alt="Bracket Installation" src="https://github.com/user-attachments/assets/cbfdded9-015e-4a1d-b791-eb379cb9d14b" /> |
+| 10 | Repeat for the other side and if you haven't already, feed the belts through and check that everything is moving freely. | <img alt="Installed" src="https://github.com/user-attachments/assets/7000174e-5d14-47a2-84d9-4a895e18c4bd" /> |
+
+The choice of which holes to use is up to you and very much specific to your seat design. Below are some placement examples for common seat belt guide shapes. Note that horizontal belt guides can be fitted with only two `M5` positioning bolts, while angled guides usually need three to prevent sideways movement:
+
+![Belt Guide Shapes](https://github.com/user-attachments/assets/628b7daf-8fbb-4096-8d56-a2028e78651a)
+
 ### Back-Driving Protection
 
 There are a few options if you wish to add back-driving protection to your setup, which is **strongly recommended**. Which you choose will depend on your background:
@@ -94,11 +127,11 @@ There are a few options if you wish to add back-driving protection to your setup
 - [Soldered + Ideal Diode](#soldered--ideal-diode): Using an ideal diode module without terminals (requires soldering)
 - [Discrete Schottky Diode](#discrete-schottky-diode): Using a discrete Schottky diode (requires _trickier_ soldering)
 
-The printable case is design to accommodate all of these options.
+The printable case is designed to accommodate all of these options.
 
 ![Back Driving Protection Options](https://github.com/user-attachments/assets/a692c416-b0e0-4845-8425-ca056b65f534)
 
-> 📢 **Important:** All of these options add a modest capacitance between the power supply and controller board. If you disconnect this protection unit, the capacitor may remain charged at up to `~15V` for a period of time. Do not touch the terminals at either end of the unit, as doing so **may cause a shock**.
+> 📢 **Important:** All of these options add a modest capacitance between the power supply and controller board. If you disconnect this protection unit, the capacitor may remain charged at up to `~15V` for a period of time. Do not touch or short the terminals at either end of the unit, as doing so **may cause a shock or damage equipment**.
 
 #### Solderless + Ideal Diode
 
@@ -197,7 +230,7 @@ We also want there to _always_ be at least some cord wrapped around the pulleys 
 
 It is important that the cord is aligned such that it does not rub against the _sides_ of the pulley housing. The housing is designed to freely rotate with the cord at any angle along the axis of the motor; so if you move your chair backwards or forwards, it doesn't cause a problem. However the motor pulleys must line up perfectly underneath the seat's belt holes to avoid rubbing. In other words, the motor axles must be _perpendicular_ to the cords:
 
-![Pulley Alignment](https://github.com/user-attachments/assets/74b92307-cd40-4cbd-a4ae-80142aa51d28)
+![Pulley Alignment](https://github.com/user-attachments/assets/458a506e-d968-46da-b6e9-95d0174b4486)
 
 _(Instructional Video TBC)_
 
