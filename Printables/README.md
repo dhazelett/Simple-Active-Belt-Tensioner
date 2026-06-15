@@ -33,11 +33,11 @@ The **Through Clamp** is probably the easiest to integrate, while the **End Clam
 
 ### Opting For Belt Rollers
 
-There's a lot of variation in seat design. In cases where the belt guides have horizontal bottom surfaces (perpendicular to your pulley cords), you don't _need_ belt rollers; the belts will just slide through the guides without issue. Low-friction tape is recommended for a smoother experience and to protect your belt guides, but it shouldn't be _necessary_.
+There's a lot of variation in seat design. In cases where the belt guides have horizontal bottom surfaces (perpendicular to your pulley cords), you don't _need_ belt rollers; the belts will just slide through the guides without issue. In this case low-friction tape _is_ recommended for a smoother experience and to protect your belt guides.
 
-However with irregular or angled bottom surfaces, you may run into issues with the belts bunching up in the corners of the guides and not sliding smoothly. For such cases, you can print and assemble two [belt rollers](/Printables/Belt%20Roller/), which have been designed with an array of mounting holes to accommodate most belt guide shapes and angles.
+However with irregular or angled belt guides, you may run into issues with the belts bunching up in the corners of the guides and not sliding smoothly. For such cases, you can print and assemble two [universal belt rollers](/Printables/Belt%20Roller/), which have been designed with an array of mounting holes to accommodate most belt guide shapes and angles.
 
-Simply pick the holes that achieve the closest to horizontal alignment. Usually only two hole positions per roller are needed, but in some cases you may wish to add a third to provide lateral support and prevent the roller from slipping sideways:
+Simply pick the holes that achieve the closest to horizontal roller alignment. Usually only **two** hole positions per roller are _strictly necessary_, but **three** or **four** are recommended to provide the most secure fit and lateral support for heavily angled belt guides:
 
 ![Belt Guide Shapes](https://github.com/user-attachments/assets/628b7daf-8fbb-4096-8d56-a2028e78651a)
 
@@ -61,9 +61,9 @@ If you're making the [Belt Rollers](/Belt%20Rollers) you'll additionally need:
 - 2x Belt Roller (Bracket)
 - 2x Belt Roller (Plate)
 - 2x Belt Roller (Roller)
-- 4x Belt Roller (Spacer) \*
+- 4~8x Belt Roller (Spacer) \*
 
-\* These can either be stacked in multiples, or vertically scaled in your slicer software to be slightly shorter than the depth of your belt guide (usually `12~40mm`). They only serve to protect your plastic belt guides from the screws used to hold the assembly together. You can omit these if you're not bothered about that.
+\* These are intended to be vertically scaled in your slicer software to be slightly shorter (by `~0.5mm`) than the depth of your belt guide (usually `12~40mm`). They help to prevent the bracket and plate from bending once clamped and also protect your belt guide plastics from the screw threads. It is recommended that you print the rollers and spacers together (in a vertical orientation) and the bracket and plate together (in a horizontal orientation).
 
 ### Self Printing
 

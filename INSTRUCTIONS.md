@@ -31,25 +31,80 @@ The rest of the parts can be obtained from virtually anywhere, including [Amazon
 
 ### Belt Rollers
 
-These are considered to be _optional_, but may be required for seats with angled or irregularly shaped belt guides.
+These are considered to be _optional_, but are usually required for seats with angled or irregularly shaped belt guides. They cost little to build, so are _recommended_ if you have any doubts about your seat's belt guide design or want maximum performance.
 
 | Guide Price | Part | Description | Example |
 | - | - | - | - |
 | `5 GBP` | 4 x `605` Bearings | `5x14x5mm` bearings for the rollers | [Amazon UK](https://www.amazon.co.uk/dp/B0CZ8DJ6YM) / [Amazon UK](https://www.amazon.co.uk/dp/B0F6LNSC75) |
-| `5 GBP` | 10 x `M5` Fully-Threaded Hex-Socket Bolts | Length depends on seat belt guide depth | [Amazon UK](https://www.amazon.co.uk/dp/B0F1XLQQJY) |
-| `5 GBP` | 10 x `M5` Half Nuts | Must be 3mm thick or less | [Amazon UK](https://www.amazon.co.uk/dp/B0DD7X41JF?th=1) / [eBay UK](https://www.ebay.co.uk/itm/222525332328?var=525412329633) |
+| `5 GBP` | 8 x `M5` Fully-Threaded Countersunk Bolts | Length depends on seat belt guide depth | [Amazon UK](https://www.amazon.co.uk/dp/B0C97LXKBP) |
+| `5 GBP` | 8 x `M5` Hex Nuts (`8mm` WAF) | Must be `<5mm` thick | [Amazon UK](https://www.amazon.co.uk/dp/B0FMRFPWJ3) |
 
 > 📢 **Important:**
-> - For `M5` bolt length; measure your seat's belt guide/hole depth and _add_ `10mm`. So my `39mm` belt guides need `50mm` bolts
-> - The bolts _must_ be fully threaded; otherwise you won't be able to use them as the roller axles
-> - If you make your bolts too long they'll interfere with the belts
-> - If _not_ using rollers, you can reduce friction (and wear) on your seat's belt loops if you apply some low-friction tape over the contact points. I've had success with [2-3/8" PTFE Tape](https://www.amazon.co.uk/dp/B0F3XKJW2V)
+> - Countersunk bolts are typically measured by their _entire length_ including the head
+> - Measure your seat's belt guide/hole depth and _add_ `10mm`, rounding up to the nearest standard bolt length (e.g. my `39mm` belt guides need `50mm` bolts)
+> - The bolts _must_ be fully threaded; otherwise you won't be able to use them for the roller axles
+> - If you use bolts that are longer than needed, they may interfere with the belts and rollers
+
+If _not_ using rollers, you can reduce friction (and wear) on your seat's belt loops if you apply some low-friction tape over the contact points. I've had success with [2-3/8" PTFE Tape](https://www.amazon.co.uk/dp/B0F3XKJW2V).
 
 ### Back-Driving Protection
 
-You are strongly encouraged to use [Back-Driving Protection](#back-driving-protection), for which there are a number of options detailed later in this document. The parts required will depend on your chosen option, but none should exceed `15 GBP` in cost.
+You are _strongly encouraged_ to assemble and use this, as without it any rapid pulling on the belts may trigger the OVP/OCP within your power supply (as the motors act as _generators_ in this scenario) and disable tensioner functionality until time passes or a manual power supply reset is performed. There are a number of assembly and parts options detailed below. The [printable case](Printables/Back-Driving%20Protection%20Case) is designed to accommodate all of these options.
+
+> ⚡ **Warning:** All of these options add a modest capacitance between the power supply and controller board. If you disconnect the protection unit, the capacitor may remain charged at up to `~15V` for a period of time. Do not touch or short the terminals at either end of the unit, as doing so **may cause a shock or damage equipment**.
+
+The parts required will depend on your chosen option, but none should exceed `15 GBP` in cost:
+- [Solderless + Ideal Diode](#solderless--ideal-diode): Using an ideal diode module with pre-soldered terminals
+- [Soldered + Ideal Diode](#soldered--ideal-diode): Using an ideal diode module without terminals (requires soldering)
+- [Discrete Schottky Diode](#discrete-schottky-diode): Using a discrete Schottky diode (requires _trickier_ soldering)
+
+![Back Driving Protection Options](https://github.com/user-attachments/assets/a692c416-b0e0-4845-8425-ca056b65f534)
+
+#### Solderless + Ideal Diode
+
+If you're at all uncomfortable with the idea of soldering or don't have the equipment, you can choose this option. You will need to cut and strip some wires, but no soldering is required.
+
+| Guide Price | Part | Description | Example |
+| - | - | - | - |
+| `5 GBP` | Ideal Diode Module | A pre-made diode board with soldered screw terminals | [AliExpress](https://www.aliexpress.com/item/1005009419896467.html) |
+| `5 GBP` | Capacitor | A `2200uF` `35V` electrolytic capacitor (just one; you'll have spares) | [Amazon UK](https://www.amazon.co.uk/dp/B07K87YFP9) |
+| `5 GBP` | DC Cable | A `5.5x2.5mm` DC barrel plug to `XT60` adapter cable (or barrel-to-barrel extension)  | [Amazon UK](https://www.amazon.co.uk/dp/B0BPKNG672) or [Amazon UK](https://www.amazon.co.uk/dp/B0FJ8BKQCF) |
+
+> 📢 **Important:** The printable case for the protection unit is intended for cables with a `5~5.5mm` external diameter, which is fairly typical. Any larger and you'll struggle to fit the cable into the ends of the case. Note also that the screw terminals on the diode board have a maximum gauge of roughly `10 AWG` (or `2.6mm` core diameter); though yours may vary.
+
+The assembly instructions for this solderless option are included below under the [Assembly](#assembly) section.
+
+#### Soldered + Ideal Diode
+
+<img width="350" align="right" alt="Soldered Option" src="https://github.com/user-attachments/assets/8eefe655-81e7-454b-9835-d53c2832d935" />
+
+The instructions are the same for the solderless option; just with the screw terminals replaced by soldered joints. If you don't need the pre-soldered screw terminals, there are _many_ 'Ideal Diode' modules available. The one suggested for the solderless option can also be ordered without terminals, but you are not restricted to that model.
+
+The main things you need to ensure of your chosen 'Ideal Diode' module are:
+- The module actually blocks reverse current; not all such modules do (for 'OR-ing' purposes)
+- The current handling exceeds `6A`
+- The voltage handling exceeds `24V` (ideally `30V+`)
+- The board has both positive and GND solder pads to make assembly easier (some do not)
+
+As long as these requirements are met, the module _should_ do the trick. These are some examples:
+- [Pololu 5382](https://www.pololu.com/product/5382)
+- [Pololu 5383](https://www.pololu.com/product/5383)
+- [Pololu 5388](https://www.pololu.com/product/5388)
+- [Pololu 5389](https://www.pololu.com/product/5389)
+- [Generic LM74700 Module](https://www.amazon.co.uk/dp/B0FNY9MWLX)
+- [Generic 'Solar Diode' Module](https://www.amazon.co.uk/dp/B07QGW5J1H)
+
+#### Discrete Schottky Diode
+
+If you're a maker and familiar with electronics, a very simple circuit can be made using the same capacitor and any Schottky-like (e.g. SBR, SiC) diode with sufficient ratings. See above for the suggested values.
+
+Strictly speaking this would be a downgrade from the 'Ideal Diode' style boards, but will still do the job just fine. Voltage drop is unlikely to be problematic with that class of diode, and the motors are wide-input.
+
+See the diagrams above for a reference circuit design.
 
 ## Assembly
+
+Depending on your choices above, some of these assembly instructions may not be relevant to you. Please read through the instructions and only follow the steps that are applicable to your build.
 
 ### Motors
 
@@ -122,29 +177,6 @@ The choice of which holes to use is up to you and very much specific to your sea
 
 ### Back-Driving Protection
 
-There are a few options if you wish to add back-driving protection to your setup, which is **strongly recommended**. Which you choose will depend on your background:
-- [Solderless + Ideal Diode](#solderless--ideal-diode): Using an ideal diode module with pre-soldered terminals
-- [Soldered + Ideal Diode](#soldered--ideal-diode): Using an ideal diode module without terminals (requires soldering)
-- [Discrete Schottky Diode](#discrete-schottky-diode): Using a discrete Schottky diode (requires _trickier_ soldering)
-
-The printable case is designed to accommodate all of these options.
-
-![Back Driving Protection Options](https://github.com/user-attachments/assets/a692c416-b0e0-4845-8425-ca056b65f534)
-
-> 📢 **Important:** All of these options add a modest capacitance between the power supply and controller board. If you disconnect this protection unit, the capacitor may remain charged at up to `~15V` for a period of time. Do not touch or short the terminals at either end of the unit, as doing so **may cause a shock or damage equipment**.
-
-#### Solderless + Ideal Diode
-
-If you're at all uncomfortable with the idea of soldering or don't have the equipment, you can choose this option. You will need to cut and strip some wires, but no soldering is required.
-
-| Guide Price | Part | Description | Example |
-| - | - | - | - |
-| `5 GBP` | Ideal Diode Module | A pre-made diode board with soldered screw terminals | [AliExpress](https://www.aliexpress.com/item/1005009419896467.html) |
-| `5 GBP` | Capacitor | A `2200uF` `35V` electrolytic capacitor (just one; you'll have spares) | [Amazon UK](https://www.amazon.co.uk/dp/B07K87YFP9) |
-| `5 GBP` | DC Cable | A `5.5x2.5mm` DC barrel plug to `XT60` adapter cable (or barrel-to-barrel extension)  | [Amazon UK](https://www.amazon.co.uk/dp/B0BPKNG672) or [Amazon UK](https://www.amazon.co.uk/dp/B0FJ8BKQCF) |
-
-> 📢 **Important:** The printable case for the protection unit is intended for cables with a `5~5.5mm` external diameter, which is fairly typical. Any larger and you'll struggle to fit the cable into the ends of the case. Note also that the screw terminals on the diode board have a maximum gauge of roughly `10 AWG` (or `2.6mm` core diameter); though yours may vary.
-
 | Step | Instructions | Illustration |
 | :-: | :- | :-: |
 | 1 | Assemble the protection unit parts; the four `M2.5x16` bolts, four `M2.5` nuts, the capacitor, the diode board, the adapter cable and printed case. Cut the adapter cable in half as shown. | <img alt="The Protection Unit Parts" src="https://github.com/user-attachments/assets/ddfda194-d2f4-4281-981d-05b19c949105" /> |
@@ -154,34 +186,6 @@ If you're at all uncomfortable with the idea of soldering or don't have the equi
 | 6 | Insert the bare wires into the screw terminals. The `XT60` cable should be on the **output** side and the round DC barrel cable should be on the **input** side. **Black** to `GND` and **red** to `VOUT` and `VIN`. Tighten up the screws as much as they will go. |  <img alt="Inserting The Wires" src="https://github.com/user-attachments/assets/0a9b5a0d-ac72-4451-a24e-41a58c598081" /> |
 | 5 | Check for any stray or loose wires and adjust if needed. Install the unit into the printed case, taking care not to disturb the fitted wires. Make sure that the black outer sheath of the cable goes _completely inside_ the case as shown, so that the case lid can clamp down on it once closed. | <img alt="Fitting Into The Case" src="https://github.com/user-attachments/assets/99450677-ceb3-4b04-8392-2bc96aac6a44" /> |
 | 8 | Install the `M2.5x16MM` screws and nuts into the case and tighten as much as they will reasonably go. Ideally if you happen to have a multimeter, before attempting to power the controller board, check that the `XT60` connector produces the expected `15V` in the correct polarity (the **flat** side should be `+` and the **beveled** side `-`) when the power supply is connected to the dc barrel plug. |  <img alt="The Completed Protection Unit" src="https://github.com/user-attachments/assets/f5234cca-f23d-4a27-9115-615e1edb59dc" /> |
-
-#### Soldered + Ideal Diode
-
-<img width="350" align="right" alt="Soldered Option" src="https://github.com/user-attachments/assets/8eefe655-81e7-454b-9835-d53c2832d935" />
-
-The instructions are the same for the solderless option; just with the screw terminals replaced by soldered joints. If you don't need the pre-soldered screw terminals, there are _many_ 'Ideal Diode' modules available. The one suggested for the solderless option can also be ordered without terminals, but you are not restricted to that model.
-
-The main things you need to ensure of your chosen 'Ideal Diode' module are:
-- The module actually blocks reverse current; not all such modules do (for 'OR-ing' purposes)
-- The current handling exceeds `6A`
-- The voltage handling exceeds `24V` (ideally `30V+`)
-- The board has both positive and GND solder pads to make assembly easier (some do not)
-
-As long as these requirements are met, the module _should_ do the trick. These are some examples:
-- [Pololu 5382](https://www.pololu.com/product/5382)
-- [Pololu 5383](https://www.pololu.com/product/5383)
-- [Pololu 5388](https://www.pololu.com/product/5388)
-- [Pololu 5389](https://www.pololu.com/product/5389)
-- [Generic LM74700 Module](https://www.amazon.co.uk/dp/B0FNY9MWLX)
-- [Generic 'Solar Diode' Module](https://www.amazon.co.uk/dp/B07QGW5J1H)
-
-#### Discrete Schottky Diode
-
-If you're a maker and familiar with electronics, a very simple circuit can be made using the same capacitor and any Schottky-like (e.g. SBR, SiC) diode with sufficient ratings. See above for the suggested values.
-
-Strictly speaking this would be a downgrade from the 'Ideal Diode' style boards, but will still do the job just fine. Voltage drop is unlikely to be problematic with that class of diode, and the motors are wide-input.
-
-See the diagrams above for a reference circuit design.
 
 ## Wiring Up
 
