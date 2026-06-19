@@ -512,7 +512,7 @@ namespace User.ActiveBeltTensioner
                     if (!GetLeftMotor().SetIdentifier())
                     {
                         MessageBox.Show(
-                            SLoc.GetValue("SABT_Message_Setup_FailToSetLeftMotor"),
+                            SLoc.GetValue("SABT_Message_Setup_FailedToSetLeftMotor"),
                             SLoc.GetValue("SABT_Plugin"),
                             MessageBoxButton.OK,
                             MessageBoxImage.Error
@@ -536,7 +536,7 @@ namespace User.ActiveBeltTensioner
                         if (!GetRightMotor().SetIdentifier())
                         {
                             MessageBox.Show(
-                                SLoc.GetValue("SABT_Message_Setup_FailToSetLeftMotor"),
+                                SLoc.GetValue("SABT_Message_Setup_FailedToSetRightMotor"),
                                 SLoc.GetValue("SABT_Plugin"),
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Error
