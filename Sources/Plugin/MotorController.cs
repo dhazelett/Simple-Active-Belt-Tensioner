@@ -2,14 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO.Ports;
 using System.Linq;
 using System.Management;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
-using WoteverCommon.Extensions;
 using WoteverLocalization;
 
 namespace User.ActiveBeltTensioner
@@ -17,446 +15,113 @@ namespace User.ActiveBeltTensioner
     /// <summary>A representation of the motor control system, which is technically one serial port shared by multiple <see cref="Motor" /> objects</summary>
     public class MotorController : INotifyPropertyChanged, IDisposable
     {
-        public static class MotorGraphic
-        {
-            public const string Disconnected = "/User.ActiveBeltTensioner;component/Channel, Disconnected.png";
-            public const string Connect = "/User.ActiveBeltTensioner;component/Channel, Connect.png";
-            public const string Communicating = "/User.ActiveBeltTensioner;component/Channel, Communicating.png";
-            public const string Connected = "/User.ActiveBeltTensioner;component/Channel, Connected.png";
-            public const string Error = "/User.ActiveBeltTensioner;component/Channel, Error.png";
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void InvokePropertyChange([CallerMemberName] string name = null)
-        {
+        private void Notify([CallerMemberName] string name = null) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
 
-        /// <summary>A representation of a single motor, which receives and responds to commands via the shared serial port of the parent <see cref="MotorController" /></summary>
-        public class Motor : INotifyPropertyChanged
-        {
-            public event PropertyChangedEventHandler PropertyChanged;
+        // -----------------------------------------------------------------------------------------
+        // Public state
+        // -----------------------------------------------------------------------------------------
 
-            private void InvokePropertyChange([CallerMemberName] string name = null)
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-            }
+        private Motor[] Motors { get; }
 
-            public byte Identifier { get; set; } = 0;
-            public string Label { get; set; }
+        public bool IsBusy => _activeActions > 0;
 
-            private bool _isConnected = false;
-            public bool IsConnected
-            {
-                get { return _isConnected; }
-                set
-                {
-                    if (_isConnected != value)
-                    {
-                        _isConnected = value;
-                        InvokePropertyChange();
-                    }
-                }
-            }
+        public bool HasSerial => _bus.IsOpen;
 
-            private string _status = SLoc.GetValue("SABT_Status_Disconnected");
-            public string Status
-            {
-                get { return _status; }
-                set
-                {
-                    if (_status != value)
-                    {
-                        _status = value;
-                        InvokePropertyChange();
-                    }
-                }
-            }
+        public bool BothMotorsAreConnected  => GetLeftMotor().IsConnected && GetRightMotor().IsConnected;
+        public bool OneMotorIsConnected     => GetLeftMotor().IsConnected != GetRightMotor().IsConnected;
+        public bool LeftMotorIsConnected    => GetLeftMotor()?.IsConnected ?? false;
+        public bool RightMotorIsConnected   => GetRightMotor()?.IsConnected ?? false;
 
-            private string _graphic = MotorController.MotorGraphic.Disconnected;
-            public string Graphic
-            {
-                get { return _graphic; }
-                set
-                {
-                    if (_graphic != value)
-                    {
-                        _graphic = value;
-                        InvokePropertyChange();
-                    }
-                }
-            }
+        public string LeftMotorStatus   => GetLeftMotor()?.Status  ?? SLoc.GetValue("SABT_Status_Disconnected");
+        public string RightMotorStatus  => GetRightMotor()?.Status ?? SLoc.GetValue("SABT_Status_Disconnected");
+        public string LeftMotorGraphic  => GetLeftMotor()?.Graphic  ?? MotorGraphic.Disconnected;
+        public string RightMotorGraphic => GetRightMotor()?.Graphic ?? MotorGraphic.Disconnected;
 
-            private const short _maximumConsecutiveFailures = 10;
-            private const byte _torqueMode = 0x01;
-            private const short _torqueLimit = 12000;
-            private MotorController _controller;
+        private string[] _serialPorts = Array.Empty<string>();
 
-            private int _commandFailures = 0;
-            private double _smoothedTorque = 0.0;
-
-            public Motor(MotorController controller, byte identifier, string label = "Unassigned")
-            {
-                _controller = controller;
-
-                Identifier = identifier;
-                Label = label;
-            }
-
-            /// <summary>Invokes various methods to ascertain the status of the motor, while updating its status indicators</summary>
-            /// <returns>Whether the motor responded as expected</returns>
-            public bool Check()
-            {
-                IsConnected = false;
-                Status = SLoc.GetValue("SABT_Status_Connecting");
-                Graphic = MotorGraphic.Disconnected;
-
-                _smoothedTorque = 0;
-
-                if (!_controller.HasSerial)
-                {
-                    Status = SLoc.GetValue("SABT_Status_NoDeviceDetected");
-
-                    return false;
-                }
-
-                if (Query(false))
-                {
-                    Status = SLoc.GetValue("SABT_Status_CheckingMode");
-                    Graphic = MotorGraphic.Communicating;
-
-                    if (Query(true))
-                    {
-                        IsConnected = true;
-                        Status = SLoc.GetValue("SABT_Status_Connected");
-                        Graphic = MotorGraphic.Connected;
-
-                        return true;
-                    }
-
-                    Status = SLoc.GetValue("SABT_Status_SettingMode");
-                    Graphic = MotorGraphic.Communicating;
-
-                    if (SetMode(_torqueMode))
-                    {
-                        IsConnected = true;
-                        Status = SLoc.GetValue("SABT_Status_Connected");
-                        Graphic = MotorGraphic.Connected;
-
-                        return true;
-                    }
-                }
-
-                IsConnected = false;
-                Status = SLoc.GetValue("SABT_Status_CommunicationFailure");
-                Graphic = MotorGraphic.Error;
-
-                return false;
-            }
-
-            /// <summary>Sends a stop (zero torque) command to the motor until a response is received or limited attempts run out, while updating its status indicators</summary>
-            /// <returns>Whether the motor responded as expected</returns>
-            public bool Stop()
-            {
-                IsConnected = false;
-                Status = SLoc.GetValue("SABT_Status_Stopping");
-                Graphic = MotorGraphic.Communicating;
-
-                _smoothedTorque = 0;
-
-                byte[] tx = BuildFrame(Identifier, 0x64, 0x00, 0x00);
-                byte[] rx = new byte[10];
-
-                for (int i = 0; i < 5; i++)
-                {
-                    if (_controller.WriteFrameReadFrame(tx, rx))
-                    {
-                        Status = SLoc.GetValue("SABT_Status_Disconnected");
-                        Graphic = MotorGraphic.Disconnected;
-
-                        return true;
-                    }
-                }
-
-                Status = SLoc.GetValue("SABT_Status_CommunicationFailure");
-                Graphic = MotorGraphic.Error;
-
-                return false;
-            }
-
-            /// <summary>Sends a status request command to the motor and checks the response (if any) for validity</summary>
-            /// <returns>Whether the motor responded as expected</returns>
-            public bool Query(bool isInTorqueMode = true)
-            {
-                byte[] tx = BuildFrame(Identifier, 0x74);
-                byte[] rx = new byte[10];
-
-                if (_controller.WriteFrameReadFrame(tx, rx, 300, true, true))
-                {
-                    if (rx[0] != Identifier) { return false; }
-                    if (isInTorqueMode && rx[1] != _torqueMode) { return false; }
-                    if (rx[6] >= 60) { return false; } // Temperature
-                    if (rx[8] != 0x00) { return false; } // Error
-
-                    return true;
-                }
-
-                return false;
-            }
-
-            /// <summary>Sends a series of torque commands to the motor to oscillate it, while updating its status indicators</summary>
-            /// <returns>Whether the motor responded as expected</returns>
-            public bool Test(int times = 10, double testTorque = 0.4)
-            {
-                SLoc.GetValue("SABT_Status_Testing");
-                Graphic = MotorGraphic.Communicating;
-
-                if (!Query(true))
-                {
-                    IsConnected = false;
-                    Status = SLoc.GetValue("SABT_Status_TestFailed");
-                    Graphic = MotorGraphic.Error;
-
-                    return false;
-                }
-
-                int direction = (this == _controller.GetLeftMotor()) ? -1 : 1;
-                int good = 0;
-                int bad = 0;
-
-                short torque = 0;
-
-                for (int i = 0; i < times; i++)
-                {
-                    byte highByte = (byte)((torque >> 8) & 0xFF);
-                    byte lowByte = (byte)(torque & 0xFF);
-
-                    byte[] tx = BuildFrame(Identifier, 0x64, highByte, lowByte);
-                    byte[] rx = new byte[10];
-
-                    if (_controller.WriteFrameReadFrame(tx, rx, 20, true, true))
-                    {
-                        good++;
-                    }
-                    else
-                    {
-                        bad++;
-                    }
-
-                    Thread.Sleep(150);
-
-                    torque = (short)((torque != 0) ? 0 : (testTorque * direction * _torqueLimit));
-                }
-
-                if (bad > 0)
-                {
-                    if (good < 1)
-                    {
-                        IsConnected = false;
-                        Status = SLoc.GetValue("SABT_Status_TestFailed");
-                        Graphic = MotorGraphic.Error;
-
-                        return false;
-
-                    }
-
-                    IsConnected = true;
-                    Status = SLoc.GetValue("SABT_Status_TestPartiallyFailed");
-                    Graphic = MotorGraphic.Connected;
-
-                    return true;
-                }
-
-                IsConnected = true;
-                Status = SLoc.GetValue("SABT_Status_TestPassed");
-                Graphic = MotorGraphic.Connected;
-
-                return true;
-            }
-
-            /// <summary>Sends a series of identifier allocation commands to the motor</summary>
-            /// <remarks>The motor firmware requires 5 repeated commands of this type to actually change the value; and it can only be changed once per power cycle</remarks>
-            /// <returns>Whether the motor responded as expected</returns>
-            public bool SetIdentifier()
-            {
-                Status = SLoc.GetValue("SABT_Status_SettingIdentifier");
-                Graphic = MotorGraphic.Communicating;
-
-                byte[] tx = BuildFrame(0xAA, 0x55, 0x53, Identifier, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
-                byte[] rx = new byte[10];
-
-                for (int i = 0; i < 5; i++)
-                {
-                    _controller.FlushSerialBuffer();
-                    _controller.WriteFrameReadFrame(tx, rx, 100, false, true);
-                }
-
-                Thread.Sleep(500);
-
-                if (Query(false))
-                {
-                    if (SetMode(_torqueMode))
-                    {
-                        Status = SLoc.GetValue("SABT_Status_IdentifierSet");
-                        Graphic = MotorGraphic.Connected;
-
-                        return true;
-                    }
-                }
-
-                Status = SLoc.GetValue("SABT_Status_CommunicationFailure");
-                Graphic = MotorGraphic.Error;
-
-                return false;
-            }
-
-            /// <summary>Sends a mode change command with the given mode byte motor (<see langword="0x01" />: torque, <see langword="0x02" />: velocity, <see langword="0x03" />: position)</summary>
-            /// <returns>Whether the motor responded as expected</returns>
-            public bool SetMode(byte mode)
-            {
-                byte[] tx = BuildFrame(Identifier, 0xA0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, mode);
-                byte[] rx = new byte[10];
-
-                _controller.WriteFrameReadFrame(tx, rx, 200, false, true);
-                
-                return Query(true);
-            }
-
-            /// <summary>Sends the given torque value (as a fraction of maximum torque) to the motor; optionally subject to a smoothing factor</summary>
-            /// <returns>Whether the motor responded as expected</returns>
-            public bool SetTorque(double torque, double smoothingFactor = 0.0)
-            {
-                _smoothedTorque = (torque * (1.0 - smoothingFactor)) + (_smoothedTorque * smoothingFactor);
-
-                torque = _smoothedTorque;
-
-                short newTorque = ClampValue(
-                    (short)(torque * _torqueLimit * -1.0),
-                    (short)_torqueLimit * -1,
-                    (short)_torqueLimit
-                );
-
-                byte highByte = (byte)((newTorque >> 8) & 0xFF);
-                byte lowByte = (byte)(newTorque & 0xFF);
-
-                byte[] tx = BuildFrame(Identifier, 0x64, highByte, lowByte);
-                byte[] rx = new byte[10];
-
-                if (!_controller.WriteFrameReadFrame(tx, rx, 10))
-                {
-                    _commandFailures++;
-                    
-                    Logging.Current.Warn("SABT: " + this.Label + " Motor communication failure (" + _commandFailures + "/" + _maximumConsecutiveFailures  + " Allowed)");
-
-                    return (_commandFailures < _maximumConsecutiveFailures);
-                }
-                
-                _commandFailures = 0;
-
-                return true;
-            }
-        }
-
-        public Motor[] Motors { get; private set; }
-        public bool IsBusy {
-            get { lock (_actionLock) { return _actionsIdentifiers.Count > 0; } }
-        }
-        public bool HasSerial
-        {
-            get { return (_serialPort != null); }
-        }
-        public bool BothMotorsAreConnected {
-            get { return GetLeftMotor().IsConnected && GetRightMotor().IsConnected; }
-        }
-
-        public bool OneMotorIsConnected {
-            get { return GetLeftMotor().IsConnected != GetRightMotor().IsConnected; }
-        }
-
-        public bool LeftMotorIsConnected {
-            get { return GetLeftMotor()?.IsConnected ?? false; }
-        }
-        public bool RightMotorIsConnected
-        {
-            get { return GetRightMotor()?.IsConnected ?? false; }
-        }
-        public string LeftMotorStatus {
-            get { return GetLeftMotor()?.Status ?? SLoc.GetValue("SABT_Status_Disconnected"); }
-        }
-        public string RightMotorStatus {
-            get { return GetRightMotor()?.Status ?? SLoc.GetValue("SABT_Status_Disconnected"); }
-        }
-        public string LeftMotorGraphic
-        {
-            get { return GetLeftMotor()?.Graphic ?? MotorGraphic.Disconnected; }
-        }
-        public string RightMotorGraphic
-        {
-            get { return GetRightMotor()?.Graphic ?? MotorGraphic.Disconnected; }
-        }
-
-        private string[] _serialPorts = new string[0];
         public string[] SerialPorts
         {
-            get { return _serialPorts; }
-            private set
+            get => _serialPorts;
+            set
             {
                 if (!ReferenceEquals(_serialPorts, value))
                 {
-                    _serialPorts = value ?? new string[0];
-                    InvokePropertyChange(nameof(SerialPorts));
+                    _serialPorts = value ?? Array.Empty<string>();
+                    Notify();
                 }
             }
         }
 
-        private readonly DevicePlugin _plugin;
-        private readonly List<string> _actionsIdentifiers = new List<string>();
-        private SerialPort _serialPort;
-        private long _actionsCounter = 0;
-        private readonly object _actionLock = new object();
-        private readonly object _serialLock = new object();
-        private bool _hasNotifiedOfLicense = false;
+        // -----------------------------------------------------------------------------------------
+        // Private state
+        // -----------------------------------------------------------------------------------------
 
+        private readonly DevicePlugin _plugin;
+        private readonly MotorBus     _bus;
+
+        private int  _activeActions;
+        private bool _hasNotifiedOfLicense;
         private bool _motorCommandSwitch = true;
 
         private readonly long _motorCommandTicks;
-        private long _lastCommandTicks = 0;
+        private long          _lastCommandTicks;
+
+        // -----------------------------------------------------------------------------------------
+        // Construction
+        // -----------------------------------------------------------------------------------------
 
         public MotorController(DevicePlugin plugin)
         {
             _plugin = plugin;
+            _bus    = new MotorBus();
 
-            Motors = new Motor[] {
-                new Motor(this, 0x01, "Left"),
-                new Motor(this, 0x02, "Right")
+            Motors = new Motor[]
+            {
+                new Motor(_bus, 0x01, "Left"),
+                new Motor(_bus, 0x02, "Right")
             };
 
-            foreach (Motor motor in Motors)
-            {
-                motor.PropertyChanged += MotorPropertyChanged;
-            }
+            foreach (Motor m in Motors)
+                m.PropertyChanged += OnMotorPropertyChanged;
 
-            _motorCommandTicks = (long)(16.67 * System.Diagnostics.Stopwatch.Frequency / 1000.0); // 60Hz
+            _motorCommandTicks = (long)(16.67 * System.Diagnostics.Stopwatch.Frequency / 1000.0); // 60 Hz
         }
 
-        private void MotorPropertyChanged(object origin, PropertyChangedEventArgs e)
+        private void OnMotorPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            Motor motor = origin as Motor;
+            if (!(sender is Motor motor)) return;
 
-            if (motor == null) return;
+            Notify($"{motor.Label}Motor{e.PropertyName}");
+            Notify(nameof(BothMotorsAreConnected));
+            Notify(nameof(OneMotorIsConnected));
+        }
 
-            InvokePropertyChange($"{motor.Label}Motor{e.PropertyName}");
+        // -----------------------------------------------------------------------------------------
+        // Setup wizard
+        // -----------------------------------------------------------------------------------------
 
-            InvokePropertyChange(nameof(BothMotorsAreConnected));
-            InvokePropertyChange(nameof(OneMotorIsConnected));
+        /// <summary>Guides the user through one-motor-at-a-time ID assignment</summary>
+        public bool Setup()
+        {
+            BeginAction(out int token);
+
+            try   { return DoSetup(); }
+            finally { EndAction(token); }
         }
 
         /// <summary>Performs the motor configuration process via a series of guided prompts</summary>
         /// <returns>Whether the process succeeded</returns>
-        public bool Setup()
+        private bool DoSetup()
         {
-            if (_serialPort == null)
+            // Disable motors and disconnect cleanly — prevents the control loop
+            // from interleaving commands with setup frames on the serial bus
+            _plugin.IsEnabled = false;
+            _bus.Disconnect();
+
+            if (!_plugin.Settings.IsSerialPortValid || !_bus.Connect(_plugin.Settings.SerialPort))
             {
                 MessageBox.Show(
                     SLoc.GetValue("SABT_Message_NoDeviceDetected"),
@@ -464,11 +129,10 @@ namespace User.ActiveBeltTensioner
                     MessageBoxButton.OK,
                     MessageBoxImage.Exclamation
                 );
-
                 return false;
             }
 
-            if (GetLeftMotor().IsConnected && GetRightMotor().IsConnected)
+            if (Motors.All(m => m.IsConnected))
             {
                 MessageBox.Show(
                     SLoc.GetValue("SABT_Message_Setup_AlreadySetUp"),
@@ -476,193 +140,137 @@ namespace User.ActiveBeltTensioner
                     MessageBoxButton.OK,
                     MessageBoxImage.Exclamation
                 );
-
                 return false;
             }
 
-            Motor leftMotor = GetLeftMotor();
-            Motor rightMotor = GetRightMotor();
+            if (Prompt("SABT_Message_Setup_TurnOffPower") != MessageBoxResult.Yes) return false;
+            
+            Motor left  = ConfigureMotor("Left");
+            if (left == null) return false;
 
-            leftMotor.Status = SLoc.GetValue("SABT_Status_Disconnected");
-            leftMotor.Graphic = MotorGraphic.Disconnected;
+            Motor right = ConfigureMotor("Right");
+            if (right == null) return false;
 
-            rightMotor.Status = SLoc.GetValue("SABT_Status_Disconnected");
-            rightMotor.Graphic = MotorGraphic.Disconnected;
+            // Step h: power off, plug in both motors, power on
+            if (Prompt("SABT_Message_Setup_PowerCycleToSwap") != MessageBoxResult.Yes) return false;
 
-            if (
+            // Step i: final scan — both IDs must be present
+            List<byte> final = _bus.ScanBus();
+            bool verified    = final.Count == 2
+                && final.Contains(left.Id)
+                && final.Contains(right.Id);
+
+            if (verified)
+            {
                 MessageBox.Show(
-                    SLoc.GetValue("SABT_Message_Setup_TurnOffPower"),
+                    SLoc.GetValue("SABT_Message_Setup_Complete"),
                     SLoc.GetValue("SABT_Plugin"),
-                    MessageBoxButton.YesNoCancel,
+                    MessageBoxButton.OK,
                     MessageBoxImage.Information
-                ) == MessageBoxResult.Yes
-            ) {
-                leftMotor.Status = SLoc.GetValue("SABT_Status_AwaitingConnection");
-                leftMotor.Graphic = MotorGraphic.Connect;
-
-                if (
-                    MessageBox.Show(
-                        SLoc.GetValue("SABT_Message_Setup_PlugInLeftMotor"),
-                        SLoc.GetValue("SABT_Plugin"),
-                        MessageBoxButton.YesNoCancel,
-                        MessageBoxImage.Information
-                    ) == MessageBoxResult.Yes
-                )
-                {
-                    if (!GetLeftMotor().SetIdentifier())
-                    {
-                        MessageBox.Show(
-                            SLoc.GetValue("SABT_Message_Setup_FailedToSetLeftMotor"),
-                            SLoc.GetValue("SABT_Plugin"),
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Error
-                        );
-
-                        return false;
-                    }
-
-                    rightMotor.Status = SLoc.GetValue("SABT_Status_AwaitingConnection");
-                    rightMotor.Graphic = MotorGraphic.Connect;
-
-                    if (
-                        MessageBox.Show(
-                            SLoc.GetValue("SABT_Message_Setup_PlugInRightMotor"),
-                            SLoc.GetValue("SABT_Plugin"),
-                            MessageBoxButton.YesNoCancel,
-                            MessageBoxImage.Information
-                        ) == MessageBoxResult.Yes
-                    )
-                    {
-                        if (!GetRightMotor().SetIdentifier())
-                        {
-                            MessageBox.Show(
-                                SLoc.GetValue("SABT_Message_Setup_FailedToSetRightMotor"),
-                                SLoc.GetValue("SABT_Plugin"),
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Error
-                            );
-
-                            return false;
-                        }
-
-                        MessageBox.Show(
-                            SLoc.GetValue("SABT_Message_Setup_Complete"),
-                            SLoc.GetValue("SABT_Plugin"),
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Information
-                        );
-
-                        return true;
-                    }
-                }
+                );
+                return true;
             }
 
+            Error("SABT_Message_Setup_VerifyFailed");
             return false;
         }
+        
+        /// <summary>Guides the user through the plug-in and ID-assignment steps for one motor; returns the configured motor or <see langword="null" /> if the user cancels</summary>
+        /// <returns>The configured motor instance, or <see langword="null" /> if the process was cancelled or failed</returns>
+        private Motor ConfigureMotor(string position)
+        {
+            Motor motor = MotorByLabel(position);
+
+            motor.Status  = SLoc.GetValue("SABT_Status_AwaitingConnection");
+            motor.Graphic = MotorGraphic.Connect;
+            
+            if (Prompt($"SABT_Message_Setup_PlugIn{position}Motor") != MessageBoxResult.Yes) return null;
+
+            if (!WaitForSingleMotor()) return null;
+
+            if (!motor.SetIdentifier() || !VerifySingleId(motor.Id))
+            {
+                Error($"SABT_Message_Setup_FailedToSet{position}Motor");
+                return null;
+            }
+
+            return motor;
+        }
+
+        /// <summary>Scans until exactly one motor responds, prompting the user to fix the connection on each mismatch</summary>
+        private bool WaitForSingleMotor()
+        {
+            while (true)
+            {
+                List<byte> found = _bus.ScanBus();
+
+                if (found.Count == 1) return true;
+
+                string key = found.Count == 0
+                    ? "SABT_Message_Setup_NoMotorOnBus"
+                    : "SABT_Message_Setup_MultipleMotorsOnBus";
+
+                if (MessageBox.Show(
+                    SLoc.GetValue(key),
+                    SLoc.GetValue("SABT_Plugin"),
+                    MessageBoxButton.OKCancel,
+                    MessageBoxImage.Warning
+                ) != MessageBoxResult.OK) return false;
+            }
+        }
+
+        /// <summary>Re-scans and returns true only if <paramref name="id"/> is the sole responder</summary>
+        private bool VerifySingleId(byte id)
+        {
+            List<byte> found = _bus.ScanBus();
+            return found.Count == 1 && found[0] == id;
+        }
+
+        // -----------------------------------------------------------------------------------------
+        // Connection lifecycle
+        // -----------------------------------------------------------------------------------------
 
         /// <summary>Opens the selected serial port; checking motor communication automatically if enabled</summary>
         /// <returns>Whether the serial port was successfully opened</returns>
         public bool Connect()
         {
-            StartAction(out string action);
+            BeginAction(out int token);
 
-            bool didConnect = false;
+            bool connected = false;
 
-            lock (_serialLock)
+            if (_bus.IsOpen)
             {
-                if (_serialPort != null && _serialPort.IsOpen)
-                {
-                    if (_plugin.IsEnabled)
-                    {
-                        Check();
-                    }
-
-                    EndAction(action);
-
-                    return true;
-                }
-
-                if (!_plugin.Settings.IsSerialPortValid)
-                {
-                    Logging.Current.Warn("SABT: Invalid serial port selection");
-
-                    EndAction(action);
-
-                    return false;
-                }
-
-                try
-                {
-                    _serialPort?.Dispose();
-                    _serialPort = new SerialPort(
-                        portName: _plugin.Settings.SerialPort,
-                        baudRate: 115200
-                    )
-                    {
-                        Parity = Parity.None,
-                        StopBits = StopBits.One,
-                        ReadTimeout = 10,
-                        WriteTimeout = 100,
-                        DtrEnable = false,
-                        RtsEnable = false,
-                        NewLine = "\n"
-                    };
-
-                    int retry = 0;
-                    const int retries = 10;
-
-                    while (retry < retries)
-                    {
-                        try
-                        {
-                            _serialPort.Open();
-
-                            didConnect = true;
-
-                            break;
-                        }
-                        catch (UnauthorizedAccessException)
-                        {
-                            _serialPort.Close();
-
-                            retry++;
-
-                            Logging.Current.Warn("SABT: Serial port opening failure (" + retry + "/" + retries + " retries)");
-
-                            Thread.Sleep(100);
-                        }
-                    }
-
-                    if (!didConnect)
-                    {
-                        _serialPort?.Dispose();
-                        _serialPort = null;
-                    }
-                }
-                catch (Exception exception)
-                {
-                    Logging.Current.Warn($"SABT: Unexpected serial communication error: {exception.Message}");
-                }
+                if (_plugin.IsEnabled) Check();
+                EndAction(token);
+                return true;
             }
 
-            EndAction(action);
-
-            if (didConnect && _plugin.IsEnabled)
+            if (_plugin.Settings.IsSerialPortValid)
             {
-                Check();
+                connected = _bus.Connect(_plugin.Settings.SerialPort);
+
+                if (!connected)
+                    Logging.Current.Warn("SABT: Failed to open serial port");
+            }
+            else
+            {
+                Logging.Current.Warn("SABT: Invalid serial port selection");
             }
 
-            return didConnect;
+            EndAction(token);
+
+            if (connected && _plugin.IsEnabled) Check();
+
+            return connected;
         }
 
         /// <summary>Invokes the <see cref="Motor.Check()" /> method on each motor</summary>
         /// <returns>Whether all motors were successfully connected</returns>
-        public bool Check()
+        private bool Check()
         {
             if (!_plugin.PluginManager.IsSimHubLicenceValid && !_hasNotifiedOfLicense)
             {
                 _hasNotifiedOfLicense = true;
-
                 MessageBox.Show(
                     SLoc.GetValue("SABT_Message_SimHubLicenseRequired"),
                     SLoc.GetValue("SABT_Plugin"),
@@ -670,399 +278,162 @@ namespace User.ActiveBeltTensioner
                 );
             }
 
-            StartAction(out string action);
+            BeginAction(out int token);
 
-            bool didConnect = true;
+            bool allConnected = Motors.Aggregate(true, (current, m) => m.Check() && current);
 
-            foreach (Motor motor in Motors)
-            {
-                didConnect = motor.Check() && didConnect;
-            }
-
-            EndAction(action);
-
-            return didConnect;
+            EndAction(token);
+            return allConnected;
         }
 
         /// <summary>Invokes the <see cref="Motor.Stop()" /> method on each motor then closes the serial port</summary>
         public void Disconnect()
         {
-            StartAction(out string action);
+            BeginAction(out int token);
 
-            lock (_serialLock)
-            {
-                if (_serialPort != null && _serialPort.IsOpen)
-                {
-                    foreach (Motor motor in Motors)
-                    {
-                        motor.Stop();
-                    }
+            foreach (Motor m in Motors) m.Stop();
 
-                    try
-                    {
-                        _serialPort.Close();
-                        _serialPort.Dispose();
-                    }
-                    catch
-                    {
-                        Logging.Current.Warn("SABT: Serial port release failure");
-                    }
-                }
-            }
+            _bus.Disconnect();
 
-            EndAction(action);
+            EndAction(token);
         }
 
         /// <summary>An alias of <see cref="Disconnect()" /> for the purposes of fulfilling the <see cref="IDisposable" /> interface</summary>
-        public void Dispose()
-        {
-            Disconnect();
-        }
+        public void Dispose() => Disconnect();
+
+        // -----------------------------------------------------------------------------------------
+        // Runtime torque output (60 Hz, alternating left/right at 30 Hz each)
+        // -----------------------------------------------------------------------------------------
 
         /// <summary>Sends the given torque values (as fractions of maximum torque) to the two motors, alternating between motors at 30Hz per motor (60Hz overall)</summary>
         /// <returns>Whether the motor commands were sent successfully (if applicable)</returns>
-        public bool SetTorques(double left, double right, double smoothingFactor = 0.0)
+        public bool SetTorques(double left, double right, double smoothing = 0.0)
         {
-            StartAction(out string action);
+            BeginAction(out int token);
 
-            if (_serialPort == null || !_serialPort.IsOpen)
+            if (!_bus.IsOpen) { EndAction(token); return false; }
+
+            bool ok = true;
+            long now = System.Diagnostics.Stopwatch.GetTimestamp();
+
+            if (now - _lastCommandTicks >= _motorCommandTicks)
             {
-                EndAction(action);
+                ok = _motorCommandSwitch
+                    ? GetLeftMotor().SetTorque(left, smoothing)
+                    : GetRightMotor().SetTorque(right * -1, smoothing);
 
-                return false;
+                _lastCommandTicks    = now;
+                _motorCommandSwitch  = !_motorCommandSwitch;
             }
 
-            bool didSet = true;
-            long currentTicks = System.Diagnostics.Stopwatch.GetTimestamp();
-
-            if (currentTicks - _lastCommandTicks >= _motorCommandTicks)
-            {
-                didSet = _motorCommandSwitch
-                    ? GetLeftMotor().SetTorque(left, smoothingFactor)
-                    : GetRightMotor().SetTorque(right * -1, smoothingFactor);
-
-                _lastCommandTicks = currentTicks;
-                _motorCommandSwitch = !_motorCommandSwitch;
-            }
-
-            EndAction(action);
-
-            return didSet;
+            EndAction(token);
+            return ok;
         }
 
-        /// <summary>Provides the motor instance currently mapped to the `left` channel</summary>
-        public Motor GetLeftMotor()
-        {
-            foreach (Motor motor in Motors)
-            {
-                if (motor.Label == (_plugin.Settings.IsFlipped ? "Right" : "Left"))
-                {
-                    return motor;
-                }
-            }
+        // -----------------------------------------------------------------------------------------
+        // Motor accessors (respect Flip Channels setting)
+        // -----------------------------------------------------------------------------------------
 
-            return null;
+        /// <summary>Provides the motor instance currently mapped to the left channel, accounting for the flip setting</summary>
+        public Motor GetLeftMotor()  => MotorByLabel(_plugin.Settings.IsFlipped ? "Right" : "Left");
+
+        /// <summary>Provides the motor instance currently mapped to the right channel, accounting for the flip setting</summary>
+        public Motor GetRightMotor() => MotorByLabel(_plugin.Settings.IsFlipped ? "Left"  : "Right");
+
+        /// <summary>Returns the motor whose <see cref="Motor.Label" /> matches the given value, or <see langword="null" /> if none is found</summary>
+        private Motor MotorByLabel(string label)
+        {
+            return Motors.FirstOrDefault(m => m.Label == label);
         }
 
-        /// <summary>Provides the motor instance currently mapped to the `right` channel</summary>
-        public Motor GetRightMotor()
-        {
-            foreach (Motor motor in Motors)
-            {
-                if (motor.Label == (_plugin.Settings.IsFlipped ? "Left" : "Right"))
-                {
-                    return motor;
-                }
-            }
+        // -----------------------------------------------------------------------------------------
+        // Serial port discovery
+        // -----------------------------------------------------------------------------------------
 
-            return null;
-        }
-
-        /// <summary>Records the (optionally) given action name as being in-progress. Uses the parent caller name if omitted</summary>
-        /// <remarks>Consult <see cref="IsBusy" /> to check if any actions are in-progress and <see cref="EndAction" /> to mark an action as complete</remarks>
-        /// <returns>The identifier of the action</returns>
-        private void StartAction(out string action, [CallerMemberName] string name = "")
-        {
-            lock (_actionLock)
-            {
-                name = $"{name}:{_actionsCounter++}";
-
-                _actionsIdentifiers.Add(name);
-
-                action = name;
-            }
-        }
-
-        /// <summary>Marks the given action identifier as complete</summary>
-        /// <remarks>Consult <see cref="IsBusy" /> to check if any actions are in-progress and <see cref="EndAction" /> to mark an action as complete</remarks>
-        /// <returns>The identifier of the action</returns>
-        private void EndAction(string name)
-        {
-            lock (_actionLock)
-            {
-                _actionsIdentifiers.Remove(name);
-            }
-        }
-
-        /// <summary>Restricts the given value to the given range</summary>
-        private static short ClampValue(short value, short minimum, short maximum)
-        {
-            if (value < minimum) { return minimum; }
-
-            if (value > maximum) { return maximum; }
-
-            return value;
-        }
-
-        /// <summary>Discards any bytes currently within serial buffer</summary>
-        /// <returns>The number of bytes cleared</returns>
-        private int FlushSerialBuffer()
-        {
-            int bytes = 0;
-
-            if (_serialPort == null)
-            {
-                return bytes;
-            }
-
-            lock (_serialLock)
-            {
-                try
-                {
-                    while (_serialPort.BytesToRead > 0)
-                    {
-                        if (_serialPort.ReadByte() != -1)
-                        {
-                            bytes++;
-                        }
-                    }
-                }
-                catch { }
-            }
-
-            return bytes;
-        }
-
-        /// <summary>Sends the given bytes over the serial port connection, then waits for a response and populates the given response buffer</summary>
-        /// <remarks>The timeout may be customised and the verification of the checksum can be disabled if needed</remarks>
-        /// <returns>Whether the motor responded as expected</returns>
-        public bool WriteFrameReadFrame(byte[] tx, byte[] rx, int timeout = 10, bool shouldValidate = true, bool shouldLog = false)
-        {
-            if (_serialPort == null || !_serialPort.IsOpen)
-            {
-                Logging.Current.Warn("SABT: Serial port is not avaiable or not open");
-
-                return false;
-            }
-
-            lock (_serialLock)
-            {
-                try
-                {
-                    while (_serialPort.BytesToRead > 0)
-                    {
-                        _serialPort.ReadByte();
-                    }
-
-                    _serialPort.Write(tx, 0, tx.Length);
-                }
-                catch
-                {
-                    return false;
-                }
-
-                if (shouldLog)
-                {
-                    Logging.Current.Info("SABT: Motor TX (" + BitConverter.ToString(tx) + ")");
-                }
-
-                long startedAt = System.Diagnostics.Stopwatch.GetTimestamp();
-                long timeoutTicks = (long)(timeout * System.Diagnostics.Stopwatch.Frequency / 1000.0);
-                int receivedBytes = 0;
-
-                while (receivedBytes < 10)
-                {
-                    try
-                    {
-                        int b = _serialPort.ReadByte();
-                        if (b < 0) { continue; }
-                        rx[receivedBytes++] = (byte)b;
-                    }
-                    catch (TimeoutException)
-                    { }
-
-                    long elapsed = System.Diagnostics.Stopwatch.GetTimestamp() - startedAt;
-
-                    if (elapsed > timeoutTicks)
-                    {
-                        Array.Clear(rx, 0, rx.Length);
-
-                        return false;
-                    }
-                }
-            }
-
-            if (shouldLog)
-            {
-                Logging.Current.Info("SABT: Motor RX (" + BitConverter.ToString(rx) + ")");
-            }
-
-            if (shouldValidate)
-            {
-                byte checksum = CalculateChecksum(rx, 9);
-                byte given = rx[9];
-                bool isValid = (given == checksum);
-
-                if (!isValid)
-                {
-                    Logging.Current.Warn("SABT: Invalid motor response checksum (" + given.ToString("X2") + " != " + checksum.ToString("X2") + ")");
-
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        /// <summary>Constructs a byte 'frame' that can be understood by the motor controller</summary>
-        /// <returns>The byte array of the constructed frame</returns>
-        private static byte[] BuildFrame(
-            byte identifier,
-            byte command,
-            byte byte0 = 0,
-            byte byte1 = 0,
-            byte byte2 = 0,
-            byte byte3 = 0,
-            byte byte4 = 0,
-            byte byte5 = 0,
-            byte byte6 = 0,
-            byte? byte7 = null
-        )
-        {
-            byte[] payload = new byte[10];
-
-            payload[0] = identifier;
-            payload[1] = command;
-            payload[2] = byte0; payload[3] = byte1; payload[4] = byte2; payload[5] = byte3;
-            payload[6] = byte4; payload[7] = byte5; payload[8] = byte6;
-            payload[9] = byte7.HasValue ? byte7.Value : CalculateChecksum(payload, 9);
-
-            return payload;
-        }
-
-        /// <summary>Determines the checksum byte for the given 'frame' byte array</summary>
-        private static byte CalculateChecksum(byte[] data, int dataLength)
-        {
-            byte checksum = 0x00;
-
-            for (int i = 0; i < dataLength; i++)
-            {
-                checksum ^= data[i];
-
-                for (int b = 0; b < 8; b++)
-                {
-                    if ((checksum & 0x01) != 0)
-                    {
-                        checksum = (byte)((checksum >> 1) ^ 0x8C);
-                    }
-                    else
-                    {
-                        checksum >>= 1;
-                    }
-                }
-            }
-
-            return checksum;
-        }
-
-        /// <summary>Identifies devices that match the expected VID/PID for the controller board (or more specifically, the serial bridge we using on it)</summary>
-        /// <returns>A list of <see cref="DeviceInstance" /> instances that appear to match</returns>
+        /// <summary>Identifies devices that match the expected VID/PID for the controller board and returns a sorted list of their COM port names</summary>
+        /// <returns>A sorted array of COM port name strings that appear to match</returns>
         public string[] UpdateSerialPorts()
         {
-            if (_serialPort != null && _serialPort.IsOpen && _plugin.IsEnabled && SerialPorts?.Length > 0)
-            {
+            if (_bus.IsOpen && _plugin.IsEnabled && SerialPorts?.Length > 0)
                 return SerialPorts;
-            }
 
             Logging.Current.Info("SABT: Detecting serial ports...");
 
-            const string vidPid = "VID_1A86&PID_55D3";
+            const string vidPid      = "VID_1A86&PID_55D3";
+            Regex        portPattern = new Regex(@"\((COM\d+)\)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            List<string> ports       = new List<string>();
 
-            Regex portPattern = new Regex(@"\((COM\d+)\)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-            List<DeviceInstance> devices = new List<DeviceInstance>();
-
-            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(
-                "SELECT Name, Caption, PNPDeviceID FROM Win32_PnPEntity"))
+            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT Name, Caption, PNPDeviceID FROM Win32_PnPEntity"))
             {
                 foreach (ManagementObject mo in searcher.Get())
                 {
-                    string name = mo["Name"] as string ?? string.Empty;
-                    string caption = mo["Caption"] as string ?? string.Empty;
-                    string pnpDeviceId = mo["PNPDeviceID"] as string ?? string.Empty;
+                    string pnpId   = mo["PNPDeviceID"] as string ?? string.Empty;
+                    string display = (mo["Name"] as string ?? mo["Caption"] as string) ?? string.Empty;
 
-                    if (string.IsNullOrWhiteSpace(pnpDeviceId))
-                    {
-                        continue;
-                    }
+                    if (string.IsNullOrWhiteSpace(pnpId)) continue;
+                    if (pnpId.IndexOf(vidPid, StringComparison.OrdinalIgnoreCase) < 0) continue;
 
-                    if (!pnpDeviceId.Contains(vidPid, StringComparison.OrdinalIgnoreCase))
-                    {
-                        continue;
-                    }
-
-                    string display = !string.IsNullOrWhiteSpace(name) ? name : caption;
-                    Match match = portPattern.Match(display);
-
-                    if (!match.Success)
-                    {
-                        continue;
-                    }
-
-                    devices.Add(new DeviceInstance
-                    {
-                        SerialPort = match.Groups[1].Value.ToUpperInvariant(),
-                        Name = display,
-                        PnpDeviceId = pnpDeviceId
-                    });
+                    Match m = portPattern.Match(display);
+                    if (m.Success) ports.Add(m.Groups[1].Value.ToUpperInvariant());
                 }
             }
 
-            string[] serialPorts = devices
-                .OrderBy(d => d.SerialPort, StringComparer.OrdinalIgnoreCase)
-                .ToList()
-                .Select(device => device.SerialPort)
-                .Where(port => !string.IsNullOrWhiteSpace(port))
+            string[] sorted = ports
+                .Where(p => !string.IsNullOrWhiteSpace(p))
                 .Distinct(StringComparer.OrdinalIgnoreCase)
-                .OrderBy(port => port, StringComparer.OrdinalIgnoreCase)
+                .OrderBy(p => p, StringComparer.OrdinalIgnoreCase)
                 .ToArray();
 
-            SerialPorts = serialPorts;
+            SerialPorts = sorted;
 
-            if (serialPorts.Length < 1)
+            if (sorted.Length == 0)
             {
                 Disconnect();
-
                 _plugin.Settings.SerialPort = null;
-
                 return SerialPorts;
             }
 
-            if (
-                string.IsNullOrWhiteSpace(_plugin.Settings.SerialPort) ||
-                !serialPorts.Contains(_plugin.Settings.SerialPort, StringComparer.OrdinalIgnoreCase)
-            ) {
-                _plugin.Settings.SerialPort = serialPorts[0];
+            if (string.IsNullOrWhiteSpace(_plugin.Settings.SerialPort) ||
+                !sorted.Contains(_plugin.Settings.SerialPort, StringComparer.OrdinalIgnoreCase))
+            {
+                _plugin.Settings.SerialPort = sorted[0];
             }
 
             return SerialPorts;
         }
 
-        public sealed class DeviceInstance
+        // -----------------------------------------------------------------------------------------
+        // Action tracking (exposes IsBusy for UI binding)
+        // -----------------------------------------------------------------------------------------
+
+        /// <summary>Increments the active action counter and notifies bindings of the <see cref="IsBusy" /> state change</summary>
+        /// <remarks>Consult <see cref="IsBusy" /> to check if any actions are in-progress, and <see cref="EndAction" /> to mark an action as complete</remarks>
+        private void BeginAction(out int token)
         {
-            public string SerialPort { get; set; }
-            public string Name { get; set; }
-            public string PnpDeviceId { get; set; }
+            token = Interlocked.Increment(ref _activeActions);
+            if (token == 1) Notify(nameof(IsBusy));
         }
+
+        /// <summary>Decrements the active action counter and notifies bindings of the <see cref="IsBusy" /> state change</summary>
+        /// <remarks>Consult <see cref="IsBusy" /> to check if any actions are in-progress, and <see cref="BeginAction" /> to mark an action as started</remarks>
+        private void EndAction(int token)
+        {
+            int remaining = Interlocked.Decrement(ref _activeActions);
+            if (remaining == 0) Notify(nameof(IsBusy));
+        }
+
+        // -----------------------------------------------------------------------------------------
+        // MessageBox helpers (keep Setup() readable)
+        // -----------------------------------------------------------------------------------------
+
+        /// <summary>Shows a localised <see cref="MessageBoxButton.YesNoCancel" /> information dialog and returns the user's choice</summary>
+        private static MessageBoxResult Prompt(string key) => MessageBox.Show(
+            SLoc.GetValue(key), SLoc.GetValue("SABT_Plugin"),
+            MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
+
+        /// <summary>Shows a localised <see cref="MessageBoxButton.OK" /> error dialog</summary>
+        private static void Error(string key) => MessageBox.Show(
+            SLoc.GetValue(key), SLoc.GetValue("SABT_Plugin"),
+            MessageBoxButton.OK, MessageBoxImage.Error);
     }
 }

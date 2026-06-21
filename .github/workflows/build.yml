@@ -1,0 +1,61 @@
+name: Build & Release
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download SimHub installer
+        shell: pwsh
+        run: |
+          $release = Invoke-RestMethod "https://api.github.com/repos/SHWotever/SimHub/releases/latest"
+          $asset   = $release.assets | Where-Object { $_.name -like "*.exe" } | Select-Object -First 1
+          Invoke-WebRequest -Uri $asset.browser_download_url -OutFile SimHubSetup.exe
+
+      - name: Install SimHub silently
+        shell: pwsh
+        run: Start-Process -FilePath .\SimHubSetup.exe -ArgumentList "/S" -Wait
+
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Restore NuGet packages
+        run: nuget restore Sources\Plugin\User.ActiveBeltTensioner.csproj -PackagesDirectory C:\NuGetPackages\ActiveBeltTensioner
+
+      - name: Read version
+        shell: pwsh
+        run: |
+          $version = (Select-String -Path Sources\Plugin\Properties\AssemblyInfo.cs `
+            -Pattern 'AssemblyInformationalVersion\("([^"]+)"\)').Matches[0].Groups[1].Value
+          echo "VERSION=$version" >> $env:GITHUB_ENV
+
+      - name: Build
+        shell: pwsh
+        run: |
+          msbuild Sources\Plugin\User.ActiveBeltTensioner.csproj `
+            /p:Configuration=Release `
+            "/p:SIMHUB_INSTALL_PATH=C:\Program Files (x86)\SimHub"
+
+      - name: Package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path staging\Languages | Out-Null
+          Copy-Item "Sources\Plugin\bin\Release\User.ActiveBeltTensioner.dll" staging\
+          Copy-Item "Sources\Plugin\Languages\*.resx" staging\Languages\
+          Compress-Archive -Path staging\* -DestinationPath "SABT SimHub Plugin.zip"
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.VERSION }}
+          name: v${{ env.VERSION }}
+          generate_release_notes: true
+          files: SABT SimHub Plugin.zip
