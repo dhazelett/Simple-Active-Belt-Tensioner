@@ -930,20 +930,20 @@ namespace User.ActiveBeltTensioner
             if (_surgeSeries != null)
             {
                 _surgeSeries.IsVisible = Settings.ShowSurgePlot;
-                ToggleThresholdLine(_surgeMinimumAnnotation, Settings.ShowSurgePlot);
-                ToggleThresholdLine(_surgeMaximumAnnotation, Settings.ShowSurgePlot);
+                ToggleThresholdlLine(_surgeMinimumAnnotation, Settings.ShowSurgePlot);
+                ToggleThresholdlLine(_surgeMaximumAnnotation, Settings.ShowSurgePlot);
             }
             if (_swaySeries != null)
             {
                 _swaySeries.IsVisible = Settings.ShowSwayPlot;
-                ToggleThresholdLine(_swayMinimumAnnotation, Settings.ShowSwayPlot);
-                ToggleThresholdLine(_swayMaximumAnnotation, Settings.ShowSwayPlot);
+                ToggleThresholdlLine(_swayMinimumAnnotation, Settings.ShowSwayPlot);
+                ToggleThresholdlLine(_swayMaximumAnnotation, Settings.ShowSwayPlot);
             }
             if (_heaveSeries != null)
             {
                 _heaveSeries.IsVisible = Settings.ShowHeavePlot;
-                ToggleThresholdLine(_heaveMinimumAnnotation, Settings.ShowHeavePlot);
-                ToggleThresholdLine(_heaveMaximumAnnotation, Settings.ShowHeavePlot);
+                ToggleThresholdlLine(_heaveMinimumAnnotation, Settings.ShowHeavePlot);
+                ToggleThresholdlLine(_heaveMaximumAnnotation, Settings.ShowHeavePlot);
             }
             if (_leftTorqueSeries != null)
             {
@@ -1030,7 +1030,7 @@ namespace User.ActiveBeltTensioner
         }
 
         /// <summary>Toggles the removal/addition of an existing threshold line</summary>
-        private void ToggleThresholdLine(Annotation annotation, bool shouldShow)
+        private void ToggleThresholdlLine(Annotation annotation, bool shouldShow)
         {
             if (annotation == null || TelemetryGraphModel == null)
             {
