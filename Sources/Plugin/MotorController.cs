@@ -456,29 +456,9 @@ namespace User.ActiveBeltTensioner
         /// <returns>Whether the process succeeded</returns>
         public bool Setup()
         {
-            if (_serialPort == null)
-            {
-                MessageBox.Show(
-                    SLoc.GetValue("SABT_Message_NoDeviceDetected"),
-                    SLoc.GetValue("SABT_Plugin"),
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Exclamation
-                );
+            _plugin.IsEnabled = false;
 
-                return false;
-            }
-
-            if (GetLeftMotor().IsConnected && GetRightMotor().IsConnected)
-            {
-                MessageBox.Show(
-                    SLoc.GetValue("SABT_Message_Setup_AlreadySetUp"),
-                    SLoc.GetValue("SABT_Plugin"),
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Exclamation
-                );
-
-                return false;
-            }
+            Connect();
 
             Motor leftMotor = GetLeftMotor();
             Motor rightMotor = GetRightMotor();
@@ -556,6 +536,12 @@ namespace User.ActiveBeltTensioner
                     }
                 }
             }
+
+            leftMotor.Status = SLoc.GetValue("SABT_Status_Disconnected");
+            leftMotor.Graphic = MotorGraphic.Disconnected;
+
+            rightMotor.Status = SLoc.GetValue("SABT_Status_Disconnected");
+            rightMotor.Graphic = MotorGraphic.Disconnected;
 
             return false;
         }
